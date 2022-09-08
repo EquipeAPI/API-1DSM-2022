@@ -36,12 +36,26 @@ def login():
     else:
         return render_template('login.html')
 
+# Rota da página inicial
+@app.route('/')
+def index():
+    if 'cpf' in session: # Verificando se a pessoa já está logada
+        return redirect(url_for(home))
+    return render_template('index.html')
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     if request.method == 'POST':
-        cliente = request.form #Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
+        dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
+        nome = dadosCliente['nome'] # Armazena o que foi enviado do formulário no input 'nome' numa variável de mesmo nome
+        cpf = dadosCliente['cpf'] # Mesmo procedimento para o cpf
+        senha = dadosCliente['senha'] # Igualmente para a senha (ainda tenho que aprender a deixar isso de uma forma segura)
+
+        cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
+        cur.execute("INSERT INTO Cliente(cli_nome, cli_cpf, cli_senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+        mysql.connection.commit() # Dando commit
+        cur.close() # Fechando o cursor
         return redirect(url_for('login'))
         '''
         ==========Possível inserção usando arquivo .py do modelo==========
