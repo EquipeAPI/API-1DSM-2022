@@ -14,7 +14,6 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-<<<<<<< Updated upstream
 
 # Rota da página de login (que é a página inicial)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
@@ -38,14 +37,12 @@ def login():
     else:
         return render_template('login.html')
 
-=======
 # Rota da página inicial
 @app.route('/')
 def index():
     if 'cpf' in session: # Verificando se a pessoa já está logada
         return redirect(url_for(home))
     return render_template('index.html')
->>>>>>> Stashed changes
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
