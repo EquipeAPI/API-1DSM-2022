@@ -1,17 +1,15 @@
 from flask import Flask
 from flask_mysqldb import MySQL
-
+from app import mysql
 
 app = Flask(__name__)
 
 # Configurações do banco de dados
-app.config['MYSQL_HOST'] = ''
-app.config['MYSQL_USER'] = ''
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = ''
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
-mysql = MySQL(app)
+''' app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Meusequel@d0'
+app.config['MYSQL_DB'] = 'teste'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor' '''
 
 
 def criaConta(nome, cpf, senha):

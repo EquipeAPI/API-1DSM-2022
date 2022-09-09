@@ -1,24 +1,25 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
-#from flask_mysqldb import MySQL
+from flask_mysqldb import MySQL
 import bd
 
 app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 
-'''# Configurações do banco de dados
+# Configurações do banco de dados
 app.config['MYSQL_HOST'] = ''
 app.config['MYSQL_USER'] = ''
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = ''
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-'''
+
+mysql = MySQL(app)
 
 # Rota da página de login (que é a página inicial)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
 @app.route('/login', methods=['POST', 'GET']) # Colocando os metodos HTTP que serão usados
 def login():
     if 'nome' in session: #Verificando se a pessoa já está logada
-        return redirect(url_for(home))
+        return redirect(url_for('home'))
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         nome = request.form['nome'] #Adicionando a uma variável python a informação do input nome do forms
         session['nome'] = nome #Criando uma session para transportar essa informação de maneira segura entre as rotas
