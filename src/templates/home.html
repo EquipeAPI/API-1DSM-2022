@@ -7,15 +7,19 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Bem vindo {{nome}}</h1>
+    {% if session['nome'] %}
+    <h1>Bem vindo, {{ session['nome'] }}</h1>
+    {% else %}]
+    <p>Não está logado ainda</p>
+    {% endif %}
      <!-- Menssagem de saque ou depósito realizado com sucesso -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}
             <p>{{msg}}</p>
         {% endfor %}
     {% endwith %}
-    <a href="http://127.0.0.1:5000/loggout">Loggout</a>
-    <a href="http://127.0.0.1:5000/saque">Saque</a>
-    <a href="http://127.0.0.1:5000/deposito">Depósito</a>
+    <a href="/loggout">Loggout</a>
+    <a href="/saque">Saque</a>
+    <a href="/deposito">Depósito</a>
 </body>
 </html>

@@ -21,10 +21,20 @@ def login():
     if 'nome' in session: #Verificando se a pessoa já está logada
         return redirect(url_for('home'))
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
-        nome = request.form['nome'] #Adicionando a uma variável python a informação do input nome do forms
-        session['nome'] = nome #Criando uma session para transportar essa informação de maneira segura entre as rotas
-        return redirect(url_for('home'))
-        
+        cpf = request.form['cpf'] #Adicionando a uma variável python a informação do input cpf do forms
+        senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM Cliente WHERE cpf =%s", (cpf,)) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+        usuario = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
+        cur.close()
+        if len(usuario) > 0: #Se existir pelo menos 1 usuário com essas informações
+            if senha == usuario['senha']: #Checa se a senha digitada é a mesma armazenada para aquele usuário específico (Possível por conta do fetchone ^)
+                session['nome'] = usuario['nome'] #Define que a sessão corresponde ao nome do usuário em questão
+                return render_template('home.html') #Redireciona para a página Home
+            else:
+                return 'Usuário ou Senha incorretos' #Se as informações não baterem
+
         '''
         ==========Possível validação usando arquivo .py do modelo==========
         if modelo.validação(nome, senha):

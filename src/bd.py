@@ -14,7 +14,8 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor' '''
 
 def criaConta(nome, cpf, senha):
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO Cliente(cli_nome, cli_cpf, cli_senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO Cliente(nome, cpf, senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
 
+        
