@@ -24,8 +24,8 @@ def login():
         cpf = request.form['cpf'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
  
-        if bd.valida("cliente", "cpf", cpf): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
-            nome = bd.pegarLinha("cliente", "cpf", cpf)
+        if bd.valida("cliente", "cpf", cpf) and bd.valida("cliente", "senha", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
+            nome = bd.pegarLinha("cliente", "cpf", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
             session['nome'] = nome['nome']
             return redirect(url_for('home'))
         else:
@@ -74,6 +74,10 @@ def deposito():
     if 'nome' in session:
         if request.method == 'POST':
             deposito = request.form['deposito']
+            atual = bd.consultaSaldo(session['nome'])
+            
+            atual = atual + int(deposito)
+            bd.mudaSaldo(atual, session['nome'])
             flash('Depósito realizado com sucesso.', 'info')
             return redirect(url_for('home'))
 
@@ -94,8 +98,12 @@ def saque():
     if 'nome' in session:
         if request.method == 'POST':
             saque = request.form['saque']
+            atual = bd.consultaSaldo(session['nome'])
+            atual = atual - int(saque)
+            bd.mudaSaldo(atual, session['nome'])
             flash('Saque realizado com sucesso.', 'info')
             return redirect(url_for('home'))
+            
 
 
             '''

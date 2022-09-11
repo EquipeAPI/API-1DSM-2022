@@ -14,6 +14,7 @@ mysql = MySQL(app)
 def criaConta(nome, cpf, senha): #Insere uma linha com esses valores na tabela cliente
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
     cur.execute("INSERT INTO Cliente(nome, cpf, senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO Conta(nome) VALUES(%s)", [nome])
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
 
@@ -34,3 +35,19 @@ def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o
     linha = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
     cur.close()
     return linha
+
+def consultaSaldo(nome):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT saldo FROM Conta WHERE nome =%s", [nome]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    saldo = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
+    cur.close()
+    return saldo['saldo']
+
+def mudaSaldo(valor, nome):
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE Conta SET saldo = {valor} WHERE nome = '{nome}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    saldo = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
+    mysql.connection.commit()
+    cur.close()
+    return None
+    
