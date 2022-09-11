@@ -6,10 +6,10 @@ app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 
 # Configurações do banco de dados
-app.config['MYSQL_HOST'] = ''
-app.config['MYSQL_USER'] = ''
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = ''
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'Guará'
+app.config['MYSQL_PASSWORD'] = 'Guarana2!'
+app.config['MYSQL_DB'] = 'teste'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
@@ -23,26 +23,15 @@ def login():
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         cpf = request.form['cpf'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
-
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM Cliente WHERE cpf =%s", (cpf,)) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
-        usuario = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
-        cur.close()
-        if len(usuario) > 0: #Se existir pelo menos 1 usuário com essas informações
-            if senha == usuario['senha']: #Checa se a senha digitada é a mesma armazenada para aquele usuário específico (Possível por conta do fetchone ^)
-                session['nome'] = usuario['nome'] #Define que a sessão corresponde ao nome do usuário em questão
-                return render_template('home.html') #Redireciona para a página Home
-            else:
-                return 'Usuário ou Senha incorretos' #Se as informações não baterem
-
-        '''
-        ==========Possível validação usando arquivo .py do modelo==========
-        if modelo.validação(nome, senha):
+ 
+        if bd.valida("cliente", "cpf", cpf): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
+            nome = bd.pegarLinha("cliente", "cpf", cpf)
+            session['nome'] = nome['nome']
             return redirect(url_for('home'))
         else:
-            return render_template('login.html')
-        '''
-
+            flash("Senha ou CPF incorretos", "info")
+            return redirect(url_for('login'))
+        
     else:
         return render_template('login.html')
 
@@ -56,24 +45,10 @@ def cadastro():
         cpf = dadosCliente['cpf'] # Mesmo procedimento para o cpf
         senha = dadosCliente['senha'] # Igualmente para a senha (ainda tenho que aprender a deixar isso de uma forma segura)
 
-
-        '''cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-        cur.execute("INSERT INTO Cliente(cli_nome, cli_cpf, cli_senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
-        mysql.connection.commit() # Dando commit
-        cur.close() # Fechando o cursor'''
-
-        bd.criaConta(nome, cpf, senha) # ^^^^Aciona as ações que estão no comentário acima^^^^
+        bd.criaConta(nome, cpf, senha) #Insere os valores do formulário na tabela cliente
 
         return redirect(url_for('login'))
-        '''
-        ==========Possível inserção usando arquivo .py do modelo==========
-        if modelo.validação(nome, senha):
-            return redirect(url_for('home'))
-        else:
-            flash = ("Senha ou CPF incorretos. Tente outra vez", info) #Mensagem de erro de login (só aparece se a validação falhar)
-            return render_template('login.html')
         
-        '''
     else:
         return render_template('cadastro.html')
 
