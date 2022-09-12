@@ -75,8 +75,8 @@ def deposito():
         if request.method == 'POST':
             deposito = request.form['deposito']
             atual = bd.consultaSaldo(session['nome'])
-            
-            atual = atual + int(deposito)
+            deposito = float(deposito)
+            atual = atual + deposito
             bd.mudaSaldo(atual, session['nome'])
             flash('Depósito realizado com sucesso.', 'info')
             return redirect(url_for('home'))
@@ -99,7 +99,8 @@ def saque():
         if request.method == 'POST':
             saque = request.form['saque']
             atual = bd.consultaSaldo(session['nome'])
-            atual = atual - int(saque)
+            saque = float(saque)
+            atual = atual - saque
             bd.mudaSaldo(atual, session['nome'])
             flash('Saque realizado com sucesso.', 'info')
             return redirect(url_for('home'))
