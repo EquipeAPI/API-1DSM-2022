@@ -8,7 +8,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -57,7 +57,7 @@ def cadastro():
 # Rota da página home
 @app.route('/Home')
 def home():
-    return render_template('home.html', nome = session['nome'])
+    return render_template('home.html', nome = session['nome'], saldo = bd.consultaSaldo(session['id_usuario']))
 
 
 # Rota de loggout. Ela não reenderiza nenhum html, apenas limpa as informações da session e redireciona para o login.
