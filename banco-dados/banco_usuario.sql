@@ -36,7 +36,7 @@ CREATE TABLE `usuario` (
   `data_nascimento_usuario` date NOT NULL,
   `genero_usuario` set('masculino','feminino') COLLATE utf8mb4_general_ci NOT NULL,
   `senha_usuario` varchar(6) COLLATE utf8mb4_general_ci NOT NULL,
-  `numero_conta` int NOT NULL,
+  `numero_conta` int NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `cpf_usuario` (`cpf_usuario`),
   KEY `numero_conta` (`numero_conta`),

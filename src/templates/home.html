@@ -12,6 +12,7 @@
     {% else %}]
     <p>Não está logado ainda</p>
     {% endif %}
+    
      <!-- Menssagem de saque ou depósito realizado com sucesso -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}

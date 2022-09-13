@@ -1,13 +1,13 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_mysqldb import MySQL
-import bd
+import bd, modelo
 
 app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = ''
+app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
@@ -25,8 +25,9 @@ def login():
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
  
         if bd.valida("usuario", "cpf_usuario", cpf) and bd.valida("usuario", "senha_usuario", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
-            nome = bd.pegarLinha("usuario", "cpf_usuario", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
-            session['nome'] = nome['nome_usuario']
+            linhaUsuario = bd.pegarLinha("usuario", "cpf_usuario", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+            session['nome'] = linhaUsuario['nome_usuario']
+            session['id_usuario'] = linhaUsuario['id_usuario']
             return redirect(url_for('home'))
         else:
             flash("Senha ou CPF incorretos", "info")
@@ -41,21 +42,14 @@ def login():
 def cadastro():
     if request.method == 'POST':
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
-        nome = dadosCliente['nome'] # Armazena o que foi enviado do formulário no input 'nome' numa variável de mesmo nome
-        cpf = dadosCliente['cpf'] # Mesmo procedimento para o cpf
-        rua = dadosCliente['rua']
-        numero = dadosCliente['numero']
-        bairro = dadosCliente['bairro']
-        cidade = dadosCliente['cidade']
-        estado = dadosCliente['estado']
-        dataNascimento = dadosCliente['dataNascimento']
-        genero = dadosCliente['genero']
-        senha = dadosCliente['senha'] # Igualmente para a senha (ainda tenho que aprender a deixar isso de uma forma segura)
+        if not bd.valida('usuario', 'cpf_usuario', dadosCliente['cpf']): #validação cpf
+            bd.criaConta(dadosCliente) #Insere os valores do formulário na tabela cliente
+            return redirect(url_for('login'))
 
-        bd.criaConta(nome, cpf, rua, numero, bairro, cidade, estado, dataNascimento, genero, senha) #Insere os valores do formulário na tabela cliente
+        else:
+            flash('Este CPF já está cadastrado')
+            return redirect(url_for('cadastro'))
 
-        return redirect(url_for('login'))
-        
     else:
         return render_template('cadastro.html')
 
@@ -81,19 +75,17 @@ def deposito():
     if 'nome' in session:
         if request.method == 'POST':
             deposito = request.form['deposito']
-            atual = bd.consultaSaldo(session['nome'])
-            deposito = float(deposito)
-            atual = atual + deposito
-            bd.mudaSaldo(atual, session['nome'])
-            flash('Depósito realizado com sucesso.', 'info')
-            return redirect(url_for('home'))
+            atual = bd.consultaSaldo(session['id_usuario'])
+            if modelo.validaOperacao(deposito):
+                deposito = float(deposito)
+                atual = atual + deposito
+                bd.mudaSaldo(atual, session['id_usuario'])
+                flash('Depósito realizado com sucesso.', 'info')
+                return redirect(url_for('home'))
+            else:
+                flash('Insira apenas números e use "." para separar reais de centavos')
+                return redirect(url_for('deposito'))
 
-
-            '''
-            ==========Possível inserção da função depósito usando arquivo .py do modelo==========
-            modelo.deposito(deposito)
-        
-            '''
         else:
             return render_template('deposito.html')
     else:
@@ -105,20 +97,16 @@ def saque():
     if 'nome' in session:
         if request.method == 'POST':
             saque = request.form['saque']
-            atual = bd.consultaSaldo(session['nome'])
-            saque = float(saque)
-            atual = atual - saque
-            bd.mudaSaldo(atual, session['nome'])
-            flash('Saque realizado com sucesso.', 'info')
-            return redirect(url_for('home'))
-            
-
-
-            '''
-            ==========Possível inserção da função saque usando arquivo .py do modelo==========
-            modelo.saque(saque)
-        
-            '''
+            atual = bd.consultaSaldo(session['id_usuario'])
+            if modelo.validaOperacao(saque):
+                saque = float(saque)
+                atual = atual - saque
+                bd.mudaSaldo(atual, session['id_usuario'])
+                flash('Saque realizado com sucesso.', 'info')
+                return redirect(url_for('home'))
+            else:
+                flash('Insira apenas números e use "." para separar reais de centavos')
+                return redirect(url_for('saque'))
         else:
             return render_template('saque.html')
     else:

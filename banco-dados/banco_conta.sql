@@ -27,10 +27,11 @@ DROP TABLE IF EXISTS `conta`;
 CREATE TABLE `conta` (
   `numero_conta` int NOT NULL AUTO_INCREMENT,
   `agencia_conta` varchar(3) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `data_abertura_conta` date NOT NULL,
+  `data_abertura_conta` date NULL,
   `tipo_conta` set('poupança','corrente') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `saldo_conta` decimal(9,2) NOT NULL,
-  `id_usuario` int DEFAULT NULL,
+  `saldo_conta` float(9,2) DEFAULT 00.00,
+  `id_usuario` int,
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
   PRIMARY KEY (`numero_conta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
