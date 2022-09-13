@@ -4,17 +4,17 @@ from app import mysql
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'Guará'
-app.config['MYSQL_PASSWORD'] = 'Guarana2!'
-app.config['MYSQL_DB'] = 'teste'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-def criaConta(nome, cpf, senha): #Insere uma linha com esses valores na tabela cliente
+def criaConta(nome, cpf, rua, numero, bairro, cidade, estado, dataNascimento, genero, senha): #Insere uma linha com esses valores na tabela cliente
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO Cliente(nome, cpf, senha) VALUES(%s, %s, %s)", (nome, cpf, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
-    cur.execute("INSERT INTO Conta(nome) VALUES(%s)", [nome])
+    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nome, cpf, rua, numero, bairro, cidade, estado, dataNascimento, genero, senha)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    #cur.execute("INSERT INTO `conta`(`numero_conta`) VALUES()", [nome])
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
 

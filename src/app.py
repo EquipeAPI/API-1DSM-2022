@@ -7,9 +7,9 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'Guará'
-app.config['MYSQL_PASSWORD'] = 'Guarana2!'
-app.config['MYSQL_DB'] = 'teste'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
@@ -24,9 +24,9 @@ def login():
         cpf = request.form['cpf'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
  
-        if bd.valida("cliente", "cpf", cpf) and bd.valida("cliente", "senha", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
-            nome = bd.pegarLinha("cliente", "cpf", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
-            session['nome'] = nome['nome']
+        if bd.valida("usuario", "cpf_usuario", cpf) and bd.valida("usuario", "senha_usuario", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
+            nome = bd.pegarLinha("usuario", "cpf_usuario", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+            session['nome'] = nome['nome_usuario']
             return redirect(url_for('home'))
         else:
             flash("Senha ou CPF incorretos", "info")
@@ -43,9 +43,16 @@ def cadastro():
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
         nome = dadosCliente['nome'] # Armazena o que foi enviado do formulário no input 'nome' numa variável de mesmo nome
         cpf = dadosCliente['cpf'] # Mesmo procedimento para o cpf
+        rua = dadosCliente['rua']
+        numero = dadosCliente['numero']
+        bairro = dadosCliente['bairro']
+        cidade = dadosCliente['cidade']
+        estado = dadosCliente['estado']
+        dataNascimento = dadosCliente['dataNascimento']
+        genero = dadosCliente['genero']
         senha = dadosCliente['senha'] # Igualmente para a senha (ainda tenho que aprender a deixar isso de uma forma segura)
 
-        bd.criaConta(nome, cpf, senha) #Insere os valores do formulário na tabela cliente
+        bd.criaConta(nome, cpf, rua, numero, bairro, cidade, estado, dataNascimento, genero, senha) #Insere os valores do formulário na tabela cliente
 
         return redirect(url_for('login'))
         
