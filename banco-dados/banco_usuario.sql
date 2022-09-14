@@ -26,21 +26,18 @@ DROP TABLE IF EXISTS `usuario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
-  `nome_usuario` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `cpf_usuario` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
-  `rua_avenida_usuario` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `numero_usuario` varchar(5) COLLATE utf8mb4_general_ci NOT NULL,
-  `bairro_usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `cidade_usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `estado_usuario` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `nome_usuario` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cpf_usuario` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `rua_avenida_usuario` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `numero_usuario` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `bairro_usuario` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cidade_usuario` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `estado_usuario` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `data_nascimento_usuario` date NOT NULL,
-  `genero_usuario` set('masculino','feminino') COLLATE utf8mb4_general_ci NOT NULL,
+  `genero_usuario` set('Masculino','Feminino','Outro','Prefiro não responder') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `senha_usuario` varchar(6) COLLATE utf8mb4_general_ci NOT NULL,
-  `numero_conta` int NULL,
   PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `cpf_usuario` (`cpf_usuario`),
-  KEY `numero_conta` (`numero_conta`),
-  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
+  UNIQUE KEY `cpf_usuario` (`cpf_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-11 15:06:13
+-- Dump completed on 2022-09-13 20:26:38

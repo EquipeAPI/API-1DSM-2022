@@ -1,6 +1,7 @@
+from tkinter import E
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_mysqldb import MySQL
-import bd, modelo
+import bd, modelo # Importando os outros arquivos .py
 
 app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
@@ -8,7 +9,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -21,14 +22,16 @@ def login():
     if 'nome' in session: #Verificando se a pessoa já está logada
         return redirect(url_for('home'))
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
-        cpf = request.form['cpf'] #Adicionando a uma variável python a informação do input cpf do forms
+        numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
  
-        if bd.valida("usuario", "cpf_usuario", cpf) and bd.valida("usuario", "senha_usuario", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
-            linhaUsuario = bd.pegarLinha("usuario", "cpf_usuario", cpf) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
-            session['nome'] = linhaUsuario['nome_usuario']
-            session['id_usuario'] = linhaUsuario['id_usuario']
-            return redirect(url_for('home'))
+        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
+            linhaUsuario = bd.pegarLinha("usuario", "senha_usuario", senha) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+            session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
+            session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
+            linhaConta = bd.pegarLinha('conta', 'id_usuario', session['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
+            session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            return redirect(url_for('home')) # Redirecionando para tela home
         else:
             flash("Senha ou CPF incorretos", "info")
             return redirect(url_for('login'))
@@ -44,12 +47,17 @@ def cadastro():
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
         if not bd.valida('usuario', 'cpf_usuario', dadosCliente['cpf']): #validação cpf
             bd.criaConta(dadosCliente) #Insere os valores do formulário na tabela cliente
+            id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['cpf'])
+            linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
+            numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            flash(f'Conta criada com sucesso.') # Mensagem que informa qual o número do usuário
+            flash(f'O seu número de conta é: {numero_conta}.')
+            flash(f'Guarde esse número, ele será necessário para acessar sua conta')
+            
             return redirect(url_for('login'))
-
         else:
             flash('Este CPF já está cadastrado')
             return redirect(url_for('cadastro'))
-
     else:
         return render_template('cadastro.html')
 
@@ -57,7 +65,9 @@ def cadastro():
 # Rota da página home
 @app.route('/Home')
 def home():
-    return render_template('home.html', nome = session['nome'], saldo = bd.consultaSaldo(session['id_usuario']))
+    return render_template('home.html', nome = session['nome'],
+    saldo = bd.consultaSaldo(session['id_usuario']),
+    numero_conta = str(session['numero_conta']))
 
 
 # Rota de loggout. Ela não reenderiza nenhum html, apenas limpa as informações da session e redireciona para o login.
@@ -72,43 +82,43 @@ def loggout():
 
 @app.route('/deposito', methods = ['POST', 'GET'])
 def deposito():
-    if 'nome' in session:
+    if 'nome' in session: # Se o usuário não está logado, retorna para a tela de login, caso contrário reenderiza a tela de depósito
         if request.method == 'POST':
-            deposito = request.form['deposito']
-            atual = bd.consultaSaldo(session['id_usuario'])
-            if modelo.validaOperacao(deposito):
-                deposito = float(deposito)
-                atual = atual + deposito
-                bd.mudaSaldo(atual, session['id_usuario'])
-                flash('Depósito realizado com sucesso.', 'info')
-                return redirect(url_for('home'))
+            deposito = request.form['deposito'] # Atrela o valor inserido pelo usuário à variável deposito
+            atual = bd.consultaSaldo(session['id_usuario']) # Atrela o saldo atual do usuário à variável atual
+            if modelo.validaOperacao(deposito): # Confere se o input do usuário é composto apenas de números e um .
+                deposito = float(deposito) # Transforma a string deposito em float
+                atual = atual + deposito # Realiza a soma dos valores
+                bd.mudaSaldo(atual, session['id_usuario']) # Atualiza o saldo do usuário com o novo valor
+                flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
+                return redirect(url_for('home')) # Redirecionando para a tela home
             else:
-                flash('Insira apenas números e use "." para separar reais de centavos')
-                return redirect(url_for('deposito'))
+                flash('Insira apenas números e use "." para separar reais de centavos') # Mensagem de que o input não é válido
+                return redirect(url_for('deposito')) # recarrega a página
 
         else:
-            return render_template('deposito.html')
+            return render_template('deposito.html') # Reenderização do template
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('login')) 
 
 
 @app.route('/saque', methods = ['POST', 'GET'])
 def saque():
-    if 'nome' in session:
+    if 'nome' in session: # Se o usuário não está logado, retorna para a tela de login, caso contrário reenderiza a tela de depósito
         if request.method == 'POST':
-            saque = request.form['saque']
-            atual = bd.consultaSaldo(session['id_usuario'])
-            if modelo.validaOperacao(saque):
-                saque = float(saque)
-                atual = atual - saque
-                bd.mudaSaldo(atual, session['id_usuario'])
-                flash('Saque realizado com sucesso.', 'info')
-                return redirect(url_for('home'))
+            saque = request.form['saque'] # Atrela o valor inserido pelo usuário à variável saque
+            atual = bd.consultaSaldo(session['id_usuario']) # Atrela o saldo atual do usuário à variável atual
+            if modelo.validaOperacao(saque): # Confere se o input do usuário é composto apenas de números e um .
+                saque = float(saque) # Transforma a string deposito em float
+                atual = atual - saque # Realiza a soma dos valores
+                bd.mudaSaldo(atual, session['id_usuario']) # Atualiza o saldo do usuário com o novo valor
+                flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
+                return redirect(url_for('home')) # Redirecionando para a tela home
             else:
-                flash('Insira apenas números e use "." para separar reais de centavos')
-                return redirect(url_for('saque'))
+                flash('Insira apenas números e use "." para separar reais de centavos') # Mensagem de que o input não é válido
+                return redirect(url_for('saque')) # recarrega a página
         else:
-            return render_template('saque.html')
+            return render_template('saque.html') # Reenderização do template
     else:
         return redirect(url_for('login'))
 
