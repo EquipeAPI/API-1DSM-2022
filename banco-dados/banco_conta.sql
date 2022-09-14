@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
 -- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
@@ -26,11 +24,11 @@ DROP TABLE IF EXISTS `conta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `conta` (
   `numero_conta` int NOT NULL,
-  `agencia_conta` varchar(2) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1',
-  `data_abertura_conta` date NULL,
+  `agencia_conta` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1',
+  `data_abertura_conta` date DEFAULT NULL,
   `tipo_conta` set('poupança','corrente') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `saldo_conta` float(9,2) NOT NULL default 00.00,
-  `id_usuario` int,
+  `saldo_conta` float(9,2) NOT NULL DEFAULT '0.00',
+  `id_usuario` int DEFAULT NULL,
   PRIMARY KEY (`numero_conta`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `conta_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
@@ -43,6 +41,7 @@ CREATE TABLE `conta` (
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
+INSERT INTO `conta` VALUES (651116,'1',NULL,NULL,0.00,1);
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-13 20:26:38
+-- Dump completed on 2022-09-14 19:05:58
