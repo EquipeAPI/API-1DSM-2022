@@ -5,19 +5,28 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Saque</title>
-        <link rel="stylesheet" href="statics/styles.css">
+        <link rel="stylesheet" href="../static/styles/styles.css">
     </head>
     <body>
-        <!-- Logo e menu --><img src="statics/logo.png" class="a"> 
-        <a id="link_b" a href="login.html">Sair</a><span id="link_a">┃</span>
-        <a id="link_a" a href="contato.html">Contato</a><span id="link_a">┃</span>
-       <a id="link_a" a href="home.html">Home</a> <!-- Logo e menu -->
-        <!-- parte do saque -->
-        <div id="retangulo" class="retangulo"></div> 
-        <form action="#" method="post">
-            <label for="saque"><h1>Insira o valor que deseja sacar:</h1></label>
-            <input type="text" name="saque" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais">
-            <input type="submit" value="Sacar">
-        </form>
+        <header class="navbar">
+            <a href="/">
+                <img src="../static/public/logo.png" alt="logo">
+            </a>
+            <div class="links">
+                <a href="/home">Home </a> <span>|</span>
+                <a href="/loggout">Sair</a>
+            </div>
+        </header>
+            <div class="corposaque">
+                <h1>Insira o valor que deseja sacar:</h1>
+                <form action="" method="POST">
+                <span id="cifrão">
+                    <label for="saque">R$</label>
+                    <input type="text" name="saque" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais" >
+                </span>
+                    <input type="submit" value="Sacar" id="sacar">
+                </form>
+                <button><a href="/home">Voltar</a></button>
+            </div>        
     </body>
 </html>

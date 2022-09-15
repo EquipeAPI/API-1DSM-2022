@@ -4,26 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/styles.css">
     <title>Home</title>
 </head>
 <body>
-    {% if nome %}
-    <h1>Bem vindo, {{ nome }}</h1>
-    {% else %}]
-    <p>Não está logado ainda</p>
-    {% endif %}
-    <h2>Conta: {{numero_conta}}</h2>
-    <hr>
-    <h3>Seu saldo é de:</h3>
-    <h1>R$ {{saldo}}</h1>
+    <header class="navbar">
+        <a href="/">
+            <img src="../static/public/logo.png" alt="logo">
+        </a>
+        <div class="links">
+            <a href="/home">Home </a> <span>|</span>
+            <a href="/loggout">Sair</a>
+        </div>
+    </header>
+    <div class="corpohome">
+        {% if nome %}
+        <h1>Bem-vindo(a), {{ nome }}!</h1>
+        {% else %}]
+        <p>Não está logado ainda</p>
+        {% endif %}
+        <h2>Conta: {{numero_conta}}</h2>
+        <h2>Saldo: {{saldo}}</h2>
+        <div>
+            <button><a href="/saque">Saque</a></button>
+            <button><a href="/deposito">Depósito</a></button>
+        </div>
+    </div>
      <!-- Menssagem de saque ou depósito realizado com sucesso -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}
-            <p>{{msg}}</p>
+            <p id="info">{{msg}}</p>
         {% endfor %}
     {% endwith %}
-    <a href="/loggout">Loggout</a>
-    <a href="/saque">Saque</a>
-    <a href="/deposito">Depósito</a>
 </body>
 </html>

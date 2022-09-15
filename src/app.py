@@ -9,7 +9,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'Meusequel@d0'
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -32,7 +32,7 @@ def login():
             session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
             return redirect(url_for('home')) # Redirecionando para tela home
         else:
-            flash("Senha ou CPF incorretos", "info")
+            flash("Número da Conta ou Senha incorretos", "info")
             return redirect(url_for('login'))
         
     else:
@@ -62,7 +62,7 @@ def cadastro():
 
 
 # Rota da página home
-@app.route('/Home')
+@app.route('/home')
 def home():
     return render_template('home.html', nome = session['nome'],
     saldo = bd.consultaSaldo(session['id_usuario']),

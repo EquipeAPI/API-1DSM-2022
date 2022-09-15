@@ -4,28 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/styles.css">
     <title>Acesse sua conta</title>
 </head>
 <body>
-    <h1>Login</h1>
+    <header class="navbar">
+        <a href="/">
+            <img src="../static/public/logo.png" alt="logo">
+        </a>
+        <div class="links">
+            <a href="/cadastro">Cadastro</a>
+        </div>
+    </header>
     <!-- Menssagem de erro de login (só aparece se as informações estiverem erradas) -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}
-            <p>{{msg}}</p>
+            <p id="erro">{{msg}}</p>
         {% endfor %}
     {% endwith %}
 
     <!-- Forms provisório -->
-    <form method="POST" action="#">
-        <label for="numero_conta">Número da conta:</label>
-        <input type="text" name="numero_conta" minlength="6" maxlength="6">
-        <label for="senha">Senha:</label>
-        <input type="password" name="senha" maxlength="6">
-        <input type="submit" value="Entrar">
+    <div class="login-form">
+        <form method="POST" action="#">
+            <label for="numero_conta">Número da conta:</label>
+            <input type="text" name="numero_conta" minlength="6" maxlength="6">
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" maxlength="6">
+            <button type="submit" value="Entrar">Entrar</button>
+        </form>  
+    </div>
 
-    </form>
-
-    <a href="/cadastro">Cadastro</a>
+    
 
 </body>
 </html>
