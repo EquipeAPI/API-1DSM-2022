@@ -8,16 +8,20 @@
         <link rel="stylesheet" href="statics/styles.css">
     </head>
     <body>
-    <!-- começo da logo e do menu --><img src="statics/logo.png" class="a"> 
-        <a id="link_b" a href="login.html">Sair</a><span id="link_a">┃</span>
-        <a id="link_a" a href="contato.html">Contato</a><span id="link_a">┃</span>
-        <a id="link_a" a href="home.html">Home</a> <!-- fim da logo e do menu -->
+    <img src="statics/logo.png" class="a"> 
+    <div class="link"> <!-- Coloquei uma div para separar no canto superior-->
+        <a href="home.html">Home</a> ┃   <!--retirei o split-->
+        <a href="contato.html">Contato</a>┃
+        <a href="login.html">Sair</a> <!-- fim da logo e do menu -->
+    </div>
         <!-- parte do deposito -->
-        <div id="retangulo" class="retangulo"></div>       
+        <div id="retangulo" class="retangulo">       
         <h1>Insira o valor que deseja depositar:</h1>
         <form action="#" method="post">
             <input type="text" name="deposito" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais">
-            <input type="submit" value="Depositar">
+            <input type="submit" value="Depositar"><br>
+            <button><a href="home.html"> Voltar</a></button><!--Aqui tem que ser /home, mas como não tenho a conexão com o flask, coloquei um link local-->
+        </div><!--fiz a união de todo o conteúdo, para colocar tudo dentro do quadrado-->
         </form>
     </body>
 </html>

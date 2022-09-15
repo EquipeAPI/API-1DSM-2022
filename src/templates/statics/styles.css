@@ -1,26 +1,27 @@
-body{background-color: rgba(255, 93, 0, 1); 
+
+body{background-color: rgba(255, 93, 0, 1);
+    font-family: Arial, Helvetica, sans-serif; /*Formatei para arial*/
 }
 img.a{margin-top: 3%;
 margin-left: 5%;
 height: 10%;
 width: 10%;
 }
-#link_a{float: right;
-margin-top: 8%;
+.link {position: absolute;/* Troquei o "float" por "position: absolute", ela não conflita nenhuma aplicação, ela se sobrepõe sobre*/
+top: 6vw;/*Tirei margin o top ele coloca o máximo valor e após, o valor inserido vai ser o espaço que se afasta em reção ao topo*/
+right: 14vh;/*Mesma Analogia, só que em relação ao Right*/
 color: white;
+font-weight: 750;  /*Coloquei a font para como um exemplo de negrito */
 }
-#link_b{float: right;
-    margin-top: 8%;
-    margin-right: 7%;
+  .link a{ /* eu referi que o a seria modificado, e retirei o subliminhado da home/contato/sair*/
+    text-decoration: none;
     color: white;
     }
 .retangulo{background-color:rgba(217, 217, 217, 1);
-border-radius:35px;
-width:570px;
-height:249px;
+border-radius:35px; /*Coloquei em pw, para responder com a tela*/
+width:35vw;
+height: 30vh;
 top: 45%;
-left: 28%;
-right: 25%;
-bottom: 40%;
+left: 30%;
 position: absolute;
 }
