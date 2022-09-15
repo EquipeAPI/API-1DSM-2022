@@ -24,12 +24,11 @@ def login():
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
- 
-        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True
-            linhaUsuario = bd.pegarLinha("usuario", "senha_usuario", senha) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+        linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+        linhaUsuario = bd.pegarLinha("usuario", "senha_usuario", senha) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and linhaConta['id_usuario'] == linhaUsuario['id_usuario']: #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True.
             session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
             session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
-            linhaConta = bd.pegarLinha('conta', 'id_usuario', session['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
             session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
             return redirect(url_for('home')) # Redirecionando para tela home
         else:
