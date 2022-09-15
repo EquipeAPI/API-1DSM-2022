@@ -1,0 +1,26 @@
+body{background-color: rgba(255, 93, 0, 1); 
+}
+img.a{margin-top: 3%;
+margin-left: 5%;
+height: 10%;
+width: 10%;
+}
+#link_a{float: right;
+margin-top: 8%;
+color: white;
+}
+#link_b{float: right;
+    margin-top: 8%;
+    margin-right: 7%;
+    color: white;
+    }
+.retangulo{background-color:rgba(217, 217, 217, 1);
+border-radius:35px;
+width:570px;
+height:249px;
+top: 45%;
+left: 28%;
+right: 25%;
+bottom: 40%;
+position: absolute;
+}

@@ -5,10 +5,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Saque</title>
+        <link rel="stylesheet" href="statics/styles.css">
     </head>
     <body>
+        <!-- Logo e menu --><img src="statics/logo.png" class="a"> 
+        <a id="link_b" a href="login.html">Sair</a><span id="link_a">┃</span>
+        <a id="link_a" a href="contato.html">Contato</a><span id="link_a">┃</span>
+       <a id="link_a" a href="home.html">Home</a> <!-- Logo e menu -->
+        <!-- parte do saque -->
+        <div id="retangulo" class="retangulo"></div> 
         <form action="#" method="post">
-            <label for="saque"><h1>Insira o valor que deseja sacar</h1></label>
+            <label for="saque"><h1>Insira o valor que deseja sacar:</h1></label>
             <input type="text" name="saque" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais">
             <input type="submit" value="Sacar">
         </form>
