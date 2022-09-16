@@ -6,7 +6,7 @@ import bd, random
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -36,3 +36,11 @@ def geradorNumeroConta ():
         numero = numero[0]
     return numero # Retorna o número gerado
 
+def mesmaConta(numero_conta, senha): #Confere se a senha e o numero da conta são referentes a mesma conta
+    linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta)
+    id_usuario = linhaConta['id_usuario']
+    linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
+    if linhaUsuario['senha_usuario'] == senha:
+        return True
+    else:
+        return False

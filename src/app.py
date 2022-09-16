@@ -9,7 +9,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Meusequel@d0'
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -24,9 +24,9 @@ def login():
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
-        linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
-        linhaUsuario = bd.pegarLinha("usuario", "senha_usuario", senha) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
-        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and linhaConta['id_usuario'] == linhaUsuario['id_usuario']: #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True.
+        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and modelo.mesmaConta(numero_conta, senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True. Se corretas confere se são referentes a mesma conta (modelo.mesmaConta)
+            linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+            linhaUsuario = bd.pegarLinha("usuario", "id_usuario", linhaConta['id_usuario'])
             session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
             session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
             session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
@@ -49,9 +49,9 @@ def cadastro():
             id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['cpf'])
             linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
             numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
-            flash(f'Conta criada com sucesso.') # Mensagem que informa qual o número do usuário
+            flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
             flash(f'O seu número de conta é: {numero_conta}.')
-            flash(f'Guarde esse número, ele será necessário para acessar sua conta')
+            flash(f'Ele será necessário para acessar sua conta')
             
             return redirect(url_for('login'))
         else:
