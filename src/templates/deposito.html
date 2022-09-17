@@ -17,6 +17,11 @@
                 <a href="/loggout">Sair</a>
             </div>
         </header>
+            {% with mensagens = get_flashed_messages() %}
+                {% for msg in mensagens %}
+                    <p id="erro">{{msg}}</p>
+                {% endfor %}
+            {% endwith %}
             <div class="corposaque">
                 <h1>Insira o valor que deseja depositar:</h1>
                 <form action="" method="POST">

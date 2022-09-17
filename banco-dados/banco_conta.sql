@@ -27,7 +27,7 @@ CREATE TABLE `conta` (
   `agencia_conta` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1',
   `data_abertura_conta` date DEFAULT NULL,
   `tipo_conta` set('poupança','corrente') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `saldo_conta` float(9,2) NOT NULL DEFAULT '0.00',
+  `saldo_conta` float(8,2) NOT NULL DEFAULT '0.00',
   `id_usuario` int DEFAULT NULL,
   PRIMARY KEY (`numero_conta`),
   KEY `id_usuario` (`id_usuario`),

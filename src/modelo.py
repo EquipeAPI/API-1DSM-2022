@@ -18,11 +18,11 @@ def validaOperacao(input):
         controle = input.split('.') # Separa o . dos números
         if len(controle) > 2: # Confere se havia apenas um . no input, que é o exigido
             return False
-        elif controle[0].isnumeric() and controle[1].isnumeric(): # confere se além do . havia somente números, que é o exigido
+        elif controle[0].isnumeric() and controle[1].isnumeric() and len(controle[0]) <= 6: # confere se além do . havia somente números, que é o exigido
             return True
         else:
             return False
-    elif input.isnumeric(): # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
+    elif input.isnumeric() and len(input) <= 6: # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
         return True
     else:
         return False

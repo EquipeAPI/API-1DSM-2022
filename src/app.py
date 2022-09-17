@@ -92,7 +92,7 @@ def deposito():
                 flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
-                flash('Insira apenas números e use "." para separar reais de centavos') # Mensagem de que o input não é válido
+                flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('deposito')) # recarrega a página
 
         else:
@@ -114,7 +114,7 @@ def saque():
                 flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
-                flash('Insira apenas números e use "." para separar reais de centavos') # Mensagem de que o input não é válido
+                flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('saque')) # recarrega a página
         else:
             return render_template('saque.html') # Reenderização do template
