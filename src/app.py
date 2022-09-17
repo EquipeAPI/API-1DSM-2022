@@ -9,7 +9,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -51,7 +51,7 @@ def cadastro():
             numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
             flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
             flash(f'O seu número de conta é: {numero_conta}.')
-            flash(f'Ele será necessário para acessar sua conta')
+            flash(f'Ele será necessário para acessar sua conta.')
             
             return redirect(url_for('login'))
         else:

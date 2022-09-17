@@ -289,3 +289,16 @@ body {
   right: 36%;
 }
 
+#erro-saque-deposito {
+  position: absolute;
+  left: 33.5%;
+  bottom: 20%;
+  width: 33vw;
+
+  font-size: 1.3vw;
+  font-weight: 400;
+  text-align: justify;
+  color: white;
+  font-weight: 700;
+}
+
