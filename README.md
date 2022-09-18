@@ -43,7 +43,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 
 | Sprint| Período | Status | Relatório |
 |:-----:|:----------:|:---------:|:---------:|
-| 01 |   29/08/2022 - 19/09/2022 | Pendente | [relatório](docs/entregas/sprint-1/README.md) |
+| 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | [relatório](docs/entregas/sprint-1/README.md) |
 | 02 |   18/04/2021 | Pendente :hourglass:|  |
 | 03 |   16/05/2021 | Pendente :hourglass:|  |
 | 04 |   06/06/2021 | Pendente :hourglass:|  |
@@ -51,6 +51,17 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 <span id="backlogs"></span>
 
 ## Backlogs
+### Backlog do produto
+
+### Backlog das sprints
+#### Sprint 1
+| Item | Funcionalidade                  |
+| :--: | :------------------------- |
+|  01  | Organização dos Requisitos|
+|  02  | Protótipos Visuais |
+|  03  | Front-end do site|
+|  04  | Cadastro e Login de usuários (Abertura de conta) |
+|  05  | Operações de depósito e saque |
 
 <span id="tecnologias"></span>
 
