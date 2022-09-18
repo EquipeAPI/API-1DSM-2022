@@ -27,7 +27,7 @@ pip install -r requirements.txt
 <p>Utilize dos arquivos script .sql para criar a estrutura do banco de dados</p>
 
 ```powershell
-# Configure as informações do banco de dados de acordo com o seu servidor 
+# Configure as informações do banco de dados de acordo com o seu servidor nos arquivos app.py e modelo.py 
 app.config['MYSQL_HOST'] = '' # localhost
 app.config['MYSQL_USER'] = '' # Usuário 
 app.config['MYSQL_PASSWORD'] = '' # Senha 

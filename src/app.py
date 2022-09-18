@@ -1,4 +1,3 @@
-from tkinter import E
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_mysqldb import MySQL
 import bd, modelo # Importando os outros arquivos .py
@@ -9,7 +8,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
