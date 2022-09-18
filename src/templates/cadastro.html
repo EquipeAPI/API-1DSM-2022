@@ -23,11 +23,15 @@
             <input type="text" name="nome" required><br>
             <label for="cpf">CPF:</label><br>
             <input type="text" name="cpf" minlength="11" maxlength="11" placeholder="Digite sem os pontos e traços" required><br>
-            <label for="endereço">Endereço:</label><br>
+            <div type="separações" class="separações">Rua ou Avenida:</div>
             <input type="text" name="rua" placeholder="Rua ou Avenida" required>
+            <div type="separações" class="separações">Número:</div>
             <input type="text" name="numero" placeholder="Número" required><br>
+            <div type="separações" class="separações">Bairro:</div>
             <input type="text" name="bairro" placeholder="Bairro" required><br>
+            <div type="separações" class="separações">Cidade:</div>
             <input type="text" name="cidade" placeholder="Cidade" required>
+            <div type="separações" class="separações">Estado:</div>
             <select name="estado" id="estado" required>
                 <option value="Acre">Acre</option>
                 <option value="Alagoas">Alagoas</option>

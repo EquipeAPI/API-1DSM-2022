@@ -230,6 +230,9 @@ body {
   transition: 300ms;
 }
 
+#separações{font-size: 18px;
+}
+
 /*PÁGINA LOGIN*/
 .login-form{
   width:430px;
