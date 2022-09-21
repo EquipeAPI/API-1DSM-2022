@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_mysqldb import MySQL
 import bd, modelo # Importando os outros arquivos .py
@@ -8,7 +9,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Meusequel@d0' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -52,7 +53,7 @@ def cadastro():
             flash(f'O seu número de conta é: {numero_conta}.')
             flash(f'Ele será necessário para acessar sua conta.')
             
-            return redirect(url_for('login'))
+            return redirect(url_for('cadastro'))
         else:
             flash('Este CPF já está cadastrado')
             return redirect(url_for('cadastro'))
@@ -83,11 +84,8 @@ def deposito():
     if 'nome' in session: # Se o usuário não está logado, retorna para a tela de login, caso contrário reenderiza a tela de depósito
         if request.method == 'POST':
             deposito = request.form['deposito'] # Atrela o valor inserido pelo usuário à variável deposito
-            atual = bd.consultaSaldo(session['id_usuario']) # Atrela o saldo atual do usuário à variável atual
             if modelo.validaOperacao(deposito): # Confere se o input do usuário é composto apenas de números e um .
-                deposito = float(deposito) # Transforma a string deposito em float
-                atual = atual + deposito # Realiza a soma dos valores
-                bd.mudaSaldo(atual, session['id_usuario']) # Atualiza o saldo do usuário com o novo valor
+                modelo.deposito(session['id_usuario'], deposito)
                 flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
@@ -105,11 +103,8 @@ def saque():
     if 'nome' in session: # Se o usuário não está logado, retorna para a tela de login, caso contrário reenderiza a tela de depósito
         if request.method == 'POST':
             saque = request.form['saque'] # Atrela o valor inserido pelo usuário à variável saque
-            atual = bd.consultaSaldo(session['id_usuario']) # Atrela o saldo atual do usuário à variável atual
             if modelo.validaOperacao(saque): # Confere se o input do usuário é composto apenas de números e um .
-                saque = float(saque) # Transforma a string deposito em float
-                atual = atual - saque # Realiza a soma dos valores
-                bd.mudaSaldo(atual, session['id_usuario']) # Atualiza o saldo do usuário com o novo valor
+                modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                 flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
@@ -119,6 +114,30 @@ def saque():
             return render_template('saque.html') # Reenderização do template
     else:
         return redirect(url_for('login'))
+
+#============================Tentativa de transferencia============================
+
+@app.route('/transferencia', methods = ['POST', 'GET'])
+def transferencia():
+    if 'nome' in session:
+        if request.method == 'POST':
+            transferencia = request.form['transferencia']
+            numero_recebedor = request.form['numero']
+            if modelo.validaOperacao(transferencia):
+                if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
+                    flash('transferencia realizada com sucesso', 'info')
+                    return redirect(url_for('home'))
+                else:
+                    flash('Número de conta invalido', 'erro')
+                    return redirect(url_for('transferencia'))
+            else:
+                flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
+                return redirect(url_for('transferencia')) # recarrega a página
+        else:
+            return render_template('transferencia.html')
+    else:
+        return redirect(url_for('login'))
+
 
 
 

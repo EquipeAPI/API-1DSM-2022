@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from flask_mysqldb import MySQL
 import bd, random
 
@@ -6,7 +6,7 @@ import bd, random
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -41,6 +41,29 @@ def mesmaConta(numero_conta, senha): #Confere se a senha e o numero da conta sã
     id_usuario = linhaConta['id_usuario']
     linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
     if linhaUsuario['senha_usuario'] == senha:
+        return True
+    else:
+        return False
+
+def saque(id_usuario, valor):
+    valor = float(valor)
+    atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)
+    atual = atual['saldo_conta'] - valor
+    bd.mudaSaldo(atual, id_usuario)
+    return None
+
+def deposito(id_usuario, valor):
+    valor = float(valor)
+    atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)
+    atual = atual['saldo_conta'] + valor
+    bd.mudaSaldo(atual, id_usuario)
+    return None
+
+def transferencia(id_usuario, valor, recebedor):
+    if bd.valida('conta', 'numero_conta', recebedor):
+        atualRecebedor = bd.pegarLinha('conta', 'numero_conta', recebedor)
+        saque(id_usuario, valor)
+        deposito(atualRecebedor['id_usuario'], valor)
         return True
     else:
         return False
