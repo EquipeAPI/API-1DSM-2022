@@ -8,11 +8,6 @@
     <title>Cadastre-se</title>
 </head>
 <body>
-    {% with mensagens = get_flashed_messages() %}
-        {% for msg in mensagens %}
-            <br><p id="erro">{{msg}}</p><br>
-        {% endfor %}
-    {% endwith %}
     <header class="navbar">
         <a href="/">
             <img src="../static/public/logo.png" alt="logo">

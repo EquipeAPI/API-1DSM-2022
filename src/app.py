@@ -44,19 +44,17 @@ def login():
 def cadastro():
     if request.method == 'POST':
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
-        if not bd.valida('usuario', 'cpf_usuario', dadosCliente['cpf']): #validação cpf
-            bd.criaConta(dadosCliente) #Insere os valores do formulário na tabela cliente
-            id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['cpf'])
-            linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
-            numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
-            flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
-            flash(f'O seu número de conta é: {numero_conta}.')
-            flash(f'Ele será necessário para acessar sua conta.')
+
+        bd.criaConta(dadosCliente) #Insere os valores do formulário na tabela cliente
+        id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['cpf'])
+        linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
+        numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+        flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
+        flash(f'O seu número de conta é: {numero_conta}.')
+        flash(f'Ele será necessário para acessar sua conta.')
             
-            return redirect(url_for('cadastro'))
-        else:
-            flash('Este CPF já está cadastrado')
-            return redirect(url_for('cadastro'))
+        return redirect(url_for('login'))
+
     else:
         return render_template('cadastro.html')
 
