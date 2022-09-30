@@ -1,6 +1,8 @@
+from dataclasses import replace
 from flask import Flask, session
 from flask_mysqldb import MySQL
 import bd, random
+import datetime
 
 
 app = Flask(__name__)
@@ -67,3 +69,12 @@ def transferencia(id_usuario, valor, recebedor):
         return True
     else:
         return False
+
+def dataHora(): #Função que retor a data e a hora do sistema em string no formato AAAA/MM/DD - hor:min:seg
+    dataHora = str(datetime.datetime.now()) #Pega a data e a hora do sistema em string
+    dataHora = dataHora[0:19] #Tira os milissegundos
+    dataHora = dataHora.replace('-', '/') #Troca os '-' por '/'
+    dataHora = dataHora.replace(' ', ' - ') #Troca os '-' por '/'
+    return dataHora #Retorna a string já formatada devidamente
+
+    

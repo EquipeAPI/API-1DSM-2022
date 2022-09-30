@@ -1,4 +1,5 @@
 
+from asyncio.windows_events import NULL
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_mysqldb import MySQL
 import bd, modelo # Importando os outros arquivos .py
@@ -83,7 +84,12 @@ def deposito():
         if request.method == 'POST':
             deposito = request.form['deposito'] # Atrela o valor inserido pelo usuário à variável deposito
             if modelo.validaOperacao(deposito): # Confere se o input do usuário é composto apenas de números e um .
+                linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 modelo.deposito(session['id_usuario'], deposito)
+                dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
+                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'deposito', 'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                '''bd.inserirOperacao('requisição_depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
@@ -102,8 +108,13 @@ def saque():
         if request.method == 'POST':
             saque = request.form['saque'] # Atrela o valor inserido pelo usuário à variável saque
             if modelo.validaOperacao(saque): # Confere se o input do usuário é composto apenas de números e um .
+                linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
-                flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
+                dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
+                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                flash('Saque realizado com sucesso. ', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('home')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
@@ -122,7 +133,12 @@ def transferencia():
             transferencia = request.form['transferencia']
             numero_recebedor = request.form['numero']
             if modelo.validaOperacao(transferencia):
+                linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
+                    dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
+                    dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': numero_recebedor} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     flash('transferencia realizada com sucesso', 'info')
                     return redirect(url_for('home'))
                 else:

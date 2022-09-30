@@ -69,10 +69,10 @@ def reqConta_mudaDado(tabela, forms):
     return None
 
 
-    #insere linha de operação realisada ou requisitada (caso depósito) na tabela desejada.
+#insere linha de operação realisada ou requisitada (caso depósito) na tabela desejada.
 def inserirOperacao(tabela, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO {tabela} (id_usuario, operacao, valor, data, hora) VALUES(%s, %s, %s, %s, %s)", (dic_dados['id_usuario'], dic_dados['operacao'], dic_dados['valor'], dic_dados['data'], dic_dados['hora']))
+    cur.execute (f"INSERT INTO {tabela} (numero_conta, operacao, valor, data_hora, saldo_operacao, id_conta_destino) VALUES(%s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['operacao'], dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes'], dic_dados['contaDestino']))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
