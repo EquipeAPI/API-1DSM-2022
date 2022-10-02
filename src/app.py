@@ -1,7 +1,8 @@
-
 from asyncio.windows_events import NULL
-from flask import Flask, render_template, redirect, request, session, url_for, flash
+from urllib import response
+from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
+
 import bd, modelo # Importando os outros arquivos .py
 
 app = Flask(__name__)
@@ -63,6 +64,8 @@ def cadastro():
 # Rota da página home
 @app.route('/home')
 def home():
+    if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+        session.pop('dic_dados', None)
     return render_template('home.html', nome = session['nome'],
     saldo = bd.consultaSaldo(session['id_usuario']),
     numero_conta = str(session['numero_conta']))
@@ -74,8 +77,13 @@ def loggout():
     if 'nome' in session: # Se a pessoa estiver logada (nome está na session)
         nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
         flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
-    session.pop('nome', None) # Apagando as informações armazenadas na session['nome']
+    session.pop(all, None) # Apagando as informações armazenadas na session['nome']
     return redirect(url_for('login')) # Redireciona para o login.
+
+
+
+#======================================= OPERAÇÕES =======================================
+
 
 
 @app.route('/deposito', methods = ['POST', 'GET'])
@@ -90,8 +98,9 @@ def deposito():
                 dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
                 dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'deposito', 'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                 '''bd.inserirOperacao('requisição_depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                session['dic_dados'] = dic_dados
                 flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
-                return redirect(url_for('home')) # Redirecionando para a tela home
+                return redirect(url_for('comprovante')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('deposito')) # recarrega a página
@@ -114,8 +123,9 @@ def saque():
                 dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
                 dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                 '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                session['dic_dados'] = dic_dados
                 flash('Saque realizado com sucesso. ', 'info') # Mensagem para indicar que a operação deu certo
-                return redirect(url_for('home')) # Redirecionando para a tela home
+                return redirect(url_for('comprovante')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('saque')) # recarrega a página
@@ -124,7 +134,6 @@ def saque():
     else:
         return redirect(url_for('login'))
 
-#============================Tentativa de transferencia============================
 
 @app.route('/transferencia', methods = ['POST', 'GET'])
 def transferencia():
@@ -139,8 +148,9 @@ def transferencia():
                     dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': numero_recebedor} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                    session['dic_dados'] = dic_dados
                     flash('transferencia realizada com sucesso', 'info')
-                    return redirect(url_for('home'))
+                    return redirect(url_for('comprovante'))
                 else:
                     flash('Número de conta invalido', 'erro')
                     return redirect(url_for('transferencia'))
@@ -153,7 +163,23 @@ def transferencia():
         return redirect(url_for('login'))
 
 
+@app.route('/comprovante') #Gerador de comprovante
+def comprovante():
+    return render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'])
 
+#tentativa de fazer pdf
+'''@app.route('/geraPDF/<tipo>') #gerador de PDF
+def geraPDF(tipo):
+    if tipo == comprovante:
+        render = render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'])
+    else:
+        render = render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'])
+    dataHora = session['dic_dados']['dataHora'] 
+    pdf = pdfkit.from_string(render, False)
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename = {tipo}_{dataHora}.pdf'
+    return response'''
 
 if __name__ == '__main__':
     app.run(debug = True)

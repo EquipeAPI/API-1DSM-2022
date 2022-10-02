@@ -1,0 +1,10 @@
+body{
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+@media print{
+    #esconde{
+        visibility: hidden;
+    }
+}
