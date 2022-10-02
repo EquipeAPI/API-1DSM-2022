@@ -36,13 +36,18 @@ body {
     border-radius: 35px;
 }
 
+.corposaque h2 {
+  margin: 10px 15px;
+  padding-top: 10px;
+}
+
 .corposaque h1 {
     margin: 0;
     font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
     text-align: center;
-    padding-top: 1.2em;
+    padding-top: 10px;
 }
 
 #cifrão {
@@ -70,7 +75,7 @@ body {
     border-radius: 10px;
 
     right: 37.5vw;
-    top: 51vh;
+    top: 53vh;
     padding: 0 0.7vw;
 
 }
@@ -98,7 +103,7 @@ body {
     border-radius: 10px;
 
     left: 38.2vw;
-    top: 51vh;
+    top: 53vh;
     padding: 0 0.7vw;
 }
 

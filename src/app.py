@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -106,7 +106,7 @@ def deposito():
                 return redirect(url_for('deposito')) # recarrega a página
 
         else:
-            return render_template('deposito.html') # Reenderização do template
+            return render_template('deposito.html', saldo = bd.consultaSaldo(session['id_usuario'])) # Reenderização do template
     else:
         return redirect(url_for('login')) 
 
@@ -130,7 +130,8 @@ def saque():
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('saque')) # recarrega a página
         else:
-            return render_template('saque.html') # Reenderização do template
+            return render_template('saque.html', saldo = bd.consultaSaldo(session['id_usuario'])) # Reenderização do template
+            
     else:
         return redirect(url_for('login'))
 
