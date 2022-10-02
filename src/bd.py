@@ -16,12 +16,7 @@ def valida(tabela, dado, valor): #valida as informações
         return False
 
 
-def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o valor inserido
-    cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM {tabela} WHERE {coluna} =%s", [valor]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
-    linha = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
-    cur.close()
-    return linha
+
 
 
 def consultaSaldo(id):
@@ -39,10 +34,22 @@ def mudaSaldo(valor, id):
     cur.close()
     return None
     
+#========================== Funções que pegam linhas ou tabelas no BD ==========================
 
+def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o valor inserido
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM {tabela} WHERE {coluna} =%s", [valor]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    linha = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
+    cur.close()
+    return linha
 
-
-
+# Função que pega linhas 
+def tabelaPersonalizada(tabela, dado, valor):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM {tabela} where {dado} = {valor}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    tabelaPersonalizada = cur.fetchall() #Armazena todas as informações desse cliente na variável usuário
+    cur.close()
+    return tabelaPersonalizada
 
 #========================== Funções que inserem linhas no BD ==========================
 
