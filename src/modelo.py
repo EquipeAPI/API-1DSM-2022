@@ -8,12 +8,18 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 mysql = MySQL(app)
+
+
+def trataCPF(cpf): #tira os caracteres especiais do número de cpf
+    cpf = cpf.replace('-', '')
+    cpf = cpf.replace('.', '')
+    return cpf
 
 def validaOperacao(input):
     if '.' in input: # Verifica se há . no input dado pelo usuário
@@ -70,11 +76,36 @@ def transferencia(id_usuario, valor, recebedor):
     else:
         return False
 
-def dataHora(): #Função que retor a data e a hora do sistema em string no formato AAAA/MM/DD - hor:min:seg
+def dataHora(comHora): #Função que retor a data e a hora do sistema em string no formato AAAA/MM/DD - hor:min:seg
     dataHora = str(datetime.datetime.now()) #Pega a data e a hora do sistema em string
-    dataHora = dataHora[0:19] #Tira os milissegundos
     dataHora = dataHora.replace('-', '/') #Troca os '-' por '/'
     dataHora = dataHora.replace(' ', ' - ') #Troca os '-' por '/'
+    if comHora:
+        dataHora = dataHora[0:19] #Tira os milissegundos
+    else:
+        dataHora = dataHora[0:10] #Tira as Horas
     return dataHora #Retorna a string já formatada devidamente
 
-    
+#Retorna a agencia a ser atribuida ao usuario que cadastrou, levando em conta qual agencia possui menos clientes
+def atribuiAgencia():
+    tabelaAgencia = bd.pegarTabela('gerente_agencia')
+    agenciaUsuario = {}
+    for linhaAgencia in tabelaAgencia:
+        contador = 0
+        agencia = linhaAgencia['numero_agencia']
+        usuarios = bd.tabelaPersonalizada('conta', 'numero_agencia', agencia)
+        for linhaUsuario in usuarios: #Contando quantos usuários tem na agencia em questão
+            contador += 1
+        agenciaUsuario[f'{agencia}'] = contador  #Dicionário que relaciona a agencia com o número de usuários cadastrados nela
+    rep = 0
+    for chave, valor in agenciaUsuario.items(): #Seleciona a agencia que possui menos usuarios
+        if rep == 0:
+            chaveMenor = chave
+            valorMenor = valor
+        elif valor < valorMenor:
+            chaveMenor = chave
+            valorMenor = valor
+        else:
+            continue
+        rep +=1
+    return chaveMenor #retorna a agencia que tem menos usuario    

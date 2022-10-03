@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -32,6 +32,7 @@ def login():
             session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
             session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
             session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            session['numero_agencia'] = linhaConta['numero_agencia']
             return redirect(url_for('home')) # Redirecionando para tela home
         else:
             flash("Número da Conta ou Senha incorretos", "info")
@@ -46,9 +47,9 @@ def login():
 def cadastro():
     if request.method == 'POST':
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
-
-        bd.criaConta(dadosCliente) #Insere os valores do formulário na tabela cliente
-        id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['cpf'])
+        data = modelo.dataHora(False)
+        bd.criaConta(dadosCliente, data) #Insere os valores do formulário na tabela cliente
+        id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['CPF'])
         linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
         numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
         flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
@@ -99,15 +100,14 @@ def deposito():
             if modelo.validaOperacao(deposito): # Confere se o input do usuário é composto apenas de números e um .
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                modelo.deposito(session['id_usuario'], deposito)
-                dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'deposito', 'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                '''bd.inserirOperacao('requisição_depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'deposito'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
-                flash('Depósito realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
+                flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('comprovante')) # Redirecionando para a tela home
             else:
-                flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
+                flash('Insira apenas números e use "." para separar reais de centavos.' 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('deposito')) # recarrega a página
 
         else:
@@ -125,7 +125,7 @@ def saque():
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
-                dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
+                dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                 dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                 '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
@@ -151,7 +151,7 @@ def transferencia():
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
-                    dataHora = modelo.dataHora() #Armazenando data e hora do sistema na variável dataHora
+                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': numero_recebedor} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
