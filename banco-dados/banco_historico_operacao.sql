@@ -18,33 +18,32 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `conta`
+-- Table structure for table `historico_operacao`
 --
 
-DROP TABLE IF EXISTS `conta`;
+DROP TABLE IF EXISTS `historico_operacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `conta` (
+CREATE TABLE `historico_operacao` (
+  `id_operacao` int NOT NULL AUTO_INCREMENT,
+  `data_hora` datetime NOT NULL,
+  `saldo_operacao` decimal(8,2) NOT NULL,
+  `valor_operacao` decimal(8,2) NOT NULL,
+  `tipo_operacao` set('Deposito','Saque') NOT NULL,
   `numero_conta` int NOT NULL,
-  `agencia_conta` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1',
-  `data_abertura_conta` date DEFAULT NULL,
-  `tipo_conta` set('poupança','corrente') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `saldo_conta` float(8,2) NOT NULL DEFAULT '0.00',
-  `id_usuario` int DEFAULT NULL,
-  PRIMARY KEY (`numero_conta`),
-  KEY `id_usuario` (`id_usuario`),
-  CONSTRAINT `conta_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id_operacao`),
+  KEY `fk_conta_historico` (`numero_conta`),
+  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `conta`
+-- Dumping data for table `historico_operacao`
 --
 
-LOCK TABLES `conta` WRITE;
-/*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES (651116,'1',NULL,NULL,0.00,1);
-/*!40000 ALTER TABLE `conta` ENABLE KEYS */;
+LOCK TABLES `historico_operacao` WRITE;
+/*!40000 ALTER TABLE `historico_operacao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historico_operacao` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
