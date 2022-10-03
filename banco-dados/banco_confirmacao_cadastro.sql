@@ -18,33 +18,38 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `historico_operacao`
+-- Table structure for table `confirmacao_cadastro`
 --
 
-DROP TABLE IF EXISTS `historico_operacao`;
+DROP TABLE IF EXISTS `confirmacao_cadastro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `historico_operacao` (
-  `id_operacao` int NOT NULL AUTO_INCREMENT,
-  `data_hora` datetime NOT NULL,
-  `saldo_operacao` double NOT NULL,
-  `valor_operacao` double NOT NULL,
-  `tipo_operacao` set('Deposito','Saque','Transação') NOT NULL,
-  `numero_conta` int NOT NULL,
-  `status_operacao` varchar(12) DEFAULT (_utf8mb4'Aprovado'),
-  PRIMARY KEY (`id_operacao`),
-  KEY `fk_conta_historico` (`numero_conta`),
-  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `confirmacao_cadastro` (
+  `id_cadastro` int NOT NULL AUTO_INCREMENT,
+  `nome_cadastro` varchar(100) NOT NULL,
+  `cpf_cadastro` varchar(14) NOT NULL,
+  `data_naascimento_cadastro` date NOT NULL,
+  `genero_cadastro` set('Feminino','Masculino','Outros','Prefiro não informar') NOT NULL,
+  `senha_cadastro` varchar(16) NOT NULL,
+  `rua_avenida_cadastro` varchar(100) NOT NULL,
+  `numero_casa_cadastro` varchar(5) NOT NULL,
+  `bairro_cadastro` varchar(50) NOT NULL,
+  `cidade_cadastro` varchar(50) NOT NULL,
+  `estado_cadastro` varchar(20) NOT NULL,
+  `numero_agencia` int NOT NULL,
+  PRIMARY KEY (`id_cadastro`),
+  KEY `fk_cadastro_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `historico_operacao`
+-- Dumping data for table `confirmacao_cadastro`
 --
 
-LOCK TABLES `historico_operacao` WRITE;
-/*!40000 ALTER TABLE `historico_operacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historico_operacao` ENABLE KEYS */;
+LOCK TABLES `confirmacao_cadastro` WRITE;
+/*!40000 ALTER TABLE `confirmacao_cadastro` DISABLE KEYS */;
+/*!40000 ALTER TABLE `confirmacao_cadastro` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-03 19:37:10
+-- Dump completed on 2022-10-03 19:37:11
