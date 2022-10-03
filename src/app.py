@@ -64,12 +64,17 @@ def cadastro():
 # Rota da página home
 @app.route('/home')
 def home():
-    if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
-        session.pop('dic_dados', None)
-    return render_template('home.html', nome = session['nome'],
-    saldo = bd.consultaSaldo(session['id_usuario']),
-    numero_conta = str(session['numero_conta']))
-
+    if 'nome' in session:
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
+            return render_template('home.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']))
+        else:
+            return render_template('homegerente.html')
+    else:
+        return redirect(url_for('login'))
 
 # Rota de loggout. Ela não reenderiza nenhum html, apenas limpa as informações da session e redireciona para o login.
 @app.route('/loggout')
