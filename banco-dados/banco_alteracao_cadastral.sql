@@ -18,32 +18,39 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `historico_operacao`
+-- Table structure for table `alteracao_cadastral`
 --
 
-DROP TABLE IF EXISTS `historico_operacao`;
+DROP TABLE IF EXISTS `alteracao_cadastral`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `historico_operacao` (
-  `id_operacao` int NOT NULL AUTO_INCREMENT,
-  `data_hora` datetime NOT NULL,
-  `saldo_operacao` double NOT NULL,
-  `valor_operacao` double NOT NULL,
-  `tipo_operacao` set('Deposito','Saque','Transação') NOT NULL,
-  `numero_conta` int NOT NULL,
-  PRIMARY KEY (`id_operacao`),
-  KEY `fk_conta_historico` (`numero_conta`),
-  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
+CREATE TABLE `alteracao_cadastral` (
+  `id_alteracao` int NOT NULL AUTO_INCREMENT,
+  `nome_alteracao` varchar(50) DEFAULT NULL,
+  `genero_alteracao` set('Feminino','Masculino','Outro','Prefiro não') DEFAULT NULL,
+  `rua_avenida_alteracao` varchar(100) DEFAULT NULL,
+  `numero_alteracao` varchar(5) DEFAULT NULL,
+  `bairro_alteracao` varchar(50) DEFAULT NULL,
+  `cidade_alteracao` varchar(50) DEFAULT NULL,
+  `estado_alteracao` varchar(20) DEFAULT NULL,
+  `senha_alteracao` varchar(16) DEFAULT NULL,
+  `id_usuario` int DEFAULT NULL,
+  `numero_agencia` int DEFAULT NULL,
+  PRIMARY KEY (`id_alteracao`),
+  KEY `fk_alteracao_usuario` (`id_usuario`),
+  KEY `fk_alteracao_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_alteracao_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_alteracao_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `historico_operacao`
+-- Dumping data for table `alteracao_cadastral`
 --
 
-LOCK TABLES `historico_operacao` WRITE;
-/*!40000 ALTER TABLE `historico_operacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historico_operacao` ENABLE KEYS */;
+LOCK TABLES `alteracao_cadastral` WRITE;
+/*!40000 ALTER TABLE `alteracao_cadastral` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alteracao_cadastral` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

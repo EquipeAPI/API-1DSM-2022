@@ -18,32 +18,32 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `historico_operacao`
+-- Table structure for table `confirmacao_deposito`
 --
 
-DROP TABLE IF EXISTS `historico_operacao`;
+DROP TABLE IF EXISTS `confirmacao_deposito`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `historico_operacao` (
-  `id_operacao` int NOT NULL AUTO_INCREMENT,
-  `data_hora` datetime NOT NULL,
-  `saldo_operacao` double NOT NULL,
-  `valor_operacao` double NOT NULL,
-  `tipo_operacao` set('Deposito','Saque','Transação') NOT NULL,
-  `numero_conta` int NOT NULL,
-  PRIMARY KEY (`id_operacao`),
-  KEY `fk_conta_historico` (`numero_conta`),
-  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
+CREATE TABLE `confirmacao_deposito` (
+  `id_confirmacao_deposito` int NOT NULL AUTO_INCREMENT,
+  `valor_confirmacao_depoisito` double NOT NULL,
+  `numero_conta` int DEFAULT NULL,
+  `numero_agencia` int DEFAULT NULL,
+  PRIMARY KEY (`id_confirmacao_deposito`),
+  KEY `fk_deposito_conta` (`numero_conta`),
+  KEY `fk_deposito_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_deposito_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_deposito_conta` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `historico_operacao`
+-- Dumping data for table `confirmacao_deposito`
 --
 
-LOCK TABLES `historico_operacao` WRITE;
-/*!40000 ALTER TABLE `historico_operacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historico_operacao` ENABLE KEYS */;
+LOCK TABLES `confirmacao_deposito` WRITE;
+/*!40000 ALTER TABLE `confirmacao_deposito` DISABLE KEYS */;
+/*!40000 ALTER TABLE `confirmacao_deposito` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-03 16:28:04
+-- Dump completed on 2022-10-03 16:28:05
