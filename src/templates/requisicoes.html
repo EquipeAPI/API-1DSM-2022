@@ -1,12 +1,28 @@
-<h2>necessário items na tabela 'confirmacao_deposito' para testes</h2>
-{{ requisicoesDeposito }} <br>
-
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../static/styles/requisicoes.css">
+    <title>Requisições</title>
+</head>
 
 {% for requisição in requisicoesDeposito %}
-<div class="requisicao">
+    <form action="">
     {% for chave, valor in requisição.items() %}
-    <p>{{chave}} : {{valor}}</p>
+        {% if chave == 'id_confirmacao_deposito' %}
+            <label for="id_confirmacao_deposito">Id da operação:</label>
+            <input type="text" name="id_confirmacao_deposito" value="{{valor}}" readonly><br>
+        {% elif chave == 'valor_confirmacao_deposito'  %}
+            <label for="valor_confirmacao_deposito">Valor:</label>
+            <input type="text" name="valor_confirmacao_deposito" value="{{valor}}" readonly><br>
+        {% elif chave == 'numero_conta' %}
+            <label for="numero_conta">Número da conta:</label>
+            <input type="text" name="numero_conta" value="{{valor}}" readonly>
+        {% elif chave == 'numero_agencia' %}
+            <label for="numero_agencia">Agência:</label>
+            <input type="text" name="numero_agencia" value="{{valor}}" readonly><br>
+        {% elif chave == 'data_hora' %}
+            <label for="data_hora">Data e Hora:</label>
+            <input type="text" name="data_hora" value="{{valor}}" readonly>
+        {% endif %}
     {% endfor %}
-</div> 
-<hr>
+    </form>
 {% endfor %}
