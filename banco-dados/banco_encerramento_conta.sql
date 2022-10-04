@@ -18,39 +18,32 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `confirmacao_cadastro`
+-- Table structure for table `encerramento_conta`
 --
 
-DROP TABLE IF EXISTS `confirmacao_cadastro`;
+DROP TABLE IF EXISTS `encerramento_conta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `confirmacao_cadastro` (
-  `id_cadastro` int NOT NULL AUTO_INCREMENT,
-  `nome_cadastro` varchar(100) NOT NULL,
-  `cpf_cadastro` varchar(14) NOT NULL,
-  `data_nascimento_cadastro` date NOT NULL,
-  `genero_cadastro` set('Feminino','Masculino','Outros','Prefiro não informar') NOT NULL,
-  `senha_cadastro` varchar(16) NOT NULL,
-  `rua_avenida_cadastro` varchar(100) NOT NULL,
-  `numero_casa_cadastro` varchar(5) NOT NULL,
-  `bairro_cadastro` varchar(50) NOT NULL,
-  `cidade_cadastro` varchar(50) NOT NULL,
-  `estado_cadastro` varchar(20) NOT NULL,
+CREATE TABLE `encerramento_conta` (
+  `id_encerramento` int NOT NULL AUTO_INCREMENT,
+  `saldo_encerramento` double NOT NULL,
+  `id_usuario` int NOT NULL,
   `numero_agencia` int NOT NULL,
-  `numero_conta` int NOT NULL,
-  PRIMARY KEY (`id_cadastro`),
-  KEY `fk_cadastro_agencia` (`numero_agencia`),
-  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)
+  PRIMARY KEY (`id_encerramento`),
+  KEY `fk_encerramento_usuario` (`id_usuario`),
+  KEY `fk_encerramento_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_encerramento_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_encerramento_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `confirmacao_cadastro`
+-- Dumping data for table `encerramento_conta`
 --
 
-LOCK TABLES `confirmacao_cadastro` WRITE;
-/*!40000 ALTER TABLE `confirmacao_cadastro` DISABLE KEYS */;
-/*!40000 ALTER TABLE `confirmacao_cadastro` ENABLE KEYS */;
+LOCK TABLES `encerramento_conta` WRITE;
+/*!40000 ALTER TABLE `encerramento_conta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `encerramento_conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
