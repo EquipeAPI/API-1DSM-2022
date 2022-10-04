@@ -26,6 +26,7 @@ def login():
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
+        
         if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and modelo.mesmaConta(numero_conta, senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True. Se corretas confere se são referentes a mesma conta (modelo.mesmaConta)
             linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
             linhaUsuario = bd.pegarLinha("usuario", "id_usuario", linhaConta['id_usuario'])
@@ -47,17 +48,20 @@ def login():
 def cadastro():
     if request.method == 'POST':
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
-        data = modelo.dataHora(False)
-        bd.criaConta(dadosCliente, data) #Insere os valores do formulário na tabela cliente
-        id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['CPF'])
-        linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
-        numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
-        flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
-        flash(f'O seu número de conta é: {numero_conta}.')
-        flash(f'Ele será necessário para acessar sua conta.')
-            
-        return redirect(url_for('login'))
-
+        if dadosCliente['senha'] == dadosCliente['senhaConfirma']:
+            data = modelo.dataHora(False)
+            bd.criaConta(dadosCliente, data) #Insere os valores do formulário na tabela cliente
+            id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['CPF'])
+            linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
+            numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
+            flash(f'O seu número de conta é: {numero_conta}.')
+            flash(f'Ele será necessário para acessar sua conta.')
+                
+            return redirect(url_for('login'))
+        else:
+            flash('Senha e confimação de senha diferentes.')
+            return render_template('cadastro.html')
     else:
         return render_template('cadastro.html')
 
