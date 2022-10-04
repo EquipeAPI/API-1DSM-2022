@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -49,18 +49,16 @@ def cadastro():
     if request.method == 'POST':
         dadosCliente = request.form # Armazena todos os dados inseridos no formulário em uma variável tipo dicionário
         if dadosCliente['senha'] == dadosCliente['senhaConfirma']:
-            data = modelo.dataHora(False)
-            bd.criaConta(dadosCliente, data) #Insere os valores do formulário na tabela cliente
-            id = bd.pegarLinha('usuario', 'cpf_usuario', dadosCliente['CPF'])
-            linhaConta = bd.pegarLinha('conta', 'id_usuario', id['id_usuario']) # Pegando a linha da conta para acessar o numero da conta na linha seguinte
-            numero_conta = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
-            flash(f'Conta criada com sucesso.' ) # Mensagem que informa qual o número do usuário
-            flash(f'O seu número de conta é: {numero_conta}.')
+            bd.reqCriacao(dadosCliente) #Insere os valores do formulário na tabela cliente
+            linhaReq = bd.pegarLinha('confirmacao_cadastro', 'cpf_cadastro', dadosCliente['CPF']) # Pegando a linha da tabela confirmacao_cadastro para acessar o numero da conta na linha seguinte
+            numero_conta = linhaReq['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            flash(f'Requisição de abertura de conta enviada para o gerente.' ) # Mensagem que informa qual o número do usuário
+            flash(f'O seu número de conta será: {numero_conta}.')
             flash(f'Ele será necessário para acessar sua conta.')
                 
             return redirect(url_for('login'))
         else:
-            flash('Senha e confimação de senha diferentes.')
+            flash('Senha e confimação de senha devem ser iguais.')
             return render_template('cadastro.html')
     else:
         return render_template('cadastro.html')
@@ -83,14 +81,6 @@ def home():
     else:
         return redirect(url_for('login'))
 
-# Rota de loggout. Ela não reenderiza nenhum html, apenas limpa as informações da session e redireciona para o login.
-@app.route('/loggout')
-def loggout():
-    if 'nome' in session: # Se a pessoa estiver logada (nome está na session)
-        nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
-        flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
-    session.pop(all, None) # Apagando as informações armazenadas na session['nome']
-    return redirect(url_for('login')) # Redireciona para o login.
 
 
 
@@ -193,6 +183,47 @@ def geraPDF(tipo):
     response.headers['Content-Disposition'] = f'inline; filename = {tipo}_{dataHora}.pdf'
     return response'''
 
+#======================================= Rotas extritamente funcionais (sem html) =======================================
+
+
+# Rota de loggout. Ela não reenderiza nenhum html, apenas limpa as informações da session e redireciona para o login.
+@app.route('/loggout')
+def loggout():
+    if 'nome' in session: # Se a pessoa estiver logada (nome está na session)
+        nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
+        flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
+    session.pop(all, None) # Apagando as informações armazenadas na session['nome']
+    return redirect(url_for('login')) # Redireciona para o login.
+
+#Envia requisição de encerramento de conta
+app.route('/enviaReqEncerramento')
+def apagaConta():
+    if 'nome' in session:
+        conta = bd.pegarLinha('conta', 'id_usuario', session['id_suario'])
+        bd.reqFecha(session['id_usuario'], conta['numero_agencia'], conta['saldo_conta'])
+        return redirect(url_for('/home'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+#======================================= Requisições do Usuário =======================================
+
+app.route('/mudancaCadastral', methods=['POST', 'GET'])
+def mudancaCadastral():
+    if request.method == 'POST':
+        form = request.form
+        bd.reqMudanca(form)
+        flash('Requisição de mudança cadastral enviada.')
+        return redirect(url_for('home'))
+    else:
+        return render_template('user.html')
+
+app.route('/reqEncerramento')
+def reqEncerramento():
+    return render_template('encerramentoConta.html')
+
+
 
 #======================================= Requisições para o gerente =======================================
 
@@ -201,21 +232,6 @@ def requisicoesDeposito(tipo):
     return render_template('requisicoes.html', 
     requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']))
 
-'''@app.route('/requisicoesMudanca')
-def requisicoesMudanca():
-    return render_template('requisicoes.html', 
-    requisicoesMudanca = bd.tabelaPersonalizada('alteracao_cadastral', 'numero_agencia', session['numero_agencia']))
 
-@app.route('/requisicoesFechamento')
-def requisicoesMudanca():
-    return render_template('requisicoes.html', 
-    requisicoesMudanca = bd.tabelaPersonalizada('encerramento_conta', 'numero_agencia', session['numero_agencia']))
-
-@app.route('/requisicoesCriacao')
-def requisicoesMudanca():
-    return render_template('requisicoes.html', 
-    requisicoesMudanca = bd.tabelaPersonalizada('confirmacao_cadastro', 'numero_agencia', session['numero_agencia']))
-
-'''
 if __name__ == '__main__':
     app.run(debug = True)

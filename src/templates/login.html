@@ -17,14 +17,15 @@
         </div>
     </header>
     <!-- Menssagem de erro de login (só aparece se as informações estiverem erradas) -->
-    {% with mensagens = get_flashed_messages() %}
-        {% for msg in mensagens %}
-            <br><p id="erro">{{msg}}</p><br>
-        {% endfor %}
-    {% endwith %}
+    
 
     <!-- Forms provisório -->
     <div class="login-form">
+        {% with mensagens = get_flashed_messages() %}
+            {% for msg in mensagens %}
+                <p id="confimacaoSenha">{{msg}}</p>
+            {% endfor %}
+        {% endwith %}
         <form method="POST" action="#">
             <label for="numero_conta">Número da conta:</label>
             <input type="text" name="numero_conta" minlength="6" maxlength="6">

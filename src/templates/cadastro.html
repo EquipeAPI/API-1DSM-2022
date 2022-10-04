@@ -31,13 +31,14 @@
             </div>
         </header>
         <div>
-            {% with mensagens = get_flashed_messages() %}
-                {% for msg in mensagens %}
-                    <br><p id="confimacaoSenha">{{msg}}</p><br>
-                {% endfor %}
-            {% endwith %}
+            
             <form action="#" method="post" class="cadastro-form">
                 <h1>Cadastro</h1>
+                {% with mensagens = get_flashed_messages() %}
+                    {% for msg in mensagens %}
+                        <br><p id="confimacaoSenha">{{msg}}</p><br>
+                    {% endfor %}
+                {% endwith %}
                 <label for="nome">Nome:</label><br>
                 <input type="text" name="nome" required><br>
                 <label for="CPF">CPF:</label><br>

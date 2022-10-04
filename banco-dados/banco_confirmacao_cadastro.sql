@@ -28,7 +28,7 @@ CREATE TABLE `confirmacao_cadastro` (
   `id_cadastro` int NOT NULL AUTO_INCREMENT,
   `nome_cadastro` varchar(100) NOT NULL,
   `cpf_cadastro` varchar(14) NOT NULL,
-  `data_naascimento_cadastro` date NOT NULL,
+  `data_nascimento_cadastro` date NOT NULL,
   `genero_cadastro` set('Feminino','Masculino','Outros','Prefiro não informar') NOT NULL,
   `senha_cadastro` varchar(16) NOT NULL,
   `rua_avenida_cadastro` varchar(100) NOT NULL,
@@ -37,6 +37,7 @@ CREATE TABLE `confirmacao_cadastro` (
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
   `numero_agencia` int NOT NULL,
+  `numero_conta` int NOT NULL,
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
   CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)

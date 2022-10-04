@@ -214,15 +214,12 @@ body {
 }
 
 #confimacaoSenha{
-  position: absolute;
-  font-size: 1.5vw;
-  color: white;
+  font-size: 1.2vw;
+  color: rgb(255, 0, 0);
   text-align: center;
-  top:10%;
-  left: 37.3%;
-  right: 37.3%;
 
 }
+
 
 /*PÁGINA CADASTRO*/
 .cadastro-form{
