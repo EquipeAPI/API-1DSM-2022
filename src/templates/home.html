@@ -51,7 +51,12 @@
             <button><a href="/deposito">Depósito</a></button>
         </div>
     </div>
-     <!-- Menssagem de saque ou depósito realizado com sucesso -->
+
+    <div>
+    {% block gerente %}
+    {% endblock %}
+    </div>
+     <!-- Mensagem de saque ou depósito realizado com sucesso -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}
             <p id="info">{{msg}}</p>

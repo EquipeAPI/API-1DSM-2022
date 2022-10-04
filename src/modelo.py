@@ -8,7 +8,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -87,6 +87,7 @@ def dataHora(comHora): #Função que retor a data e a hora do sistema em string 
     return dataHora #Retorna a string já formatada devidamente
 
 #Retorna a agencia a ser atribuida ao usuario que cadastrou, levando em conta qual agencia possui menos clientes
+chaveMenor = 1
 def atribuiAgencia():
     tabelaAgencia = bd.pegarTabela('gerente_agencia')
     agenciaUsuario = {}
@@ -99,6 +100,7 @@ def atribuiAgencia():
         agenciaUsuario[f'{agencia}'] = contador  #Dicionário que relaciona a agencia com o número de usuários cadastrados nela
     rep = 0
     for chave, valor in agenciaUsuario.items(): #Seleciona a agencia que possui menos usuarios
+        global chaveMenor
         if rep == 0:
             chaveMenor = chave
             valorMenor = valor

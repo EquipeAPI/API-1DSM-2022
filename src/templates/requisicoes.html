@@ -1,0 +1,12 @@
+<h2>necessário items na tabela 'confirmacao_deposito' para testes</h2>
+{{ requisicoesDeposito }} <br>
+
+
+{% for requisição in requisicoesDeposito %}
+<div class="requisicao">
+    {% for chave, valor in requisição.items() %}
+    <p>{{chave}} : {{valor}}</p>
+    {% endfor %}
+</div> 
+<hr>
+{% endfor %}

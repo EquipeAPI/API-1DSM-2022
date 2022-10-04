@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -21,8 +21,8 @@ mysql = MySQL(app)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
 @app.route('/login', methods=['POST', 'GET']) # Colocando os metodos HTTP que serão usados
 def login():
-    if 'nome' in session: #Verificando se a pessoa já está logada
-        return redirect(url_for('home'))
+    #if 'nome' in session: #Verificando se a pessoa já está logada
+        #return redirect(url_for('home'))
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
         numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
@@ -73,7 +73,9 @@ def home():
             saldo = bd.consultaSaldo(session['id_usuario']),
             numero_conta = str(session['numero_conta']))
         else:
-            return render_template('homegerente.html')
+            return render_template('homegerente.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']))
     else:
         return redirect(url_for('login'))
 
@@ -186,6 +188,11 @@ def geraPDF(tipo):
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = f'inline; filename = {tipo}_{dataHora}.pdf'
     return response'''
+
+@app.route('/requisicoes')
+def requisicoes():
+    return render_template('requisicoes.html', 
+    requisicoesDeposito = bd.tabelaPersonalizada('confirmacao_deposito', 'numero_agencia', session['numero_agencia']))
 
 if __name__ == '__main__':
     app.run(debug = True)
