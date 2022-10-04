@@ -1,3 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+    <head>
+        <link rel="stylesheet" href="../static/styles/styles.css">
+    </head>
+    <body>
+        <div class="divtabuser">
+            <div class="dirowuser">
+                <div class="userinfo">
+
+                </div>
+                <div class="useralt"><br>
+                    <label for="nome">Nome:</label><br>
+                        <input type="text" name="nome" required><br>
+                        <div type="separações" class="separações">Rua ou Avenida:</div>
+                        <input type="text" name="rua" placeholder="Rua ou Avenida" required>
+                        <div type="separações" class="separações">Número:</div>
+                        <input type="text" name="numero" placeholder="Número" required><br>
+                        <div type="separações" class="separações">Bairro:</div>
+                        <input type="text" name="bairro" placeholder="Bairro" required><br>
+                        <div type="separações" class="separações">Cidade:</div>
+                        <input type="text" name="cidade" placeholder="Cidade" required>
+                        <div type="separações" class="separações">Estado:</div>
+                        <select name="estado" id="estado" required>
+                            <option value="Acre">Acre</option>
+                            <option value="Alagoas">Alagoas</option>
+                            <option value="Amapá">Amapá</option>
+                            <option value="Amazonas">Amazonas</option>
+                            <option value="Bahia">Bahia</option>
+                            <option value="Ceará">Ceará</option>
+                            <option value="Distrito Federal">Distrito Federal</option>
+                            <option value="Espirito Santo">Espirito Santo</option>
+                            <option value="Goiás">Goiás</option>
+                            <option value="Maranhão">Maranhão</option>
+                            <option value="Mato Grosso">Mato Grosso</option>
+                            <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+                            <option value="Minas Gerais">Minas Gerais</option>
+                            <option value="Pará">Pará</option>
+                            <option value="Paraíba">Paraíba</option>
+                            <option value="Paraná">Paraná</option>
+                            <option value="Pernambuco">Pernambuco</option>
+                            <option value="Piauí">Piauí</option>
+                            <option value="Rio de Janeiro">Rio de Janeiro</option>
+                            <option value="Rio Grande do Norte">Rio Grande do Norte</option>
+                            <option value="Rio Grande do Sul">Rio Grande do Sul</option>
+                            <option value="Rondônia">Rondônia</option>
+                            <option value="Roraima">Roraima</option>
+                            <option value="Santa Catarina">Santa Catarina</option>
+                            <option value="São Paulo">São Paulo</option>
+                            <option value="Sergipe">Sergipe</option>
+                            <option value="Tocantins">Tocantins</option>
+                        </select><br>
+                        <label for="datNascimento">Data de Nascimento:</label><br>
+                        <input type="date" name="dataNascimento" placeholder="Data de Nascimento" required><br>
+                        <label for="genero">Gênero:</label><br>
+                        <select name="genero" id="generos" required>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                            <option value="Prefiro não informar">Prefiro não informar</option>
+                        </select><br><br>
+                        <input type="submit" value="Alterar Dados" id="cadastrar">
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

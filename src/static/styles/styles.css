@@ -348,3 +348,33 @@ body {
   font-weight: 700;
 }
 
+/* Página User */
+
+.divtabuser{
+  display: table;
+
+}
+
+.divrowuser{
+  display: table-row
+}
+
+.userinfo{
+  text-align: center;
+  width: 20vw;
+  height: 43vh;
+  margin: 12vh auto;
+  background-color: #f0e5c7;
+  border-radius: 35px;
+  display: table-cell
+}
+
+.useralt{
+  text-align: center;
+  width: 20vw;
+  height: 43vh;
+  margin: 12vh auto;
+  background-color: #f0e5c7;
+  border-radius: 35px;
+  display: table-cell
+}
