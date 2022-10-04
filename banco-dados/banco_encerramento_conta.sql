@@ -18,27 +18,32 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `transacao`
+-- Table structure for table `encerramento_conta`
 --
 
-DROP TABLE IF EXISTS `transacao`;
+DROP TABLE IF EXISTS `encerramento_conta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transacao` (
-  `numero_conta_destino` int NOT NULL,
-  `id_operacao` int NOT NULL,
-  KEY `fk_historico_transacao` (`id_operacao`),
-  CONSTRAINT `fk_historico_transacao` FOREIGN KEY (`id_operacao`) REFERENCES `historico_operacao` (`id_operacao`)
+CREATE TABLE `encerramento_conta` (
+  `id_encerramento` int NOT NULL AUTO_INCREMENT,
+  `saldo_encerramento` double NOT NULL,
+  `id_usuario` int NOT NULL,
+  `numero_agencia` int NOT NULL,
+  PRIMARY KEY (`id_encerramento`),
+  KEY `fk_encerramento_usuario` (`id_usuario`),
+  KEY `fk_encerramento_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_encerramento_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`),
+  CONSTRAINT `fk_encerramento_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `transacao`
+-- Dumping data for table `encerramento_conta`
 --
 
-LOCK TABLES `transacao` WRITE;
-/*!40000 ALTER TABLE `transacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transacao` ENABLE KEYS */;
+LOCK TABLES `encerramento_conta` WRITE;
+/*!40000 ALTER TABLE `encerramento_conta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `encerramento_conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-04 18:48:54
+-- Dump completed on 2022-10-04 18:48:53
