@@ -196,12 +196,12 @@ def geraPDF(tipo):
 
 #======================================= Requisições para o gerente =======================================
 
-@app.route('/requisicoesDeposito')
-def requisicoesDeposito():
+@app.route('/requisicoes/<tipo>') #nome das tabelas (possíveis valores do tipo): confirmacao_deposito, alteracao_cadastral, encerramento_conta, confirmacao_cadastro
+def requisicoesDeposito(tipo):
     return render_template('requisicoes.html', 
-    requisicoesDeposito = bd.tabelaPersonalizada('confirmacao_deposito', 'numero_agencia', session['numero_agencia']))
+    requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']))
 
-@app.route('/requisicoesMudanca')
+'''@app.route('/requisicoesMudanca')
 def requisicoesMudanca():
     return render_template('requisicoes.html', 
     requisicoesMudanca = bd.tabelaPersonalizada('alteracao_cadastral', 'numero_agencia', session['numero_agencia']))
@@ -216,6 +216,6 @@ def requisicoesMudanca():
     return render_template('requisicoes.html', 
     requisicoesMudanca = bd.tabelaPersonalizada('confirmacao_cadastro', 'numero_agencia', session['numero_agencia']))
 
-
+'''
 if __name__ == '__main__':
     app.run(debug = True)
