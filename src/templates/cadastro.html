@@ -31,6 +31,11 @@
             </div>
         </header>
         <div>
+            {% with mensagens = get_flashed_messages() %}
+                {% for msg in mensagens %}
+                    <br><p id="confimacaoSenha">{{msg}}</p><br>
+                {% endfor %}
+            {% endwith %}
             <form action="#" method="post" class="cadastro-form">
                 <h1>Cadastro</h1>
                 <label for="nome">Nome:</label><br>
@@ -87,9 +92,10 @@
                 <label for="senha">Senha:</label><br>
                 <input type="password" name="senha" placeholder="Até 16 dígitos" maxlength="16" required><br>
                 <label for="senha">Confirmar senha:</label><br>
-                <input type="password" name="senha" placeholder="Até 16 dígitos" maxlength="16" required><br>
+                <input type="password" name="senhaConfirma" placeholder="Até 16 dígitos" maxlength="16" required><br>
                 <input type="submit" value="Cadastrar" id="cadastrar">
             </form>
+            
         </div>
     </body>
 </html>
