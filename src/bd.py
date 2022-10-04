@@ -16,9 +16,6 @@ def valida(tabela, dado, valor): #valida as informações
         return False
 
 
-
-
-
 def consultaSaldo(id):
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT saldo_conta FROM conta WHERE id_usuario ={id}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login

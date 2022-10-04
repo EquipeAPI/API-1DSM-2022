@@ -193,10 +193,29 @@ def geraPDF(tipo):
     response.headers['Content-Disposition'] = f'inline; filename = {tipo}_{dataHora}.pdf'
     return response'''
 
-@app.route('/requisicoes')
-def requisicoes():
+
+#======================================= Requisições para o gerente =======================================
+
+@app.route('/requisicoesDeposito')
+def requisicoesDeposito():
     return render_template('requisicoes.html', 
     requisicoesDeposito = bd.tabelaPersonalizada('confirmacao_deposito', 'numero_agencia', session['numero_agencia']))
+
+@app.route('/requisicoesMudanca')
+def requisicoesMudanca():
+    return render_template('requisicoes.html', 
+    requisicoesMudanca = bd.tabelaPersonalizada('alteracao_cadastral', 'numero_agencia', session['numero_agencia']))
+
+@app.route('/requisicoesFechamento')
+def requisicoesMudanca():
+    return render_template('requisicoes.html', 
+    requisicoesMudanca = bd.tabelaPersonalizada('encerramento_conta', 'numero_agencia', session['numero_agencia']))
+
+@app.route('/requisicoesCriacao')
+def requisicoesMudanca():
+    return render_template('requisicoes.html', 
+    requisicoesMudanca = bd.tabelaPersonalizada('confirmacao_cadastro', 'numero_agencia', session['numero_agencia']))
+
 
 if __name__ == '__main__':
     app.run(debug = True)

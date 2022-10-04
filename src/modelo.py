@@ -98,10 +98,9 @@ def atribuiAgencia():
         for linhaUsuario in usuarios: #Contando quantos usuários tem na agencia em questão
             contador += 1
         agenciaUsuario[f'{agencia}'] = contador  #Dicionário que relaciona a agencia com o número de usuários cadastrados nela
-    rep = 0
+
     for chave, valor in agenciaUsuario.items(): #Seleciona a agencia que possui menos usuarios
-        global chaveMenor
-        if rep == 0:
+        if int(chave) == 0:
             chaveMenor = chave
             valorMenor = valor
         elif valor < valorMenor:
@@ -109,5 +108,4 @@ def atribuiAgencia():
             valorMenor = valor
         else:
             continue
-        rep +=1
     return chaveMenor #retorna a agencia que tem menos usuario    
