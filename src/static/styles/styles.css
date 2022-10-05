@@ -112,8 +112,8 @@ body {
     border: none;
     border-radius: 10px;
 
-    right: 37.5vw;
-    top: 53vh;
+    right: 0%;
+    top: 120%;
     padding: 0 0.7vw;
 
 }
@@ -140,8 +140,8 @@ body {
     border: none;
     border-radius: 10px;
 
-    left: 38.2vw;
-    top: 53vh;
+    left: 10%;
+    top: 120%;
     padding: 0 0.7vw;
 }
 
@@ -359,12 +359,14 @@ body {
 /* Página User */
 
 .divtabuser{
+  margin-top: 3%;
+  margin-left: 20%;
   display: table;
 
 }
 
 .divrowuser{
-  display: table-row
+  display: table-row;
 }
 
 .userinfo{
@@ -374,7 +376,8 @@ body {
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
-  display: table-cell
+  display: table-cell;
+
 }
 
 .useralt{
@@ -384,7 +387,18 @@ body {
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
-  display: table-cell
+  display: table-cell;
+
+}
+
+.espaço{
+  text-align: center;
+  width: 20vw;
+  height: 45vh;
+  margin: 12vh auto;
+  border-radius: 35px;
+  display: table-cell;
+
 }
 
 #alterar {
@@ -397,6 +411,7 @@ body {
   margin-right: auto;
   display:block;
   cursor: pointer;
+  width: 8vw;
 }
 
 #deletar{
@@ -406,6 +421,8 @@ body {
   background-color: red;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 3%;
   display:block;
   cursor: pointer;
+  height: 4vh;
 }
