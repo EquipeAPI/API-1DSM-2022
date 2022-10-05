@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="../static/styles/requisicoes.css">
     <title>Requisições</title>
 </head>
+<!-- Requisições de depósito -->
 {% if tipo == 'confirmacao_deposito' %}
     {% for requisição in requisicoesDeposito %}
         <form action="">
@@ -25,5 +26,51 @@
             {% endif %}
         {% endfor %}
     </form>
+    {% endfor %}
+{% endif %}
+
+<!-- Requisições de abertura de conta-->
+{% if tipo == 'confirmacao_cadastro' %}
+    {% for requisição in requisicoesAlteracao %}
+        <form action="">
+        {% for chave, valor in requisição.items() %}
+            {% if chave == 'id_cadastro' %}
+                <label for="id_cadastro">Id da operação:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'nome_cadastro' %}
+                <label for="nome_cadastro">Nome:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'cpf_cadastro' %}
+                <label for="cpf">CPF:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'data_nascimento_cadastro' %}
+                <label for="data_nascimento_cadastro">Data de Nascimento:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'genero_cadastro' %}
+                <label for="genero_cadastro">Gênero:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'rua_avenida_cadastro' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'numero_casa_cadastro' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'bairro_cadastro' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'cidade_cadastro' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'estado_cadastro' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'numero_agencia' %}
+                <label for=""></label>
+                <input type="text">
+            {% if chave == 'numero_conta' %}
+                <label for=""></label>
+                <input type="text">
+        {% endfor %}    
+        </form>
     {% endfor %}
 {% endif %}
