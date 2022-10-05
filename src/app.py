@@ -98,6 +98,7 @@ def deposito():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                 dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'deposito'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                bd.inserirOperacao('historico_operacao', 'deposito', dic_dados) #Inserindo no histórico
                 bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
                 flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
@@ -122,10 +123,10 @@ def saque():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                 dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': None} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                bd.inserirOperacao('historico_operacao', 'saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
                 session['dic_dados'] = dic_dados
-                flash('Saque realizado com sucesso. ', 'info') # Mensagem para indicar que a operação deu certo
+                flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('comprovante')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
