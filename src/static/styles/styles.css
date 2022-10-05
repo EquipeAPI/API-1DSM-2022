@@ -370,7 +370,7 @@ body {
 .userinfo{
   text-align: center;
   width: 20vw;
-  height: 43vh;
+  height: 45vh;
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
@@ -380,9 +380,32 @@ body {
 .useralt{
   text-align: center;
   width: 20vw;
-  height: 43vh;
+  height: 45vh;
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
   display: table-cell
+}
+
+#alterar {
+  font-size:18px;
+  padding:10px 15px;
+  width:55%;
+  border-radius:px;
+  border:0;
+  margin-left: auto;
+  margin-right: auto;
+  display:block;
+  cursor: pointer;
+}
+
+#deletar{
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  margin-left: auto;
+  margin-right: auto;
+  display:block;
+  cursor: pointer;
 }
