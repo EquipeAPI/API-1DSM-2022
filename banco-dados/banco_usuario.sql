@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
--- Host: localhost    Database: banco
+-- Host: 127.0.0.1    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `usuario` (
   `nome_usuario` varchar(100) NOT NULL,
   `cpf_usuario` varchar(14) NOT NULL,
   `data_nascimento_usuario` date NOT NULL,
-  `genero_usuario` set('Femino','Masculino','Outro','Prefiro não informar') NOT NULL,
+  `genero_usuario` set('Feminino','Masculino','Outros','Prefiro não informar') NOT NULL,
   `senha_usuario` varchar(16) NOT NULL,
   `rua_avenida_usuario` varchar(100) NOT NULL,
   `numero_casa_usuario` varchar(5) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE `usuario` (
   `cidade_usuario` varchar(50) NOT NULL,
   `estado_usuario` varchar(20) NOT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'João','12345678910','1976-10-03','Masculino','banana123','Avenida dos Bobos','19','Bairro do Otários','Cidade dos Idiota','São Paulo');
+INSERT INTO `usuario` VALUES (1,'João','12345678910','1976-10-03','Masculino','banana123','Avenida dos Bobos','19','Bairro do Otários','Cidade dos Idiota','São Paulo'),(2,'Maria','01987654321','1887-12-05','Feminino','pacoca123','Rua Fatec','123','Bairro Banana','Jacareí','Jacareí');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-04 18:48:53
+-- Dump completed on 2022-10-05 10:36:20
