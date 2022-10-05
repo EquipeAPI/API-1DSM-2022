@@ -3,26 +3,74 @@
     <link rel="stylesheet" href="../static/styles/requisicoes.css">
     <title>Requisições</title>
 </head>
-
-{% for requisição in requisicoesDeposito %}
-    <form action="">
-    {% for chave, valor in requisição.items() %}
-        {% if chave == 'id_confirmacao_deposito' %}
-            <label for="id_confirmacao_deposito">Id da operação:</label>
-            <input type="text" name="id_confirmacao_deposito" value="{{valor}}" readonly><br>
-        {% elif chave == 'valor_confirmacao_deposito'  %}
-            <label for="valor_confirmacao_deposito">Valor:</label>
-            <input type="text" name="valor_confirmacao_deposito" value="{{valor}}" readonly><br>
-        {% elif chave == 'numero_conta' %}
-            <label for="numero_conta">Número da conta:</label>
-            <input type="text" name="numero_conta" value="{{valor}}" readonly>
-        {% elif chave == 'numero_agencia' %}
-            <label for="numero_agencia">Agência:</label>
-            <input type="text" name="numero_agencia" value="{{valor}}" readonly><br>
-        {% elif chave == 'data_hora' %}
-            <label for="data_hora">Data e Hora:</label>
-            <input type="text" name="data_hora" value="{{valor}}" readonly>
-        {% endif %}
-    {% endfor %}
+<!-- Requisições de depósito -->
+{% if tipo == 'confirmacao_deposito' %}
+    {% for requisição in requisicoesDeposito %}
+        <form action="">
+        {% for chave, valor in requisição.items() %}
+            {% if chave == 'id_confirmacao_deposito' %}
+                <label for="id_confirmacao_deposito">Id da operação:</label>
+                <input type="text" name="id_confirmacao_deposito" value="{{valor}}" readonly><br>
+            {% elif chave == 'valor_confirmacao_deposito'  %}
+                <label for="valor_confirmacao_deposito">Valor:</label>
+                <input type="text" name="valor_confirmacao_deposito" value="{{valor}}" readonly><br>
+            {% elif chave == 'numero_conta' %}
+                <label for="numero_conta">Número da conta:</label>
+                <input type="text" name="numero_conta" value="{{valor}}" readonly>
+            {% elif chave == 'numero_agencia' %}
+                <label for="numero_agencia">Agência:</label>
+                <input type="text" name="numero_agencia" value="{{valor}}" readonly><br>
+            {% elif chave == 'data_hora' %}
+                <label for="data_hora">Data e Hora:</label>
+                <input type="text" name="data_hora" value="{{valor}}" readonly>
+            {% endif %}
+        {% endfor %}
     </form>
-{% endfor %}
+    {% endfor %}
+{% endif %}
+
+<!-- Requisições de abertura de conta-->
+{% if tipo == 'confirmacao_cadastro' %}
+    {% for requisição in requisicoesAlteracao %}
+        <form action="">
+        {% for chave, valor in requisição.items() %}
+            {% if chave == 'id_cadastro' %}
+                <label for="id_cadastro">Id da operação:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'nome_cadastro' %}
+                <label for="nome_cadastro">Nome:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'cpf_cadastro' %}
+                <label for="cpf">CPF:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'data_nascimento_cadastro' %}
+                <label for="data_nascimento_cadastro">Data de Nascimento:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'genero_cadastro' %}
+                <label for="genero_cadastro">Gênero:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'rua_avenida_cadastro' %}
+                <label for="rua_avenida_cadastro"></label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'numero_casa_cadastro' %}
+                <label for="numero_casa_cadastro">Número:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'bairro_cadastro' %}
+                <label for="bairro_cadastro">Bairro:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'cidade_cadastro' %}
+                <label for="cidade_cadastro">Cidade:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'estado_cadastro' %}
+                <label for="estado_cadastro">Estado:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'numero_agencia' %}
+                <label for="numero_agencia">Agência:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% if chave == 'numero_conta' %}
+                <label for="numero_conta">Conta:</label>
+                <input type="text" value="{{valor}}" readonly>
+        {% endfor %}    
+        </form>
+    {% endfor %}
+{% endif %}
