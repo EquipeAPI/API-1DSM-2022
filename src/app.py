@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -230,7 +230,7 @@ def reqEncerramento():
 @app.route('/requisicoes/<tipo>') #nome das tabelas (possíveis valores do tipo): confirmacao_deposito, alteracao_cadastral, encerramento_conta, confirmacao_cadastro
 def requisicoesDeposito(tipo):
     return render_template('requisicoes.html', 
-    requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']))
+    requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']), tipo = tipo)
 
 
 if __name__ == '__main__':
