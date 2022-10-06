@@ -8,12 +8,25 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 mysql = MySQL(app)
+
+def preencherDicionario(dic, id_usuario):
+    dicionario = dic
+    dadosAtuais = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
+    for chave, valor in dic.items():
+        if valor == None:
+            nomeChaveMuda = replace("alteracao", "usuario")
+            for chaveUsuario in dadosAtuais.key():
+                if nomeChaveMuda == chaveUsuario
+                    dicionario[chave] = dadosAtuais[f'{nomeChaveMuda}']
+    return dicionario
+
+
 
 
 def trataCPF(cpf): #tira os caracteres especiais do número de cpf

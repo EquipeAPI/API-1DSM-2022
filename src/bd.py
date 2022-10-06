@@ -106,9 +106,9 @@ def reqDeposito(dic_dados): #id_usuário, operacao, valor, data e hora estão co
 
 
 #Requisicao de fechamento de conta
-def reqFecha(id_usuário, numero_agencia, saldo):
+def reqFecha(id_usuário, numero_agencia, numero_conta, saldo):
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO (id_usuario) VALUES(%s, %s)", (id_usuário, tipo))
+    cur.execute (f"INSERT INTO encerramento_conta(id_usuario, saldo_encerramento, numero_agencia, numero_conta) VALUES(%s, %s, %s, %s)", (id_usuário, saldo, numero_agencia, numero_conta))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None

@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -98,7 +98,6 @@ def deposito():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                 dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'deposito'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                bd.inserirOperacao('historico_operacao', 'deposito', dic_dados) #Inserindo no histórico
                 bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
                 flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
@@ -170,6 +169,14 @@ def transferencia():
 def comprovante():
     return render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'])
 
+@app.route('/extrato')
+def extrato():
+    dic_dados = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta'])
+    a = session['numero_conta']
+    return render_template('extrato.html', operacoes = dic_dados, numero_conta = session['numero_conta'], nome = session['nome'])
+
+
+
 #tentativa de fazer pdf
 '''@app.route('/geraPDF/<tipo>') #gerador de PDF
 def geraPDF(tipo):
@@ -197,20 +204,22 @@ def loggout():
     return redirect(url_for('login')) # Redireciona para o login.
 
 #Envia requisição de encerramento de conta
-app.route('/enviaReqEncerramento')
-def apagaConta():
+@app.route("/enviaReqEncerramento")
+def enviaReqEncerramento():
     if 'nome' in session:
-        conta = bd.pegarLinha('conta', 'id_usuario', session['id_suario'])
-        bd.reqFecha(session['id_usuario'], conta['numero_agencia'], conta['saldo_conta'])
-        return redirect(url_for('/home'))
+        linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+        saldo = linhaConta['saldo_conta']
+        bd.reqFecha(session['id_usuario'], session['numero_conta'], linhaConta['numero_agencia'], saldo)
+        flash('Requisição de fechamento de conta enviada.')
+        return redirect(url_for('home'))
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('login')) # Redireciona para o login.
 
 
 
 #======================================= Requisições do Usuário =======================================
 
-app.route('/mudancaCadastral', methods=['POST', 'GET'])
+@app.route('/mudancaCadastral', methods=['POST', 'GET'])
 def mudancaCadastral():
     if request.method == 'POST':
         form = request.form
@@ -220,9 +229,11 @@ def mudancaCadastral():
     else:
         return render_template('user.html')
 
-app.route('/reqEncerramento')
+@app.route('/reqEncerramento')
 def reqEncerramento():
     return render_template('encerramentoConta.html')
+
+
 
 
 
