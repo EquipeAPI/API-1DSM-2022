@@ -22,13 +22,16 @@
                     <p id="erro-saque-deposito">{{msg}}</p>
                 {% endfor %}
             {% endwith %}
-            <div class="corposaque">
+            <div class="corposaque2">
                 <h1>Insira o valor que deseja transferir:</h1>
                 <form action="" method="POST">
                 <span id="cifrão">
                     <label for="numero">Número da conta:</label>
+                    <p></p>
                     <input type="text" name="numero" maxlength="6" minlength="6">
+                    <p></p>
                     <label for="transferencia">R$</label>
+                    <p></p>
                     <input type="text" name="transferencia" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais" autocomplete="off">
                 </span>
                     <input type="submit" value="Transferir" id="depositar">

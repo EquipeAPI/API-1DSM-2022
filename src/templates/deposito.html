@@ -6,16 +6,50 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Depósito</title>
         <link rel="stylesheet" href="../static/styles/styles.css">
-    </head>
-    <body>
         <header class="navbar">
+            <script>
+                function cpf(i){
+                var v =i.value;
+                if(isNaN(v[v.length-1])){//impede de entrar qualquer coisa além de número
+                    i.value = v.substring(0, v.length-1);
+                    return;
+            }
+            
+                i.setAttribute("maxlength", "14");
+                if(v.length == 3) i.value += ".";
+                if(v.length == 7) i.value += ".";
+                if(v.length == 11) i.value += "-";
+            }
+            </script>
+                <script>
+                    // pra abrir o menu
+                    function abre() {
+                    document.getElementById("mySidenav").style.width = "250px";
+                    }
+                    // pra fechar o menu
+                    function fecha() {
+                    document.getElementById("mySidenav").style.width = "0";
+                    }
+                </script>
+            <div class="menu">
+                <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
+                <a href="/home">Home</a>
+                <a href="/loggout">Sair</a>
+            </div>
             <a href="/">
                 <img src="../static/public/logo.png" alt="logo">
             </a>
-            <div class="links">
-                <a href="/home">Home </a> <span>|</span>
-                <a href="/loggout">Sair</a>
+            <div class="user">
+                <a href="/user">
+                <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
             </div>
+            </div>
+    </header>
+    </head>
+    <body>
         </header>
             {% with mensagens = get_flashed_messages() %}
                 {% for msg in mensagens %}

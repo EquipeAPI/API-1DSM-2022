@@ -106,4 +106,14 @@ def atribuiAgencia():
             valorMenor = valor
         else:
             continue
-    return chaveMenor #retorna a agencia que tem menos usuario    
+    return chaveMenor #retorna a agencia que tem menos usuario
+
+#Função para apagar usuário do banco
+def apagaUsuario():       
+    bd.apaga_linha('transacao','numero_conta_origem', numero_conta)
+    bd.apaga_linha('historico_operacao', 'numero_conta', numero_conta)
+    bd.apaga_linha('conta', 'numero_conta', numero_conta)
+    bd.apaga_linha('gerente_agencia', 'id_usuario', id_usuario)
+    bd.apaga_linha('alteracao_cadastral', 'id_usuario', id_usuario) 
+    bd.apaga_linha('usuario', 'id_usuario', id_usuario)
+    return None 
