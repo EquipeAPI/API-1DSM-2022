@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: banco
+-- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,8 +27,11 @@ DROP TABLE IF EXISTS `transacao`;
 CREATE TABLE `transacao` (
   `numero_conta_destino` int NOT NULL,
   `id_operacao` int NOT NULL,
+  `numero_conta_origem` int DEFAULT NULL,
   KEY `fk_historico_transacao` (`id_operacao`),
-  CONSTRAINT `fk_historico_transacao` FOREIGN KEY (`id_operacao`) REFERENCES `historico_operacao` (`id_operacao`)
+  KEY `fk_transacao_conta` (`numero_conta_origem`),
+  CONSTRAINT `fk_historico_transacao` FOREIGN KEY (`id_operacao`) REFERENCES `historico_operacao` (`id_operacao`),
+  CONSTRAINT `fk_transacao_conta` FOREIGN KEY (`numero_conta_origem`) REFERENCES `conta` (`numero_conta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05 10:36:20
+-- Dump completed on 2022-10-06 16:14:01
