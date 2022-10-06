@@ -9,6 +9,7 @@
         <form action="">
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_confirmacao_deposito' %}
+                {% set id = valor %}
                 <label for="id_confirmacao_deposito">Id da operação:</label>
                 <input type="text" name="id_confirmacao_deposito" value="{{valor}}" readonly><br>
             {% elif chave == 'valor_confirmacao_deposito'  %}
@@ -24,52 +25,60 @@
                 <label for="data_hora">Data e Hora:</label>
                 <input type="text" name="data_hora" value="{{valor}}" readonly>
             {% endif %}
+            
         {% endfor %}
-    </form>
+        {% set id = requisição["id_confirmacao_deposito"] %}        
+        <button><a href="{{ '/aceita/%s/%s' % (tipo, id)}}">{{id}}</a></button>
+        <button><a href="{{'/recusa/%s/%s' % (tipo, id)}}">recusar</a></button>
+        </form>
     {% endfor %}
 {% endif %}
 
 <!-- Requisições de abertura de conta-->
 {% if tipo == 'confirmacao_cadastro' %}
-    {% for requisição in requisicoesAlteracao %}
+    {% for requisição in confirmacao_cadastro %}
         <form action="">
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_cadastro' %}
+                {% set id = valor %}
                 <label for="id_cadastro">Id da operação:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'nome_cadastro' %}
+            {% elif chave == 'nome_cadastro' %}
                 <label for="nome_cadastro">Nome:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'cpf_cadastro' %}
+            {% elif chave == 'cpf_cadastro' %}
                 <label for="cpf">CPF:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'data_nascimento_cadastro' %}
+            {% elif chave == 'data_nascimento_cadastro' %}
                 <label for="data_nascimento_cadastro">Data de Nascimento:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'genero_cadastro' %}
+            {% elif chave == 'genero_cadastro' %}
                 <label for="genero_cadastro">Gênero:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'rua_avenida_cadastro' %}
+            {% elif chave == 'rua_avenida_cadastro' %}
                 <label for="rua_avenida_cadastro"></label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'numero_casa_cadastro' %}
+            {% elif chave == 'numero_casa_cadastro' %}
                 <label for="numero_casa_cadastro">Número:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'bairro_cadastro' %}
+            {% elif chave == 'bairro_cadastro' %}
                 <label for="bairro_cadastro">Bairro:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'cidade_cadastro' %}
+            {% elif chave == 'cidade_cadastro' %}
                 <label for="cidade_cadastro">Cidade:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'estado_cadastro' %}
+            {% elif chave == 'estado_cadastro' %}
                 <label for="estado_cadastro">Estado:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'numero_agencia' %}
+            {% elif chave == 'numero_agencia' %}
                 <label for="numero_agencia">Agência:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% if chave == 'numero_conta' %}
+            {% elif chave == 'numero_conta' %}
                 <label for="numero_conta">Conta:</label>
                 <input type="text" value="{{valor}}" readonly>
+            {% endif %}
+            <button><a href="{{'/aceita/%s/%s' % (tipo, id)}}"></a></button>
+            <button><a href="{{'/recusa/%s/%s' % (tipo, id)}}"></a></button>
         {% endfor %}    
         </form>
     {% endfor %}

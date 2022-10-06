@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -233,6 +233,23 @@ def requisicoesDeposito(tipo):
     return render_template('requisicoes.html', 
     requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']),
     requisicoesAlteracao = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia'])  ,tipo = tipo)
+
+
+@app.route('/aceita/<tipo>/<id>')
+def aceitarReq(tipo, id):
+    if tipo == 'confirmacao_deposito':
+        linhaOperacao = bd.pegarLinha('confirmacao_deposito', 'id_confirmacao_deposito', id)
+        linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
+        saldoAtual = linhaConta['saldo_conta']
+        dataHora = modelo.dataHora(True)
+        dic_dados = {'numero_conta': linhaOperacao['numero_conta'], 'operacao': 'deposito', 'valor': linhaOperacao['valor_confirmacao_deposito'], 'dataHora': dataHora, 'saldoAntes': saldoAtual}
+        bd.inserirOperacao('historico_operacao', 'deposito', dic_dados)
+        #bd.deletaLinha(tipo, 'id_confirmacao', id) #Deleta linha na tabela confirmacao depósito
+        return redirect(url_for('requisicoesDeposito', tipo=tipo))
+    
+
+
+
 
 
 if __name__ == '__main__':
