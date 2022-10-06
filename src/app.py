@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -147,7 +147,7 @@ def transferencia():
             if modelo.validaOperacao(transferencia):
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
+                if modelo.transferencia(session['numero_conta'], transferencia, numero_recebedor):
                     dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': numero_recebedor} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
@@ -229,23 +229,39 @@ def reqEncerramento():
 #======================================= Requisições para o gerente =======================================
 
 @app.route('/requisicoes/<tipo>') #nome das tabelas (possíveis valores do tipo): confirmacao_deposito, alteracao_cadastral, encerramento_conta, confirmacao_cadastro
-def requisicoesDeposito(tipo):
+def requisicoes(tipo):
     return render_template('requisicoes.html', 
-    requisicoesDeposito = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']),
+    requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']),
     requisicoesAlteracao = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia'])  ,tipo = tipo)
 
 
-@app.route('/aceita/<tipo>/<id>')
-def aceitarReq(tipo, id):
+@app.route('/resposta/<decisao>/<tipo>/<id>')
+def respostaReq(decisao, tipo, id):
     if tipo == 'confirmacao_deposito':
-        linhaOperacao = bd.pegarLinha('confirmacao_deposito', 'id_confirmacao_deposito', id)
-        linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
-        saldoAtual = linhaConta['saldo_conta']
-        dataHora = modelo.dataHora(True)
-        dic_dados = {'numero_conta': linhaOperacao['numero_conta'], 'operacao': 'deposito', 'valor': linhaOperacao['valor_confirmacao_deposito'], 'dataHora': dataHora, 'saldoAntes': saldoAtual}
-        bd.inserirOperacao('historico_operacao', 'deposito', dic_dados)
-        #bd.deletaLinha(tipo, 'id_confirmacao', id) #Deleta linha na tabela confirmacao depósito
-        return redirect(url_for('requisicoesDeposito', tipo=tipo))
+        if decisao == 'aceita':
+            linhaOperacao = bd.pegarLinha('confirmacao_deposito', 'id_confirmacao_deposito', id)
+            linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
+            saldoAtual = linhaConta['saldo_conta']
+            dataHora = modelo.dataHora(True)
+            dic_dados = {'numero_conta': linhaOperacao['numero_conta'], 'operacao': 'deposito', 'valor': linhaOperacao['valor_confirmacao_deposito'], 'dataHora': dataHora, 'saldoAntes': saldoAtual}
+            modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_confirmacao_deposito'])
+            bd.inserirOperacao('historico_operacao', 'deposito', dic_dados)
+            bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
+            return redirect(url_for('requisicoes', tipo=tipo))
+        else:
+            bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
+            return redirect(url_for('requisicoes', tipo=tipo))
+    
+    if tipo == 'confirmacao_cadastro':
+        if decisao == 'aceita':
+            linhaOperacao = bd.pegarLinha('confirmacao_cadastro', 'id_cadastro', id)
+            dataHora = modelo.dataHora(False)
+            bd.criaConta(linhaOperacao, dataHora)
+            bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
+            return redirect(url_for('requisicoes', tipo=tipo))
+        else:
+            bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
+            return redirect(url_for('requisicoes', tipo=tipo))
     
 
 

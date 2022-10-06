@@ -8,7 +8,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -24,13 +24,11 @@ def trataCPF(cpf): #tira os caracteres especiais do número de cpf
 def validaOperacao(input):
     if '.' in input: # Verifica se há . no input dado pelo usuário
         controle = input.split('.') # Separa o . dos números
-        if len(controle) > 2: # Confere se havia apenas um . no input, que é o exigido
-            return False
-        elif controle[0].isnumeric() and controle[1].isnumeric() and len(controle[0]) <= 6: # confere se além do . havia somente números, que é o exigido
+        if controle[0].isnumeric() and controle[1].isnumeric(): # confere se além do . havia somente números, que é o exigido
             return True
         else:
             return False
-    elif input.isnumeric() and len(input) <= 6: # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
+    elif input.isnumeric(): # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
         return True
     else:
         return False

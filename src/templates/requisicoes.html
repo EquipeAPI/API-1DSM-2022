@@ -5,7 +5,7 @@
 </head>
 <!-- Requisições de depósito -->
 {% if tipo == 'confirmacao_deposito' %}
-    {% for requisição in requisicoesDeposito %}
+    {% for requisição in requisicoes %}
         <form action="">
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_confirmacao_deposito' %}
@@ -28,19 +28,18 @@
             
         {% endfor %}
         {% set id = requisição["id_confirmacao_deposito"] %}        
-        <button><a href="{{ '/aceita/%s/%s' % (tipo, id)}}">{{id}}</a></button>
-        <button><a href="{{'/recusa/%s/%s' % (tipo, id)}}">recusar</a></button>
+        <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}">Aceitar</a></button>
+            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}">Recusar</a></button>
         </form>
     {% endfor %}
 {% endif %}
 
 <!-- Requisições de abertura de conta-->
 {% if tipo == 'confirmacao_cadastro' %}
-    {% for requisição in confirmacao_cadastro %}
+    {% for requisição in requisicoes %}
         <form action="">
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_cadastro' %}
-                {% set id = valor %}
                 <label for="id_cadastro">Id da operação:</label>
                 <input type="text" value="{{valor}}" readonly>
             {% elif chave == 'nome_cadastro' %}
@@ -77,9 +76,14 @@
                 <label for="numero_conta">Conta:</label>
                 <input type="text" value="{{valor}}" readonly>
             {% endif %}
-            <button><a href="{{'/aceita/%s/%s' % (tipo, id)}}"></a></button>
-            <button><a href="{{'/recusa/%s/%s' % (tipo, id)}}"></a></button>
+            
         {% endfor %}    
+        {% set id = requisição["id_cadastro"] %} 
+            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}">Aceitar</a></button>
+            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}">Recusar</a></button>
         </form>
+
     {% endfor %}
 {% endif %}
+
+<button><a href="/home">Votar</a></button>
