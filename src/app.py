@@ -252,7 +252,7 @@ def respostaReq(decisao, tipo, id):
             bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
             return redirect(url_for('requisicoes', tipo=tipo))
     
-    if tipo == 'confirmacao_cadastro':
+    elif tipo == 'confirmacao_cadastro':
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('confirmacao_cadastro', 'id_cadastro', id)
             dataHora = modelo.dataHora(False)
@@ -263,7 +263,26 @@ def respostaReq(decisao, tipo, id):
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
             return redirect(url_for('requisicoes', tipo=tipo))
     
+    elif tipo == 'alteracao_cadastral':
+        if decisao == 'aceita':
+            linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
+            # bd.altera_tabela()
+            bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
+            return redirect(url_for('requisicoes', tipo=tipo))
+        else:
+            bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
+            return redirect(url_for('requisicoes', tipo=tipo))
 
+    elif tipo == 'encerramento_conta':
+        if decisao == 'aceita':
+            linhaOperacao = bd.pegarLinha('encerramento_conta', 'id_encerramento', id)
+            linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaOperacao['id_usuario'])
+            modelo.apagaUsuario(linhaConta['numero_conta'], linhaOperacao['id_usuario'])
+            bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
+            return redirect(url_for('requisicoes', tipo=tipo))
+        else:
+            bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
+            return redirect(url_for('requisicoes', tipo=tipo))
 
 
 
