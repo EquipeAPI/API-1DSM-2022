@@ -29,7 +29,7 @@ CREATE TABLE `confirmacao_cadastro` (
   `nome_cadastro` varchar(100) NOT NULL,
   `cpf_cadastro` varchar(14) NOT NULL,
   `data_naascimento_cadastro` date NOT NULL,
-  `genero_cadastro` set('Feminino','Masculino','Outros','Prefiro não informar') NOT NULL,
+  `genero_cadastro` set('Feminino','Masculino','Outro','Prefiro não informar') DEFAULT NULL,
   `senha_cadastro` varchar(16) NOT NULL,
   `rua_avenida_cadastro` varchar(100) NOT NULL,
   `numero_casa_cadastro` varchar(5) NOT NULL,
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 16:11:53
+-- Dump completed on 2022-10-06 19:00:56

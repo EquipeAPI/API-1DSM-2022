@@ -26,8 +26,8 @@ DROP TABLE IF EXISTS `alteracao_cadastral`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alteracao_cadastral` (
   `id_alteracao` int NOT NULL AUTO_INCREMENT,
-  `nome_alteracao` varchar(50) DEFAULT NULL,
-  `genero_alteracao` set('Feminino','Masculino','Outro','Prefiro não') DEFAULT NULL,
+  `nome_alteracao` varchar(100) DEFAULT NULL,
+  `genero_alteracao` set('Feminino','Masculino','Outro','Prefiro não informar') DEFAULT NULL,
   `rua_avenida_alteracao` varchar(100) DEFAULT NULL,
   `numero_alteracao` varchar(5) DEFAULT NULL,
   `bairro_alteracao` varchar(50) DEFAULT NULL,
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 16:11:54
+-- Dump completed on 2022-10-06 19:00:56

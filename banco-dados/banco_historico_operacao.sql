@@ -31,7 +31,7 @@ CREATE TABLE `historico_operacao` (
   `valor_operacao` double NOT NULL,
   `tipo_operacao` set('Deposito','Saque','Transação') NOT NULL,
   `numero_conta` int NOT NULL,
-  `status_operacao` varchar(12) DEFAULT (_utf8mb4'Aprovado'),
+  `status_operacao` varchar(12) DEFAULT 'Aprovado',
   PRIMARY KEY (`id_operacao`),
   KEY `fk_conta_historico` (`numero_conta`),
   CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 16:11:54
+-- Dump completed on 2022-10-06 19:00:57
