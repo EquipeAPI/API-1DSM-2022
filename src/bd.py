@@ -116,9 +116,9 @@ def reqFecha(id_usuário, numero_agencia, saldo):
 
 
 # ========================= Função de apagar linha ===========================
-def apaga_linha(tabela, dado):
+def apaga_linha(tabela, coluna, dado):
     cur = mysql.connection.cursor()
-    cur.execute (f'delete from {tabela} where {dado}')#Comendo DDL para apagar uma linha
+    cur.execute (f'delete from {tabela} where {coluna} = {dado} ')#Comendo DDL para apagar uma linha
     mysql.connection.commit()
     cur.close()
     return None
