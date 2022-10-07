@@ -423,6 +423,11 @@ body {
   cursor: pointer;
   height: 4vh;
 }
+
+fieldset{
+  border: 0px;
+}
+
 /* requisições */
 
 .leftcolumn {   
