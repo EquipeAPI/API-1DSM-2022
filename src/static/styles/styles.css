@@ -52,9 +52,10 @@ body {
 
 .navbar img {
     margin-top: 2vh;
-    margin-left:50%;
-    width: 8vw;
     height: 16vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .user{
@@ -119,15 +120,15 @@ body {
 }
 
 #depositar:hover { 
-    background-color: rgb(255, 85, 0);
-    color: white;
+    background-color: #2660A4;
+    color:white;
     transition: 300ms;
     cursor: pointer;
 }
 
 #sacar:hover {
-    background-color: rgb(255, 85, 0);
-    color: white;
+    background-color: #2660A4;
+    color:white;
     transition: 300ms;
     cursor: pointer;
 }
@@ -178,7 +179,7 @@ body {
 
 .corpohome button {
   font-size: 2vw;
-  color: white;
+  color: black;
 
   border: none;
   border-radius: 10px;
@@ -187,17 +188,16 @@ body {
   left: 5vw;
   padding: 0 2vw;
   margin-right: 4vw;
-
-  background-color: #FF884D;
 }
 
 .corpohome button:hover { 
-  background-color:rgb(255, 85, 0);
+  background-color: #2660A4;
+  color:white;
   transition: 300ms;
 }
 
 .corpohome button a:visited {
-  color: white;
+  color: black;
 }
 
 .corpohome button a {
@@ -224,7 +224,7 @@ body {
 /*PÁGINA CADASTRO*/
 .cadastro-form{
   width:430px;
-  top:50%;
+  top:60%;
   left:50%;
   position:absolute;
   transform: translate(-50%,-50%);
@@ -277,7 +277,8 @@ body {
 }
 
 #cadastrar:hover {
-  background-color: rgb(255, 85, 0);
+  background-color: #2660A4;
+  color:white;
   transition: 300ms;
 }
 
@@ -330,7 +331,8 @@ body {
 }
 
 .login-form button:hover { 
-  background-color: rgb(255, 85, 0);
+  background-color: #2660A4;
+  color:white;
   transition: 300ms;
 }
 
@@ -372,38 +374,33 @@ body {
 .userinfo{
   text-align: center;
   width: 20vw;
-  height: 45vh;
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
   display: table-cell;
-
 }
 
 .useralt{
   text-align: center;
   width: 20vw;
-  height: 45vh;
   margin: 12vh auto;
   background-color: #f0e5c7;
   border-radius: 35px;
   display: table-cell;
-
+  padding-bottom: 20px;
 }
 
 .espaço{
   text-align: center;
   width: 20vw;
-  height: 45vh;
   margin: 12vh auto;
   border-radius: 35px;
   display: table-cell;
-
 }
 
 #alterar {
   font-size:18px;
-  padding:10px 15px;
+  padding:10px;
   width:55%;
   border-radius:px;
   border:0;
@@ -411,7 +408,7 @@ body {
   margin-right: auto;
   display:block;
   cursor: pointer;
-  width: 8vw;
+  width: 10vw;
 }
 
 #deletar{
@@ -463,10 +460,10 @@ body {
 .req-form input{
   font-size:16px;
   width:100%;
-  padding:15px 5px;
+  padding:5px 5px;
   border: 0;
   outline:none;
-  border-radius:10px;
+  border-radius:5px;
 
 }
 
@@ -485,6 +482,57 @@ body {
 }
 
 .req-form button:hover { 
-  background-color: rgb(255, 85, 0);
+  background-color: #2660A4;
+  color:white;
   transition: 300ms;
+}
+
+.termina{
+  font-size:70px;
+  color:white;
+  text-align:center;
+  margin-top:50px;
+  font-weight:bolder;
+}
+
+a.nav-link:link
+{
+   color: black;
+   text-decoration: none;
+}
+a.nav-link:visited
+{
+   color:black;
+   text-decoration: none;
+}
+a.nav-link:hover
+{
+   color:white;
+   text-decoration: none;
+}
+a.nav-link:active
+{
+   color:black;
+   text-decoration: none;
+}
+
+a.nav-link2:link
+{
+   color: black;
+   text-decoration: none;
+}
+a.nav-link2:visited
+{
+   color:white;
+   text-decoration: none;
+}
+a.nav-link2:hover
+{
+   color:white;
+   text-decoration: none;
+}
+a.nav-link2:active
+{
+   color:black;
+   text-decoration: none;
 }
