@@ -34,6 +34,7 @@ CREATE TABLE `alteracao_cadastral` (
   `cidade_alteracao` varchar(50) DEFAULT NULL,
   `estado_alteracao` varchar(20) DEFAULT NULL,
   `senha_alteracao` varchar(16) DEFAULT NULL,
+  `data_nascimento_alteracao` date DEFAULT NULL,
   `id_usuario` int NOT NULL,
   `numero_agencia` int NOT NULL,
   PRIMARY KEY (`id_alteracao`),
@@ -43,6 +44,9 @@ CREATE TABLE `alteracao_cadastral` (
   CONSTRAINT `fk_alteracao_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+ALTER TABLE alteracao_cadastral ADD data_nascimento_alteracao date;
 
 --
 -- Dumping data for table `alteracao_cadastral`
