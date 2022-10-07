@@ -8,7 +8,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -22,7 +22,7 @@ def preencherDicionario(dic, id_usuario):
         if valor == None:
             nomeChaveMuda = replace("alteracao", "usuario")
             for chaveUsuario in dadosAtuais.key():
-                if nomeChaveMuda == chaveUsuario
+                if nomeChaveMuda == chaveUsuario:
                     dicionario[chave] = dadosAtuais[f'{nomeChaveMuda}']
     return dicionario
 

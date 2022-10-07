@@ -111,7 +111,7 @@
                 <label for="genero_cadastro">Gênero:</label>
                 <input type="text" value="{{valor}}" readonly>
             {% elif chave == 'rua_avenida_cadastro' %}
-                <label for="rua_avenida_cadastro"></label>
+                <label for="rua_avenida_cadastro">Rua:</label>
                 <input type="text" value="{{valor}}" readonly>
             {% elif chave == 'numero_casa_cadastro' %}
                 <label for="numero_casa_cadastro">Número:</label>
@@ -135,6 +135,89 @@
 
         {% endfor %}    
         {% set id = requisição["id_cadastro"] %} 
+            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}">Aceitar</a></button>
+            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}">Recusar</a></button>
+        </form>
+        </div>
+        </div>
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+<!-- Requisições de alteração de dados-->
+{% if tipo == 'alteracao_cadastral' %}
+    {% for requisição in requisicoes %}
+        <div class="rightcolumn">
+        <div class="card">
+        <form action="#" method="post" class="req-form">
+
+        {% for chave, valor in requisição.items() %}
+            {% if chave == 'id_alteracao' %}
+                <label for="id_alteracao">Id da requisição:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'nome_alteracao' and valor != None %}
+                <label for="nome_alteracao">Nome:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'genero_alteracao' and valor != None %}
+                <label for="genero_alteracao">Gênero:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'rua_avenida_alteracao' and valor != None %}
+                <label for="rua_avenida_alteracao">Rua:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'numero_alteracao' and valor != None %}
+                <label for="numero_alteracao">Número:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'bairro_alteracao' and valor != None %}
+                <label for="bairro_alteracao">Bairro:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'cidade_alteracao' and valor != None %}
+                <label for="cidade_alteracao">Cidade:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'estado_alteracao' and valor != None%}
+                <label for="estado_alteracao">Estado:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'senha_alteracao' and valor != None%}
+                <label for="senha_alteracao">Senha:</label>
+                <input type="password" value="{{valor}}" readonly>
+            {% elif chave == 'id_usuario' %}
+                <label for="id_usuario">ID do usuário:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% endif %}
+
+        {% endfor %}    
+        {% set id = requisição["id_alteracao"] %} 
+            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}">Aceitar</a></button>
+            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}">Recusar</a></button>
+        </form>
+        </div>
+        </div>
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+<!-- Requisições de encerramento de conta-->
+{% if tipo == 'encerramento_conta' %}
+    {% for requisição in requisicoes %}
+        <div class="rightcolumn">
+        <div class="card">
+        <form action="#" method="post" class="req-form">
+
+        {% for chave, valor in requisição.items() %}
+            {% if chave == 'id_encerramento' %}
+                <label for="id_encerramento">Id da requisição:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'saldo_encerramento' %}
+                <label for="saldo_encerramento">Saldo pendente:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'id_usuario' %}
+                <label for="id_usuario">ID do usuário:</label>
+                <input type="text" value="{{valor}}" readonly>
+            {% endif %}
+
+        {% endfor %}    
+        {% set id = requisição["id_alteracao"] %} 
             <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}">Aceitar</a></button>
             <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}">Recusar</a></button>
         </form>
