@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -209,7 +209,7 @@ def enviaReqEncerramento():
     if 'nome' in session:
         linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
         saldo = linhaConta['saldo_conta']
-        bd.reqFecha(session['id_usuario'], session['numero_conta'], linhaConta['numero_agencia'], saldo)
+        bd.reqFecha(session['id_usuario'], linhaConta['numero_agencia'], saldo)
         flash('Requisição de fechamento de conta enviada.')
         return redirect(url_for('home'))
     else:
@@ -223,18 +223,15 @@ def enviaReqEncerramento():
 def mudancaCadastral():
     if request.method == 'POST':
         form = request.form
-        bd.reqMudanca(form)
+        bd.reqMudanca(form, session['id_usuario'], session['numero_agencia'])
         flash('Requisição de mudança cadastral enviada.')
         return redirect(url_for('home'))
     else:
         return render_template('user.html')
 
-@app.route('/reqEncerramento')
+'''@app.route('/reqEncerramento')
 def reqEncerramento():
-    return render_template('encerramentoConta.html')
-
-
-
+    return render_template('encerramentoConta.html')'''
 
 
 #======================================= Requisições para o gerente =======================================

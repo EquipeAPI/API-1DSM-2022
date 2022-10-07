@@ -56,7 +56,7 @@
     <div class="row">
         <div class="leftcolumn">
         <div class="card">
-        <form action="#" method="post" class="req-form">
+        <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_confirmacao_deposito' %}
@@ -92,7 +92,7 @@
     {% for requisição in requisicoes %}
         <div class="rightcolumn">
         <div class="card">
-        <form action="#" method="post" class="req-form">
+        <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_cadastro' %}
@@ -150,7 +150,7 @@
     {% for requisição in requisicoes %}
         <div class="rightcolumn">
         <div class="card">
-        <form action="#" method="post" class="req-form">
+        <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_alteracao' %}
@@ -187,8 +187,8 @@
 
         {% endfor %}    
         {% set id = requisição["id_alteracao"] %} 
-            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link2">Aceitar</a></button>
-            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link2">Recusar</a></button>
+        <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link2">Aceitar</a></button>
+        <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link2">Recusar</a></button>
         </form>
         </div>
         </div>
@@ -202,7 +202,7 @@
     {% for requisição in requisicoes %}
         <div class="rightcolumn">
         <div class="card">
-        <form action="#" method="post" class="req-form">
+        <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_encerramento' %}
@@ -217,9 +217,10 @@
             {% endif %}
 
         {% endfor %}    
-        {% set id = requisição["id_alteracao"] %} 
-            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link2">Aceitar</a></button>
-            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link2">Recusar</a></button>
+        {% set id = requisição["id_encerramento"] %} 
+
+        <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link2">Aceitar</a></button>
+        <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link2">Recusar</a></button>
         </form>
         </div>
         </div>

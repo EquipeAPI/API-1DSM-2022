@@ -93,7 +93,8 @@
                 </div>
                 <div class="espaço"></div>
                 <div class="useralt"><br>
-                    <label for="nome">Nome:</label><br>
+                    <form action="#" method="post">
+                        <label for="nome">Nome:</label><br>
                         <input type="text" name="nome"><br>
                         <div type="separações" class="separações">Rua ou Avenida:</div>
                         <input type="text" name="rua" placeholder="Rua ou Avenida">
@@ -142,10 +143,12 @@
                             <option value="Outro">Outro</option>
                             <option value="Prefiro não informar">Prefiro não informar</option>
                         </select><br><br>
+                     
                         <input type="submit" value="Alterar Dados" id="alterar">
+                    </form>
                 </div>
             </div>
         </div>
-        <input type="submit" value="EXCLUIR CONTA" id="deletar">
+        <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
     </body>
 </html>

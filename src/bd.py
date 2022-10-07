@@ -60,7 +60,7 @@ def pegarTabela(tabela):
 
 def criaConta(forms, dataAbertura): #Insere uma linha com esses valores na tabela cliente
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_nascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.execute(f"SELECT * FROM usuario WHERE nome_usuario =%s", [forms['nome_cadastro']]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
@@ -81,9 +81,9 @@ def reqCriacao(forms):
 
 
 #Requisição de mudança de dados cadastrais
-def reqMudanca(forms):
+def reqMudanca(forms, id_usuario, numero_agencia):
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute(f"INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms ['cpf'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['dataNascimento'], forms['genero'], forms['senha'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute(f"INSERT INTO alteracao_cadastral(nome_alteracao, rua_avenida_alteracao, numero_alteracao, bairro_alteracao, cidade_alteracao, estado_alteracao, genero_alteracao, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['genero'], id_usuario, numero_agencia)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.close()
     return None
@@ -106,9 +106,9 @@ def reqDeposito(dic_dados): #id_usuário, operacao, valor, data e hora estão co
 
 
 #Requisicao de fechamento de conta
-def reqFecha(id_usuário, numero_agencia, numero_conta, saldo):
+def reqFecha(id_usuário, numero_agencia, saldo):
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO encerramento_conta(id_usuario, saldo_encerramento, numero_agencia, numero_conta) VALUES(%s, %s, %s, %s)", (id_usuário, saldo, numero_agencia, numero_conta))
+    cur.execute (f"INSERT INTO encerramento_conta(id_usuario, saldo_encerramento, numero_agencia) VALUES(%s, %s, %s)", (id_usuário, saldo, numero_agencia))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
@@ -122,3 +122,9 @@ def apaga_linha(tabela, coluna, dado):
     mysql.connection.commit()
     cur.close()
     return None
+
+
+
+
+
+
