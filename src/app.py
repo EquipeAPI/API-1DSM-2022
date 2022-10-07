@@ -227,7 +227,8 @@ def mudancaCadastral():
         flash('Requisição de mudança cadastral enviada.')
         return redirect(url_for('home'))
     else:
-        return render_template('user.html')
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+        return render_template('user.html', linhaUsuario = linhaUsuario)
 
 '''@app.route('/reqEncerramento')
 def reqEncerramento():

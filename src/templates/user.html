@@ -43,53 +43,24 @@
                     <fieldset disabled="disabled">
                     <br>
                     <label for="nome">Nome:</label><br>
-                        <input type="text" name="nome"><br>
+                        <input type="text" name="nome" value="{{linhaUsuario['nome_usuario']}}"><br>
                         <div type="separações" class="separações">Rua ou Avenida:</div>
-                        <input type="text" name="rua" placeholder="Rua ou Avenida">
+                        <input type="text" name="rua" value="{{linhaUsuario['rua_avenida_usuario']}}">
                         <div type="separações" class="separações">Número:</div>
-                        <input type="text" name="numero" placeholder="Número"><br>
+                        <input type="text" name="numero" value="{{linhaUsuario['numero_casa_usuario']}}"><br>
                         <div type="separações" class="separações">Bairro:</div>
-                        <input type="text" name="bairro" placeholder="Bairro"><br>
+                        <input type="text" name="bairro" value="{{linhaUsuario['bairro_usuario']}}"><br>
                         <div type="separações" class="separações">Cidade:</div>
-                        <input type="text" name="cidade" placeholder="Cidade">
+                        <input type="text" name="cidade" value="{{linhaUsuario['cidade_usuario']}}">
                         <div type="separações" class="separações">Estado:</div>
-                        <select name="estado" id="estado">
-                            <option value="Acre">Acre</option>
-                            <option value="Alagoas">Alagoas</option>
-                            <option value="Amapá">Amapá</option>
-                            <option value="Amazonas">Amazonas</option>
-                            <option value="Bahia">Bahia</option>
-                            <option value="Ceará">Ceará</option>
-                            <option value="Distrito Federal">Distrito Federal</option>
-                            <option value="Espirito Santo">Espirito Santo</option>
-                            <option value="Goiás">Goiás</option>
-                            <option value="Maranhão">Maranhão</option>
-                            <option value="Mato Grosso">Mato Grosso</option>
-                            <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-                            <option value="Minas Gerais">Minas Gerais</option>
-                            <option value="Pará">Pará</option>
-                            <option value="Paraíba">Paraíba</option>
-                            <option value="Paraná">Paraná</option>
-                            <option value="Pernambuco">Pernambuco</option>
-                            <option value="Piauí">Piauí</option>
-                            <option value="Rio de Janeiro">Rio de Janeiro</option>
-                            <option value="Rio Grande do Norte">Rio Grande do Norte</option>
-                            <option value="Rio Grande do Sul">Rio Grande do Sul</option>
-                            <option value="Rondônia">Rondônia</option>
-                            <option value="Roraima">Roraima</option>
-                            <option value="Santa Catarina">Santa Catarina</option>
-                            <option value="São Paulo">São Paulo</option>
-                            <option value="Sergipe">Sergipe</option>
-                            <option value="Tocantins">Tocantins</option>
+                        <select name="estado" value="{{linhaUsuario['rua_avenida_usuario']}}" id="estado">
+                            <option value="{{linhaUsuario['estado_usuario']}}">{{linhaUsuario['estado_usuario']}}</option>
                         </select><br>
                         <label for="datNascimento">Data de Nascimento:</label><br>
-                        <input type="date" name="dataNascimento" placeholder="Data de Nascimento"><br>
+                        <input type="date" name="dataNascimento" value="{{linhaUsuario['data_nascimento_usuario']}}"><br>
                         <label for="genero">Gênero:</label><br>
                         <select name="genero" id="generos">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Outro">Outro</option>
-                            <option value="Prefiro não informar">Prefiro não informar</option>
+                            <option value="{{linhaUsuario['genero_usuario']}}">{{linhaUsuario['genero_usuario']}}</option>
                         </select>
                     </fieldset>
                 </div>
