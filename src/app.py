@@ -274,7 +274,7 @@ def respostaReq(decisao, tipo, id):
     elif tipo == 'alteracao_cadastral':
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
-            # bd.altera_tabela()
+            modelo.alteraCadastro(linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
             return redirect(url_for('requisicoes', tipo=tipo))
         else:

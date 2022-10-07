@@ -29,14 +29,13 @@ CREATE TABLE `alteracao_cadastral` (
   `nome_alteracao` varchar(100) DEFAULT NULL,
   `genero_alteracao` set('Feminino','Masculino','Outro','Prefiro não informar') DEFAULT NULL,
   `rua_avenida_alteracao` varchar(100) DEFAULT NULL,
-  `numero_alteracao` varchar(5) DEFAULT NULL,
   `bairro_alteracao` varchar(50) DEFAULT NULL,
   `cidade_alteracao` varchar(50) DEFAULT NULL,
   `estado_alteracao` varchar(20) DEFAULT NULL,
   `senha_alteracao` varchar(16) DEFAULT NULL,
-  `data_nascimento_alteracao` date DEFAULT NULL,
   `id_usuario` int NOT NULL,
   `numero_agencia` int NOT NULL,
+  `numero_casa_alteracao` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id_alteracao`),
   KEY `fk_alteracao_usuario` (`id_usuario`),
   KEY `fk_alteracao_agencia` (`numero_agencia`),
@@ -44,9 +43,6 @@ CREATE TABLE `alteracao_cadastral` (
   CONSTRAINT `fk_alteracao_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
-ALTER TABLE alteracao_cadastral ADD data_nascimento_alteracao date;
 
 --
 -- Dumping data for table `alteracao_cadastral`
@@ -66,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 19:00:56
+-- Dump completed on 2022-10-07 17:21:50

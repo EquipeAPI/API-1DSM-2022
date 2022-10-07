@@ -15,7 +15,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-def preencherDicionario(dic, id_usuario):
+""" def preencherDicionario(dic, id_usuario):
     dicionario = dic
     dadosAtuais = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
     for chave, valor in dic.items():
@@ -24,10 +24,7 @@ def preencherDicionario(dic, id_usuario):
             for chaveUsuario in dadosAtuais.key():
                 if nomeChaveMuda == chaveUsuario:
                     dicionario[chave] = dadosAtuais[f'{nomeChaveMuda}']
-    return dicionario
-
-
-
+    return dicionario """
 
 def trataCPF(cpf): #tira os caracteres especiais do número de cpf
     cpf = cpf.replace('-', '')
@@ -131,3 +128,13 @@ def apagaUsuario(numero_conta, id_usuario):
     bd.apaga_linha('alteracao_cadastral', 'id_usuario', id_usuario) 
     bd.apaga_linha('usuario', 'id_usuario', id_usuario)
     return None 
+
+#função para alterar cadastro
+def alteraCadastro(id_usuario):
+    dicionario = bd.pegarLinha('alteracao_cadastral', 'id_usuario', id_usuario)
+    for chave, valor in dicionario.item():
+        if valor == '' or chave == 'id_alteracao':
+            continue
+        else:
+            chave = chave.replace('alteracao_cadastral', 'usuario')
+            return (f'update usuario set {chave} = {valor} where id_usuario = {id_usuario}')
