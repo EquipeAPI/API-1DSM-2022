@@ -37,12 +37,14 @@ CREATE TABLE `confirmacao_cadastro` (
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
   `numero_agencia` int NOT NULL,
+  `numero_conta` Int(6),
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
   CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+ALTER TABLE confirmacao_cadastro ADD numero_conta Int(6);
 --
 -- Dumping data for table `confirmacao_cadastro`
 --
