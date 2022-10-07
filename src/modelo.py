@@ -131,10 +131,14 @@ def apagaUsuario(numero_conta, id_usuario):
 
 #função para alterar cadastro
 def alteraCadastro(id_usuario):
+    cur = mysql.connection.cursor()
     dicionario = bd.pegarLinha('alteracao_cadastral', 'id_usuario', id_usuario)
-    for chave, valor in dicionario.item():
-        if valor == '' or chave == 'id_alteracao':
+    for chave, valor in dicionario.items():
+        if valor == '' or chave == 'id_alteracao' or chave == 'numero_agencia':
             continue
         else:
-            chave = chave.replace('alteracao_cadastral', 'usuario')
-            return (f'update usuario set {chave} = {valor} where id_usuario = {id_usuario}')
+            chave = chave.replace('alteracao', 'usuario')
+            cur.execute (f"update usuario set {chave} = '{valor}' where id_usuario = {id_usuario}")
+    mysql.connection.commit() # Dando commit
+    cur.close()
+    return None
