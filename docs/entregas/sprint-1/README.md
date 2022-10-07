@@ -2,11 +2,11 @@
 **Duração: 29/08/2022 - 19/09/2022**
 ## Organização dos requisitos
 Tendo em vista que os requisitos para o produto foram expostos pelo cliente em detalhes na apresentação do projeto, a atenção da equipe se voltou a entender quais desses representariam mais valor para a primeira entrega e os respectivos detalhes de cada um. Em reunião com o cliente, chegamos ao acordo dos seguintes requisitos:
-* <a href="#prototipo">Protótipos visuais</a>
+* <a href="#prototipo">Protótipo Navegável</a>
 * <a href="#cadastro-login">Abertura de contas</a>
 * <a href="#operacoes">Operações de saque e depósito</a>
 
-<h2 id="prototipo">Protótipos visuais</h2>
+<h2 id="prototipo">Protótipo Navegável</h2>
 A prototipação da parte visual do nosso site foi realizada inicialmente na ferramenta <a href="https://www.figma.com/">Figma</a>. Ela serviria de base para o cliente entender a nossa visão do produto, bem como as formas que a equipe pensou em arquitetar as informações para alinhar as expectativas com aquilo que estava sendo desenvolvido. Nossa equipe produziu algumas telas para suprir as funcionalidades que construímos.<br>
 <p align="center">
     <img src="sprint1/sprint1-prot.gif">
