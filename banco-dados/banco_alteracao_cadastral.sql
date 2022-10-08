@@ -36,6 +36,7 @@ CREATE TABLE `alteracao_cadastral` (
   `id_usuario` int NOT NULL,
   `numero_agencia` int NOT NULL,
   `numero_casa_alteracao` varchar(5) DEFAULT NULL,
+  `data_nascimento_alteracao` date DEFAULT NULL,
   PRIMARY KEY (`id_alteracao`),
   KEY `fk_alteracao_usuario` (`id_usuario`),
   KEY `fk_alteracao_agencia` (`numero_agencia`),
@@ -62,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-07 17:21:50
+-- Dump completed on 2022-10-08  9:36:30
