@@ -51,10 +51,9 @@ body {
 }
 
 .navbar img {
-    margin-top: 2vh;
     height: 16vh;
-    display: block;
-    margin-left: auto;
+    display: inline-block;
+    margin-left: 45%;
     margin-right: auto;
 }
 
