@@ -44,7 +44,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 | Sprint| Período | Status | Relatório |
 |:-----:|:----------:|:---------:|:---------:|
 | 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | [relatório](docs/entregas/sprint-1/README.md) |
-| 02 |   18/04/2021 | Pendente :hourglass:|  |
+| 02 |   19/09/2022 - 09/10/2022 | Pendente :hourglass:|  |
 | 03 |   16/05/2021 | Pendente :hourglass:|  |
 | 04 |   06/06/2021 | Pendente :hourglass:|  |
 
@@ -108,9 +108,17 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  04  | Cadastro e Login de usuários (Abertura de conta) |
 |  05  | Operações de depósito e saque |
 <p align="center">
-    <img src="docs/entregas/sprint-1/sprint1/sprint1-prot.gif">
+    <img src="docs/entregas/sprint-1/sprint1/mvp-sprint1.gif">
 </p>
 
+### Sprint 2 
+| Item | Funcionalidade             |
+| :--: | :------------------------- |
+|  01  | Criação de Gerentes de Agência|
+|  02  | Requisições de cadastro, operações, alterações e encerramento de conta |
+|  04  | Controle de requisições do Gerente de Agência |
+|  05  | Comprovantes de operações |
+|  06  | Extrato de movimentação da conta |
 
 <span id="tecnologias"></span>
 
