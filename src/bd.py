@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from flask import Flask
 from flask_mysqldb import MySQL
 from app import mysql, app
@@ -81,9 +82,15 @@ def reqCriacao(forms):
 
 
 #Requisição de mudança de dados cadastrais
-def reqMudanca(forms, id_usuario, numero_agencia):
+def reqMudanca(dicionario, id_usuario, numero_agencia):
+    forms = {}
+    for chave, valor in dicionario.items():
+        if dicionario[chave] == '':
+            forms[chave] = None
+        else:
+            forms[chave] = valor
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute(f"INSERT INTO alteracao_cadastral(nome_alteracao, rua_avenida_alteracao, numero_alteracao, bairro_alteracao, cidade_alteracao, estado_alteracao, genero_alteracao, id_usuario, numero_agencia, data_nascimento_alteracao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['genero'], id_usuario, numero_agencia, forms['dataNascimento'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute(f"INSERT INTO alteracao_cadastral(nome_alteracao, rua_avenida_alteracao, numero_casa_alteracao, bairro_alteracao, cidade_alteracao, estado_alteracao, genero_alteracao, id_usuario, numero_agencia, data_nascimento_alteracao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['genero'], id_usuario, numero_agencia, forms['dataNascimento'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.close()
     return None

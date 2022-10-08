@@ -79,6 +79,7 @@
                         <input type="text" name="cidade" placeholder="Cidade">
                         <div type="separações" class="separações">Estado:</div>
                         <select name="estado" id="estado">
+                            <option value="{{linhaUsuario['estado_usuario']}}">{{linhaUsuario['estado_usuario']}}</option>
                             <option value="Acre">Acre</option>
                             <option value="Alagoas">Alagoas</option>
                             <option value="Amapá">Amapá</option>
@@ -111,6 +112,7 @@
                         <input type="date" name="dataNascimento" placeholder="Data de Nascimento"><br>
                         <label for="genero">Gênero:</label><br>
                         <select name="genero" id="generos">
+                            <option value="{{linhaUsuario['genero_usuario']}}">{{linhaUsuario['genero_usuario']}}</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Outro">Outro</option>
@@ -123,5 +125,6 @@
             </div>
         </div>
         <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+        <a href="/home"><input type="button" value="Voltar"></a>
     </body>
 </html>

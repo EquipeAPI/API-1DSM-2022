@@ -180,6 +180,9 @@
             {% elif chave == 'senha_alteracao' and valor != None%}
                 <label for="senha_alteracao">Senha:</label>
                 <input type="password" value="{{valor}}" readonly>
+            {% elif chave == 'data_nascimento_alteracao' and valor != None%}
+                <label for="data_nascimento_alteracao">Data de Nascimento:</label>
+                <input type="text" value="{{valor}}" readonly>
             {% elif chave == 'id_usuario' %}
                 <label for="id_usuario">ID do usuário:</label>
                 <input type="text" value="{{valor}}" readonly>

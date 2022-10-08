@@ -75,6 +75,8 @@ def home():
             saldo = bd.consultaSaldo(session['id_usuario']),
             numero_conta = str(session['numero_conta']))
         else:
+            linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+            session['nome'] = linhaUsuario['nome_usuario']
             return render_template('homegerente.html', nome = session['nome'],
             saldo = bd.consultaSaldo(session['id_usuario']),
             numero_conta = str(session['numero_conta']))
