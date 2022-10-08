@@ -1,7 +1,27 @@
-{% extends "home.html" %}
-{% block gerente %}
-    <a href="/requisicoes/confirmacao_deposito">Requisicoes de depósito</a>
-    <a href="/requisicoes/alteracao_cadastral">Requisicoes de alteração cadastral</a>
-    <a href="/requisicoes/encerramento_conta">Requisicoes de encerramento de conta</a>
-    <a href="/requisicoes/confirmacao_cadastro">Requisicoes de abertura de conta</a>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <span class="botoes">
+      {% extends "home.html" %} {% block gerente %}
+      <a href="/requisicoes/confirmacao_deposito">
+        <input type="button" value="Requisicoes de depósito" />
+      </a>
+      <a href="/requisicoes/alteracao_cadastral">
+        <input type="button" value="Requisicoes de alteração cadastral" />
+      </a>
+      <a href="/requisicoes/encerramento_conta">
+        <input type="button" value="Requisicoes de encerramento de conta" />
+      </a>
+      <a href="/requisicoes/confirmacao_cadastro">
+        <input type="button" value="Requisicoes de abertura de conta" />
+      </a>
+      {% endblock %}
+    </span>
+  </body>
+</html>
