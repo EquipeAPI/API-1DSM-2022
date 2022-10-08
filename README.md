@@ -76,6 +76,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 | **20** | **RF13** | Clientes em situação de "cheque especial" tem o valor da dívida. automaticamente debitado dos depósitos realizados. | 4 |
 | **17** | **RF7** | Truncamento de valores decimais. | 4 |
 
+### Referência das User Stories
 | ID | User Stories | 
 | :--:       | :-----------:|
 | **01** | Como Gerente Geral, eu gostaria de ter acesso irrestrito as funcionalidade do sistema para administrá-lo. |
@@ -106,6 +107,10 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  02  | Protótipo Navegável |
 |  04  | Cadastro e Login de usuários (Abertura de conta) |
 |  05  | Operações de depósito e saque |
+<p align="center">
+    <img src="docs/entregas/sprint-1/sprint1/sprint1-prot.gif">
+</p>
+
 
 <span id="tecnologias"></span>
 
