@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -73,13 +73,15 @@ def home():
         if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
             return render_template('home.html', nome = session['nome'],
             saldo = bd.consultaSaldo(session['id_usuario']),
-            numero_conta = str(session['numero_conta']))
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']))
         else:
             linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
             session['nome'] = linhaUsuario['nome_usuario']
             return render_template('homegerente.html', nome = session['nome'],
             saldo = bd.consultaSaldo(session['id_usuario']),
-            numero_conta = str(session['numero_conta']))
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']))
     else:
         return redirect(url_for('login'))
 
