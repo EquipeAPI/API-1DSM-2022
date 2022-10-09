@@ -179,7 +179,6 @@ def extrato():
     return render_template('extrato.html', operacoes = dic_dados, numero_conta = session['numero_conta'], nome = session['nome'], numero_agencia = session['numero_agencia'])
 
 
-
 #tentativa de fazer pdf
 '''@app.route('/geraPDF/<tipo>') #gerador de PDF
 def geraPDF(tipo):

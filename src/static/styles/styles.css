@@ -592,5 +592,14 @@ span.botoes
   margin-bottom:10px;
   margin-right:100px;
   display: flex;
-  justify-content:center;99
+  justify-content:center;
+  gap: 10px;
+}
+
+.centHomeG {
+  margin-top:10px;
+  margin-bottom:10px;
+  display: flex;
+  justify-content:center;
+  gap: 10px;
 }
