@@ -1,58 +1,6 @@
-body {
-    margin: 2.5% 10%;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-#logo {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-.comprovante {
-
-    width: 100%;
-    border-top: 3px solid orange;
-    border-bottom: 3px solid orange;
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.comprovante h1 {
-    font-weight: 500;
-}
-
-.comprovante h2 {
-    font-weight: 400;
-}
-
-.comprovante h3 {
-    margin-left: 50px;
-}
-
-#datahora {
-    font-size: 1em;
-}
-
-#esconde button {
-    font-size: 1em;
-    background-color: white;
-    border: 1px solid orange;
-    border-radius: 10px;
-    color: orange;
-    cursor: pointer;
-    padding: 5px;
-}
-
-#esconde button a {
-    text-decoration: none;
-    color: inherit;
-}
-
-#esconde button:hover {
-    color: white;
-    background-color: #FF5D00;
-    transition: 300ms;
+body{
+    margin-left: 30%;
+    margin-right: 30%;
 }
 
 @media print{
