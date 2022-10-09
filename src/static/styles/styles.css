@@ -545,3 +545,48 @@ span.botoes
 {
   text-align: center;
 }
+
+/* botão voltar */
+.voltar {
+  background-color: #f0e5c7;
+}
+.voltar button {
+  position: absolute;
+
+    color: black;
+    font-size: 2vw;
+    border: none;
+    border-radius: 10px;
+
+    left: 10%;
+    top: 120%;
+    padding: 0 0.7vw;
+}
+
+.voltar button:hover { 
+  background-color: #2660A4;
+  color:white;
+  transition: 300ms;
+}
+
+/* botão voltar para requisições teste */
+.voltar2 {
+  background-color: #f0e5c7;
+}
+.voltar2 button {
+
+    color: black;
+    font-size: 2vw;
+    border: none;
+    border-radius: 10px;
+
+    left: 10%;
+    top: 120%;
+    padding: 0 0.7vw;
+}
+
+.voltar2 button:hover { 
+  background-color: #2660A4;
+  color:white;
+  transition: 300ms;
+}
