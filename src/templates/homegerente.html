@@ -4,22 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/styles.css">
     <title></title>
   </head>
   <body>
-    <span class="botoes">
+    <span>
       {% extends "home.html" %} {% block gerente %}
       <a href="/requisicoes/confirmacao_deposito">
-        <input type="button" value="Requisicoes de depósito" />
+        <input type="button" value="Requisicoes de depósito" class="voltar"/>
       </a>
       <a href="/requisicoes/alteracao_cadastral">
-        <input type="button" value="Requisicoes de alteração cadastral" />
+        <input type="button" value="Requisicoes de alteração cadastral" class="voltar"/>
       </a>
       <a href="/requisicoes/encerramento_conta">
-        <input type="button" value="Requisicoes de encerramento de conta" />
+        <input type="button" value="Requisicoes de encerramento de conta" class="voltar"/>
       </a>
       <a href="/requisicoes/confirmacao_cadastro">
-        <input type="button" value="Requisicoes de abertura de conta" />
+        <input type="button" value="Requisicoes de abertura de conta" class="voltar"/>
       </a>
       {% endblock %}
     </span>

@@ -8,23 +8,18 @@
     <link rel="stylesheet" href="../static/styles/comprovante.css">
 </head>
 <body>
-    <div id="logo">
     <img src="../static/public/favicon.png" alt="">
-    </div>
-    <div class="comprovante">
-        <h1>Comprovante de {{operacao}}</h1>
-        <h2>Dados da conta: </h2>
+    <h1>Comprovante de {{operacao}}</h1>
+    <div>
         <h3>Nome: {{nome}}</h3>
         <h3>Operação: {{operacao}}</h3>
-        <h3>Agência: {{numero_agencia}}</h3>
-        <h3>Número da conta: {{numero_conta}} </h3>
-        <h3>Saldo anterior: {{saldoAntes}}</h3>
-        <h3>Valor: {{valor}}</h3>
-        <h2 id="datahora">{{operacao}} realizado em: {{dataHora}}</h2>
-        
+        <h4>Número da conta: {{numero_conta}}</h4>
+        <h4>Saldo anterior: {{saldoAntes}}</h4>
+        <h4>Valor: {{valor}}</h4>
+        <h4>Data e hora: {{dataHora}}</h4>
     </div>
     <div id="esconde">
-        <button onclick="window.print()">Imprimir comprovante</button>
+        <button onclick="window.print()">Imprimir</button>
         <!-- <button><a href="/geraPDF/comprovante">Gerar PDF</a></button> -->
         <button><a href="/home">Voltar para home</a></button>
     </div>
