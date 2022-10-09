@@ -54,8 +54,7 @@
 
     {% for requisição in requisicoes %}
     <div class="row">
-        <div class="leftcolumn">
-        <div class="card">
+        <div class="coluna">
         <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
@@ -90,8 +89,7 @@
 <!-- Requisições de abertura de conta-->
 {% if tipo == 'confirmacao_cadastro' %}
     {% for requisição in requisicoes %}
-        <div class="rightcolumn">
-        <div class="card">
+        <div class="coluna">
         <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
@@ -148,8 +146,7 @@
 <!-- Requisições de alteração de dados-->
 {% if tipo == 'alteracao_cadastral' %}
     {% for requisição in requisicoes %}
-        <div class="rightcolumn">
-        <div class="card">
+        <div class="coluna">
         <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
@@ -203,8 +200,7 @@
 <!-- Requisições de encerramento de conta-->
 {% if tipo == 'encerramento_conta' %}
     {% for requisição in requisicoes %}
-        <div class="rightcolumn">
-        <div class="card">
+        <div class="coluna">
         <form class="req-form">
 
         {% for chave, valor in requisição.items() %}
@@ -232,4 +228,6 @@
     {% endfor %}
 {% endif %}
 
-<a href="/home" class="voltar2"><button>Voltar</button></a>
+<div class="cent">
+    <a href="/home" class="voltar"><button> Voltar </button></a>
+    </div>

@@ -429,20 +429,11 @@ fieldset{
 
 /* requisições */
 
-.leftcolumn {   
-    float: center;
+.coluna {   
+    float:center;
     width: 100%;
-	margin-left:30%;
-	margin-right:30%;
 }
 
-
-.rightcolumn {
-    float: center;
-    width: 100%;
-	margin-left:30%;
-	margin-right:30%;
-}
 .row:after {
     content: "";
     display: table;
@@ -455,6 +446,9 @@ fieldset{
   background-color: #f0e5c7;
   padding: 25px;
   border-radius:10px;
+  width:50vw;
+  margin-left:22vw;
+  
 }
 
 .req-form label{
@@ -557,6 +551,9 @@ span.botoes
   text-decoration: none;
   padding-right: 5px;
   margin-bottom: 5px;
+  display:block;
+  margin-right:auto;
+  margin-left:auto;
 }
 
 #req:hover { 
@@ -566,6 +563,36 @@ span.botoes
 }
 
 .req{
-  margin-left: 32%;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
   margin-top: 5%;
+}
+
+/* botão voltar */
+.voltar {
+  background-color: #f0e5c7;
+}
+.voltar button {
+  position: absolute;
+
+    color: black;
+    font-size: 2vw;
+    border: none;
+    border-radius: 10px;
+    padding: 0 0.7vw;
+
+}
+
+.voltar button:hover { 
+  background-color: #2660A4;
+  color:white;
+  transition: 300ms;
+}
+.cent {
+  margin-top:10px;
+  margin-bottom:10px;
+  margin-right:100px;
+  display: flex;
+  justify-content:center;99
 }
