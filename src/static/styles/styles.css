@@ -551,10 +551,8 @@ span.botoes
   text-decoration: none;
   padding-right: 5px;
   margin-bottom: 5px;
-  display:block;
-  margin-right:auto;
-  margin-left:auto;
 }
+
 
 #req:hover { 
   background-color: #2660A4;
