@@ -10,19 +10,13 @@
   <body>
     <span>
       {% extends "home.html" %} {% block gerente %}
-      <a href="/requisicoes/confirmacao_deposito">
-        <input type="button" value="Requisicoes de depósito" class="voltar"/>
-      </a>
-      <a href="/requisicoes/alteracao_cadastral">
-        <input type="button" value="Requisicoes de alteração cadastral" class="voltar"/>
-      </a>
-      <a href="/requisicoes/encerramento_conta">
-        <input type="button" value="Requisicoes de encerramento de conta" class="voltar"/>
-      </a>
-      <a href="/requisicoes/confirmacao_cadastro">
-        <input type="button" value="Requisicoes de abertura de conta" class="voltar"/>
-      </a>
-      {% endblock %}
+      <div class="req">
+        <button id="req"><a href="/requisicoes/confirmacao_deposito" id="req">Requisições de depósito</a></button>
+        <button id="req"><a href="/requisicoes/alteracao_cadastral" id="req">Requisições alterações cadastrais</a></button>
+        <br><button id="req"><a href="/requisicoes/encerramento_conta" id="req">Requisições de encerramento de conta</a></button>
+        <button id="req"><a href="/requisicoes/confirmacao_cadastro" id="req">Requisições de abertura de conta</a></button>
+    </div>
+    {% endblock %}
     </span>
   </body>
 </html>

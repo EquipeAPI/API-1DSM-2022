@@ -547,46 +547,25 @@ span.botoes
 }
 
 /* botão voltar */
-.voltar {
+#req{
   background-color: #f0e5c7;
-}
-.voltar button {
-  position: absolute;
 
-    color: black;
-    font-size: 2vw;
-    border: none;
-    border-radius: 10px;
-
-    left: 10%;
-    top: 120%;
-    padding: 0 0.7vw;
+  color: black;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  padding-right: 5px;
+  margin-bottom: 5px;
 }
 
-.voltar button:hover { 
+#req:hover { 
   background-color: #2660A4;
   color:white;
   transition: 300ms;
 }
 
-/* botão voltar para requisições teste */
-.voltar2 {
-  background-color: #f0e5c7;
-}
-.voltar2 button {
-
-    color: black;
-    font-size: 2vw;
-    border: none;
-    border-radius: 10px;
-
-    left: 10%;
-    top: 120%;
-    padding: 0 0.7vw;
-}
-
-.voltar2 button:hover { 
-  background-color: #2660A4;
-  color:white;
-  transition: 300ms;
+.req{
+  margin-left: 32%;
+  margin-top: 5%;
 }
