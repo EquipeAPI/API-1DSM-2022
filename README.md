@@ -131,13 +131,11 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 <span id="equipe"></span>
 
 ## Equipe
-|    Função    | Nome                     |                     GitHub                     |
-| :----------: | :----------------------- | :--------------------------------------------: |
-| Product Owner | Renan Souza Neves | [Github](https://github.com/Renan-Neves)
-| Scrum Master | Vinicius de Oliveira Laranjeiro | [GitHub](https://github.com/noo-e) |
-|   Dev Team   | Bruno Denardo |    [GitHub](https://github.com/brunodenardo)    |
-|   Dev Team   | Juan Santos do Vale| [GitHub](https://github.com/JuanSantosVale)      |
-|   Dev Team   | Matheus Fernando Vieira de Melo  |  [GitHub](https://github.com/Matheusfvm)       |
-|   Dev Team   | Murilo Henrique Sangi da Silva Lima | [GitHub](https://github.com/MuriloLima03) |
-|   Dev Team   | Samuel Lucas Vieira de Melo |   [GitHub](https://github.com/SamuelLucasVieira)    |
+|    Função     | Nome                                |                     GitHub                   |
+| :----------:  | :-----------------------            | :------------------------------------------: |
+| Product Owner | Renan Souza Neves                   | [Github](https://github.com/Renan-Neves)     |
+| Scrum Master  | Vinicius de Oliveira Laranjeiro     | [GitHub](https://github.com/noo-e)           |
+|   Dev Team    | Bruno Denardo                       | [GitHub](https://github.com/brunodenardo)    |
+|   Dev Team    | Matheus Fernando Vieira de Melo     | [GitHub](https://github.com/Matheusfvm)      |
+|   Dev Team    | Murilo Henrique Sangi da Silva Lima | [GitHub](https://github.com/MuriloLima03)    |
 
