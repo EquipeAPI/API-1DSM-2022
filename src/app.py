@@ -297,6 +297,17 @@ def respostaReq(decisao, tipo, id):
             return redirect(url_for('requisicoes', tipo=tipo))
 
 
+#======================================= Requisições para o gerente =======================================
+
+@app.route('/usuarios_agencia')
+def usuarios_agencia():
+    tabelaUsuario = bd.pegarTabela('usuario')
+    tabelaConta = bd.pegarTabela('conta')
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'])
+
+
+    
+
 
 
 if __name__ == '__main__':
