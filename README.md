@@ -44,7 +44,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 | Sprint| Período | Status | Relatório |
 |:-----:|:----------:|:---------:|:---------:|
 | 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | [relatório](docs/entregas/sprint-1/README.md) |
-| 02 |   19/09/2022 - 09/10/2022 | Pendente :hourglass:|  |
+| 02 |   19/09/2022 - 09/10/2022 | Entregue :heavy_check_mark: |  |
 | 03 |   16/05/2021 | Pendente :hourglass:|  |
 | 04 |   06/06/2021 | Pendente :hourglass:|  |
 
@@ -119,6 +119,9 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  04  | Controle de requisições do Gerente de Agência |
 |  05  | Comprovantes de operações |
 |  06  | Extrato de movimentação da conta |
+<p align="center">
+    <img src="docs/entregas/sprint-2/demo-api-2sprint.gif">
+</p>
 
 <span id="tecnologias"></span>
 
@@ -128,13 +131,11 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 <span id="equipe"></span>
 
 ## Equipe
-|    Função    | Nome                     |                     GitHub                     |
-| :----------: | :----------------------- | :--------------------------------------------: |
-| Product Owner | Renan Souza Neves | [Github](https://github.com/Renan-Neves)
-| Scrum Master | Vinicius de Oliveira Laranjeiro | [GitHub](https://github.com/noo-e) |
-|   Dev Team   | Bruno Denardo |    [GitHub](https://github.com/brunodenardo)    |
-|   Dev Team   | Juan Santos do Vale| [GitHub](https://github.com/JuanSantosVale)      |
-|   Dev Team   | Matheus Fernando Vieira de Melo  |  [GitHub](https://github.com/Matheusfvm)       |
-|   Dev Team   | Murilo Henrique Sangi da Silva Lima | [GitHub](https://github.com/MuriloLima03) |
-|   Dev Team   | Samuel Lucas Vieira de Melo |   [GitHub](https://github.com/SamuelLucasVieira)    |
+|    Função     | Nome                                |                     GitHub                   |
+| :----------:  | :-----------------------            | :------------------------------------------: |
+| Product Owner | Renan Souza Neves                   | [Github](https://github.com/Renan-Neves)     |
+| Scrum Master  | Vinicius de Oliveira Laranjeiro     | [GitHub](https://github.com/noo-e)           |
+|   Dev Team    | Bruno Denardo                       | [GitHub](https://github.com/brunodenardo)    |
+|   Dev Team    | Matheus Fernando Vieira de Melo     | [GitHub](https://github.com/Matheusfvm)      |
+|   Dev Team    | Murilo Henrique Sangi da Silva Lima | [GitHub](https://github.com/MuriloLima03)    |
 

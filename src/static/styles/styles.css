@@ -1,8 +1,8 @@
 /*CONFIGURAÇÕES COMPARTILHADAS*/
 /* começo menu */
 .menu{  position: absolute;
-  top:8vh;
-  left: 15vw;
+  top:6vh;
+  left: 13vw;
 }
 
 .sidenav {
@@ -46,21 +46,26 @@
 /* fim menu */
 
 body {
-    background-color: rgba(255, 93, 0);
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topo{
+  background-color: rgba(255, 93, 0);
+  border-bottom:solid black;
 }
 
 .navbar img {
-    height: 16vh;
+    height: 15vh;
     display: inline-block;
-    margin-left: 45%;
+    margin-left: 47%;
     margin-right: auto;
 }
 
 .user{
   position: absolute;
-  top:8vh;
-  right: 15vw;
+  top:6vh;
+  right: 13vw;
 }
 
 /* PÁGINAS SAQUE E DEPÓSITO */
@@ -410,18 +415,6 @@ body {
   width: 10vw;
 }
 
-#deletar{
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
-  background-color: red;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 3%;
-  display:block;
-  cursor: pointer;
-  height: 4vh;
-}
 
 fieldset{
   border: 0px;
@@ -572,28 +565,37 @@ span.botoes
   background-color: #f0e5c7;
 }
 .voltar button {
-  position: absolute;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10px;
 
     color: black;
     font-size: 2vw;
     border: none;
     border-radius: 10px;
     padding: 0 0.7vw;
+    text-decoration: none;
 
+}
+
+#deletar{
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  display:block;
+  cursor: pointer;
+  height: 4vh;
 }
 
 .voltar button:hover { 
   background-color: #2660A4;
   color:white;
   transition: 300ms;
-}
-.cent {
-  margin-top:10px;
-  margin-bottom:10px;
-  margin-right:100px;
-  display: flex;
-  justify-content:center;
-  gap: 10px;
 }
 
 .centHomeG {
