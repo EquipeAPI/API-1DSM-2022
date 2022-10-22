@@ -56,7 +56,16 @@
     <div class="row">
         <div class="coluna">
         <form class="req-form">
-
+            {% for linhaConta in tabelaConta %}
+                {% if linhaConta['numero_conta'] == requisição['numero_conta'] %}
+                    {% for linhaUsuario in tabelaUsuario  %}
+                        {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] %}
+                            <h2>Requisição de {{linhaUsuario['nome_usuario']}}</h2>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_confirmacao_deposito' %}
                 {% set id = valor %}
@@ -91,7 +100,7 @@
     {% for requisição in requisicoes %}
         <div class="coluna">
         <form class="req-form">
-
+        
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_cadastro' %}
                 <label for="id_cadastro">Id da operação:</label>
@@ -148,7 +157,12 @@
     {% for requisição in requisicoes %}
         <div class="coluna">
         <form class="req-form">
-
+        {% for linhaUsuario in tabelaUsuario  %}
+            {% if linhaUsuario['id_usuario'] == requisição['id_usuario'] %}
+                <h2>Requisição de {{linhaUsuario['nome_usuario']}}</h2>
+            {% endif %}
+        {% endfor %}
+        <h3>Alterações requeridas:</h3>
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_alteracao' %}
                 <label for="id_alteracao">Id da requisição:</label>
@@ -202,7 +216,11 @@
     {% for requisição in requisicoes %}
         <div class="coluna">
         <form class="req-form">
-
+        {% for linhaUsuario in tabelaUsuario  %}
+            {% if linhaUsuario['id_usuario'] == requisição['id_usuario'] %}
+                <h2>Requisição de {{linhaUsuario['nome_usuario']}}</h2>
+            {% endif %}
+        {% endfor %}
         {% for chave, valor in requisição.items() %}
             {% if chave == 'id_encerramento' %}
                 <label for="id_encerramento">Id da requisição:</label>
