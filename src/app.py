@@ -297,7 +297,7 @@ def respostaReq(decisao, tipo, id):
             return redirect(url_for('requisicoes', tipo=tipo))
 
 
-#======================================= Requisições para o gerente =======================================
+#======================================= Contando Usuários da agência =======================================
 
 @app.route('/usuarios_agencia')
 def usuarios_agencia():

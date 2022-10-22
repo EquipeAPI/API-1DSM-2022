@@ -57,6 +57,7 @@
                 {% for linhaConta in conta %}
                     {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia %}
                         <form class="req-form">
+                            
                             {% for chave, valor in linhaUsuario.items() %}
                                 {% if chave == 'id_usuario' %}
                                     <label for="id_usuario">ID do usuário:</label>

@@ -8,7 +8,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -112,6 +112,7 @@ def atribuiAgencia():
 def apagaUsuario(numero_conta, id_usuario):
     bd.apaga_linha('encerramento_conta', 'id_usuario', id_usuario)       
     bd.apaga_linha('transacao','numero_conta_origem', numero_conta)
+    bd.apaga_linha('confirmacao_deposito', 'numero_conta', numero_conta)
     bd.apaga_linha('historico_operacao', 'numero_conta', numero_conta)
     bd.apaga_linha('conta', 'numero_conta', numero_conta)
     bd.apaga_linha('gerente_agencia', 'id_usuario', id_usuario)
