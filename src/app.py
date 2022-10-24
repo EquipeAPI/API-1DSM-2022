@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -34,13 +34,47 @@ def login():
             session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
             session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
             session['numero_agencia'] = linhaConta['numero_agencia']
-            return redirect(url_for('home')) # Redirecionando para tela home
+            session['gerente'] = 'Agencia'
+            if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
+                session['gerente'] = 'nao'
+                return redirect(url_for('home')) # Redirecionando para tela home
+            else:
+                session['gerente'] = 'agencia'
+                return redirect(url_for('homeGerenteAgencia'))
         else:
             flash("Número da Conta ou Senha incorretos", "info")
             return redirect(url_for('login'))
         
     else:
         return render_template('login.html')
+
+# Rota da página home
+@app.route('/home')
+def home():
+    if 'nome' in session:
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        return render_template('home.html', nome = session['nome'],
+        saldo = bd.consultaSaldo(session['id_usuario']),
+        numero_conta = str(session['numero_conta']),
+        numero_agencia = str(session['numero_agencia']))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/homeGerenteAgencia')
+def homeGerenteAgencia():
+    if 'nome' in session:
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+        session['nome'] = linhaUsuario['nome_usuario']
+        return render_template('homegerente.html', nome = session['nome'],
+        saldo = bd.consultaSaldo(session['id_usuario']),
+        numero_conta = str(session['numero_conta']),
+        numero_agencia = str(session['numero_agencia']))
+    else:
+        return redirect(url_for('login'))
+
 
 
 # Rota da página de cadastro
@@ -64,26 +98,7 @@ def cadastro():
         return render_template('cadastro.html')
 
 
-# Rota da página home
-@app.route('/home')
-def home():
-    if 'nome' in session:
-        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
-            session.pop('dic_dados', None)
-        if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
-            return render_template('home.html', nome = session['nome'],
-            saldo = bd.consultaSaldo(session['id_usuario']),
-            numero_conta = str(session['numero_conta']),
-            numero_agencia = str(session['numero_agencia']))
-        else:
-            linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
-            session['nome'] = linhaUsuario['nome_usuario']
-            return render_template('homegerente.html', nome = session['nome'],
-            saldo = bd.consultaSaldo(session['id_usuario']),
-            numero_conta = str(session['numero_conta']),
-            numero_agencia = str(session['numero_agencia']))
-    else:
-        return redirect(url_for('login'))
+
 
 
 
@@ -213,7 +228,10 @@ def enviaReqEncerramento():
         saldo = linhaConta['saldo_conta']
         bd.reqFecha(session['id_usuario'], linhaConta['numero_agencia'], saldo)
         flash('Requisição de fechamento de conta enviada.')
-        return redirect(url_for('home'))
+        if session['gerente'] == 'agencia':
+            return redirect(url_for('homeGerenteAgencia'))
+        else:
+            return redirect(url_for('home'))
     else:
         return redirect(url_for('login')) # Redireciona para o login.
 
@@ -227,10 +245,13 @@ def mudancaCadastral():
         form = request.form
         bd.reqMudanca(form, session['id_usuario'], session['numero_agencia'])
         flash('Requisição de mudança cadastral enviada.')
-        return redirect(url_for('home'))
+        if session['gerente'] == 'agencia':
+            return redirect(url_for('homeGerenteAgencia'))
+        else:
+            return redirect(url_for('home'))
     else:
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
-        return render_template('user.html', linhaUsuario = linhaUsuario)
+        return render_template('user.html', linhaUsuario = linhaUsuario, gerente = session['gerente'])
 
 '''@app.route('/reqEncerramento')
 def reqEncerramento():

@@ -129,6 +129,10 @@
             </div>
         </div>
         <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
-        <a href="/home" class="voltar"><button> Voltar </button></a>
+        {% if gerente == 'agencia' %}
+            <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
+        {% else %}
+            <a href="/home" class="voltar"><button> Voltar </button></a>
+        {% endif %}
     </body>
 </html>
