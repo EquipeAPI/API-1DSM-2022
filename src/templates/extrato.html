@@ -27,7 +27,13 @@
     <div id="esconde">
         <button onclick="window.print()">Imprimir</button>
         <!-- <button><a href="/geraPDF/comprovante">Gerar PDF</a></button> -->
-        <button><a href="/home">Voltar para home</a></button>
+        {% if gerente == 'agencia' %}
+            <button><a href="/homeGerenteAgencia">Voltar para home</a></button>
+        {% elif gerente == 'geral' %}
+            <button><a href="/homeGerenteGeral">Voltar</a></button>
+        {% else %}
+            <button><a href="/home">Voltar para home</a></button>
+        {% endif %}
     </div>
 </body>
 </body>

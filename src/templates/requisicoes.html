@@ -247,5 +247,10 @@
 {% endif %}
 
 <div class="cent">
-    <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
+    {% if gerente == 'agencia' %}
+        <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
+    {% else %}
+        <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+    {% endif %}
+    
     </div>

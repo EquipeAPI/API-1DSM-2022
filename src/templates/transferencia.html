@@ -36,7 +36,13 @@
                 </span>
                     <input type="submit" value="Transferir" id="depositar">
                 </form>
-                <button><a href="/home">Voltar</a></button>
+                {% if gerente == 'agencia' %}
+                    <button><a href="/homeGerenteAgencia">Voltar</a></button>
+                {% elif gerente == 'geral' %}
+                    <button><a href="/homeGerenteGeral">Voltar</a></button>
+                {% else %}
+                    <button><a href="/home">Voltar</a></button>
+                {% endif %}
             </div>
     </body>
 </html>

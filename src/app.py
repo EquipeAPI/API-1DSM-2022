@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -38,6 +38,9 @@ def login():
             if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
                 session['gerente'] = 'nao'
                 return redirect(url_for('home')) # Redirecionando para tela home
+                '''elif bd.valida('gerente_agencia', 'gerente_geral', 'SIM'):
+                session['gerente'] = 'geral'
+                return redirect(url_for('homeGerenteGeral'))'''
             else:
                 session['gerente'] = 'agencia'
                 return redirect(url_for('homeGerenteAgencia'))
@@ -47,34 +50,6 @@ def login():
         
     else:
         return render_template('login.html')
-
-# Rota da página home
-@app.route('/home')
-def home():
-    if 'nome' in session:
-        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
-            session.pop('dic_dados', None)
-        return render_template('home.html', nome = session['nome'],
-        saldo = bd.consultaSaldo(session['id_usuario']),
-        numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']))
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/homeGerenteAgencia')
-def homeGerenteAgencia():
-    if 'nome' in session:
-        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
-            session.pop('dic_dados', None)
-        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
-        session['nome'] = linhaUsuario['nome_usuario']
-        return render_template('homegerente.html', nome = session['nome'],
-        saldo = bd.consultaSaldo(session['id_usuario']),
-        numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']))
-    else:
-        return redirect(url_for('login'))
-
 
 
 # Rota da página de cadastro
@@ -98,7 +73,49 @@ def cadastro():
         return render_template('cadastro.html')
 
 
+#======================================= ROTAS HOME =======================================
 
+# Rota da página home
+@app.route('/home')
+def home():
+    if 'nome' in session:
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        return render_template('home.html', nome = session['nome'],
+        saldo = bd.consultaSaldo(session['id_usuario']),
+        numero_conta = str(session['numero_conta']),
+        numero_agencia = str(session['numero_agencia']))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/homeGerenteAgencia')
+def homeGerenteAgencia():
+    if session['gerente'] == 'agencia':
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+        session['nome'] = linhaUsuario['nome_usuario']
+        return render_template('homegerente.html', nome = session['nome'],
+        saldo = bd.consultaSaldo(session['id_usuario']),
+        numero_conta = str(session['numero_conta']),
+        numero_agencia = str(session['numero_agencia']))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/homeGerenteGeral')
+def homeGerenteGeral():
+    if session['gerente'] == 'geral':
+        if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
+            session.pop('dic_dados', None)
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+        session['nome'] = linhaUsuario['nome_usuario']
+        return render_template('homegerentegeral.html', nome = session['nome'],
+        saldo = bd.consultaSaldo(session['id_usuario']),
+        numero_conta = str(session['numero_conta']),
+        numero_agencia = str(session['numero_agencia']))
+    else:
+        return redirect(url_for('login'))
 
 
 
@@ -126,7 +143,7 @@ def deposito():
                 return redirect(url_for('deposito')) # recarrega a página
 
         else:
-            return render_template('deposito.html', saldo = bd.consultaSaldo(session['id_usuario'])) # Reenderização do template
+            return render_template('deposito.html', saldo = bd.consultaSaldo(session['id_usuario']), gerente = session['gerente']) # Reenderização do template
     else:
         return redirect(url_for('login')) 
 
@@ -150,7 +167,7 @@ def saque():
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('saque')) # recarrega a página
         else:
-            return render_template('saque.html', saldo = bd.consultaSaldo(session['id_usuario'])) # Reenderização do template
+            return render_template('saque.html', saldo = bd.consultaSaldo(session['id_usuario']), gerente = session['gerente']) # Reenderização do template
             
     else:
         return redirect(url_for('login'))
@@ -179,19 +196,19 @@ def transferencia():
                 flash('Insira apenas números e use "." para separar reais de centavos.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('transferencia')) # recarrega a página
         else:
-            return render_template('transferencia.html')
+            return render_template('transferencia.html', gerente = session['gerente'])
     else:
         return redirect(url_for('login'))
 
 
 @app.route('/comprovante') #Gerador de comprovante
 def comprovante():
-    return render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'], numero_agencia = session['numero_agencia'])
+    return render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'], numero_agencia = session['numero_agencia'], gerente = session['gerente'])
 @app.route('/extrato')
 def extrato():
     dic_dados = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta'])
     a = session['numero_conta']
-    return render_template('extrato.html', operacoes = dic_dados, numero_conta = session['numero_conta'], nome = session['nome'], numero_agencia = session['numero_agencia'])
+    return render_template('extrato.html', operacoes = dic_dados, numero_conta = session['numero_conta'], nome = session['nome'], numero_agencia = session['numero_agencia'], gerente = session['gerente'])
 
 
 #tentativa de fazer pdf
@@ -265,7 +282,7 @@ def requisicoes(tipo):
     usuario = bd.pegarTabela('usuario')
     conta = bd.pegarTabela('conta')
     return render_template('requisicoes.html', 
-    requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta)
+    requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta, gerente = session['gerente'])
 
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
@@ -280,10 +297,10 @@ def respostaReq(decisao, tipo, id):
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_confirmacao_deposito'])
             bd.inserirOperacao('historico_operacao', 'deposito', dic_dados)
             bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
             bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
     
     elif tipo == 'confirmacao_cadastro':
         if decisao == 'aceita':
@@ -291,10 +308,10 @@ def respostaReq(decisao, tipo, id):
             dataHora = modelo.dataHora(False)
             bd.criaConta(linhaOperacao, dataHora)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
     
     elif tipo == 'alteracao_cadastral':
         if decisao == 'aceita':
@@ -303,10 +320,10 @@ def respostaReq(decisao, tipo, id):
                 session['nome'] = linhaOperacao['nome_alteracao']
             modelo.alteraCadastro(linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
 
     elif tipo == 'encerramento_conta':
         if decisao == 'aceita':
@@ -314,10 +331,10 @@ def respostaReq(decisao, tipo, id):
             linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaOperacao['id_usuario'])
             modelo.apagaUsuario(linhaConta['numero_conta'], linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
             bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo))
+            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
 
 
 #======================================= Contando Usuários da agência =======================================
@@ -326,7 +343,7 @@ def respostaReq(decisao, tipo, id):
 def usuarios_agencia():
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaConta = bd.pegarTabela('conta')
-    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'])
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'])
 
 
     
