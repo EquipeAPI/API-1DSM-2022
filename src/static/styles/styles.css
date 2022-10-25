@@ -50,6 +50,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.body2{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgba(255, 93, 0);
+}
+
 .topo{
   background-color: rgba(255, 93, 0);
   border-bottom:solid black;
@@ -58,7 +64,7 @@ body {
 .navbar img {
     height: 15vh;
     display: inline-block;
-    margin-left: 47%;
+    margin-left: 46%;
     margin-right: auto;
 }
 
@@ -229,7 +235,7 @@ body {
 .cadastro-form{
   width:430px;
   top:60%;
-  left:52%;
+  left:51.5%;
   position: absolute;
   transform: translate(-50%,-50%);
   font-family: Arial, Helvetica, sans-serif;
@@ -293,7 +299,7 @@ body {
 .login-form{
   width:430px;
   top:38%;
-  left:52%;
+  left:51%;
   position:absolute;
   transform: translate(-50%,-50%);
   font-family: Arial, Helvetica, sans-serif;
@@ -604,4 +610,15 @@ span.botoes
   display: flex;
   justify-content:center;
   gap: 10px;
+}
+
+.transf {
+  width: 37vw;
+  height: 34vh;
+  margin: 12vh auto;
+  padding-top: 1vh;
+  padding-left: 1vw;
+
+  background-color: #f0e5c7;
+  border-radius: 35px;
 }

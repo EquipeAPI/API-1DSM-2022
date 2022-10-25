@@ -8,41 +8,56 @@
         <link rel="stylesheet" href="../static/styles/styles.css">
     </head>
     <body>
-        <header class="navbar">
-            <a href="/home">
-                <img src="../static/public/logo.png" alt="logo">
-            </a>
-            <div class="links">
-                <a href="/home">Home </a> <span>|</span>
-                <a href="/loggout">Sair</a>
-            </div>
+        <div class="topo">
+            <header class="navbar">
+                <div class="menu">
+                    <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
+                </div>
+                <div id="mySidenav" class="sidenav">
+                    <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
+                    <a href="/home">Home</a>
+                    <a href="/saque">Saque</a>
+                    <a href="/deposito">Deposito</a>
+                    <a href="/extrato">Extrato</a>        
+                    <a href="/mudancaCadastral">Perfil de usuário</a>
+                    <a href="/loggout">Sair</a>
+                    <br>
+                </div>
+                <a href="/home">
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+                <div class="user">
+                    <a href="/mudancaCadastral">
+                    <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+                </div>
+            </header>
+        </div>
         </header>
             {% with mensagens = get_flashed_messages() %}
                 {% for msg in mensagens %}
                     <p id="erro-saque-deposito">{{msg}}</p>
                 {% endfor %}
             {% endwith %}
-            <div class="corposaque2">
+            <div class="transf">
                 <h1>Insira o valor que deseja transferir:</h1>
                 <form action="" method="POST">
-                <span id="cifrão">
-                    <label for="numero">Número da conta:</label>
-                    <p></p>
-                    <input type="text" name="numero" maxlength="6" minlength="6">
-                    <p></p>
-                    <label for="transferencia">R$</label>
-                    <p></p>
-                    <input type="text" name="transferencia" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais" autocomplete="off">
-                </span>
-                    <input type="submit" value="Transferir" id="depositar">
+                    <span id="cifrão">
+                        <label for="transferencia">R$</label>
+                        <input type="text" name="transferencia" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais" autocomplete="off">
+                        <p></p>
+                        <label for="numero">Número da conta:</label>
+                        <br>
+                        <input type="text" name="numero" maxlength="6" minlength="6">
+                        <input type="submit" value="Transferir" id="depositar">
+                    {% if gerente == 'agencia' %}
+                        <button><a href="/homeGerenteAgencia">Voltar</a></button>
+                    {% elif gerente == 'geral' %}
+                        <button><a href="/homeGerenteGeral">Voltar</a></button>
+                    {% else %}
+                        <button><a href="/home">Voltar</a></button>
+                    {% endif %}
+                    </span>
                 </form>
-                {% if gerente == 'agencia' %}
-                    <button><a href="/homeGerenteAgencia">Voltar</a></button>
-                {% elif gerente == 'geral' %}
-                    <button><a href="/homeGerenteGeral">Voltar</a></button>
-                {% else %}
-                    <button><a href="/home">Voltar</a></button>
-                {% endif %}
             </div>
     </body>
 </html>
