@@ -30,6 +30,9 @@
                 document.getElementById("mySidenav").style.width = "0";
                 }
             </script>
+    </head>
+    <body>
+        <div class="topo">
             <header class="navbar">
                 <div class="menu">
                     <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
@@ -42,11 +45,8 @@
                     <img src="../static/public/logo.png" alt="logo">
                 </a>
                 </div>
-        </header>
-    </head>
-    <body>
-        <div>
-            
+            </header>
+        </div>
             <form action="#" method="post" class="cadastro-form">
                 <h1>Cadastro</h1>
                 {% with mensagens = get_flashed_messages() %}
@@ -111,7 +111,5 @@
                 <input type="password" name="senhaConfirma" placeholder="Até 16 dígitos" maxlength="16" required><br>
                 <input type="submit" value="Cadastrar" id="cadastrar">
             </form>
-            
-        </div>
     </body>
 </html>
