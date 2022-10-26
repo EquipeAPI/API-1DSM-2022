@@ -64,8 +64,8 @@ def login():
                 session['gerente'] = 'nao'
                 return redirect(url_for('home'))
             else:
-                flash("Número da Conta ou Senha incorretos", "info")
-                return redirect(url_for('login'))
+                flash("Número inserido é um número de gerente", "info")
+                return redirect(url_for('loginGerente'))
             
         else:
             flash("Número da Conta ou Senha incorretos", "info")
