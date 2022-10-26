@@ -33,6 +33,9 @@
         </header>
     <!-- Menssagem de erro de login (só aparece se as informações estiverem erradas) -->
 
+    {% if gerente != None %}
+        <h1>Login para gerentes</h1>
+    {% endif %}
 
     <!-- Forms provisório -->
     <div class="login-form">
