@@ -614,11 +614,47 @@ span.botoes
 
 .transf {
   width: 37vw;
-  height: 34vh;
+  height: 40vh;
   margin: 12vh auto;
   padding-top: 1vh;
   padding-left: 1vw;
 
   background-color: #f0e5c7;
   border-radius: 35px;
+}
+
+.transf button {
+  position: absolute;
+
+  color: white;
+  font-size: 2vw;
+  border: none;
+  border-radius: 10px;
+
+  left: 10%;
+  top: 120%;
+  padding: 0 0.7vw;
+}
+
+.transf button a {
+  text-decoration: none;
+
+}
+
+.transf button a:link {
+  color: black;
+}
+
+.transf h2 {
+  margin: 10px 15px;
+  padding-top: 10px;
+}
+
+.transf h1 {
+    margin: 0;
+    font-size: 2vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    padding-top: 10px;
 }
