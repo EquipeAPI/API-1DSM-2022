@@ -12,7 +12,7 @@
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #2660A4;
+  background-color: #FF894E;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -22,13 +22,13 @@
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #FFFFFF;
+  color: #000000;
   display: block;
   transition: 0.3s;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+  color: #ffffff;
 }
 
 .sidenav .closebtn {
@@ -53,18 +53,18 @@ body {
 .body2{
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: rgba(255, 93, 0);
+  background-color: #ED4F00;
 }
 
 .topo{
-  background-color: rgba(255, 93, 0);
+  background-color: #ED4F00;
   border-bottom:solid black;
 }
 
 .navbar img {
     height: 15vh;
     display: inline-block;
-    margin-left: 46%;
+    margin-left: 46.5%;
     margin-right: auto;
 }
 
@@ -130,14 +130,14 @@ body {
 }
 
 #depositar:hover { 
-    background-color: #2660A4;
+    background-color: #0073B6;
     color:white;
     transition: 300ms;
     cursor: pointer;
 }
 
 #sacar:hover {
-    background-color: #2660A4;
+    background-color: #0073B6;
     color:white;
     transition: 300ms;
     cursor: pointer;
@@ -201,7 +201,7 @@ body {
 }
 
 .corpohome button:hover { 
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
@@ -233,9 +233,9 @@ body {
 
 /*PÁGINA CADASTRO*/
 .cadastro-form{
-  width:430px;
+  width:23vw;
   top:60%;
-  left:51.5%;
+  left:50%;
   position: absolute;
   transform: translate(-50%,-50%);
   font-family: Arial, Helvetica, sans-serif;
@@ -287,7 +287,7 @@ body {
 }
 
 #cadastrar:hover {
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
@@ -297,9 +297,9 @@ body {
 
 /*PÁGINA LOGIN*/
 .login-form{
-  width:430px;
+  width:23vw;
   top:38%;
-  left:51%;
+  left:50%;
   position:absolute;
   transform: translate(-50%,-50%);
   font-family: Arial, Helvetica, sans-serif;
@@ -341,7 +341,7 @@ body {
 }
 
 .login-form button:hover { 
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
@@ -479,7 +479,7 @@ fieldset{
 }
 
 .req-form button:hover { 
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
@@ -554,7 +554,7 @@ span.botoes
 
 
 #req:hover { 
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
@@ -599,7 +599,7 @@ span.botoes
 }
 
 .voltar button:hover { 
-  background-color: #2660A4;
+  background-color: #0073B6;
   color:white;
   transition: 300ms;
 }
