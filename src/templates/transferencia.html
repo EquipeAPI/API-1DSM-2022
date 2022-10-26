@@ -6,16 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Transferencia</title>
         <link rel="stylesheet" href="../static/styles/styles.css">
-        <script>
-            // pra abrir o menu
-            function abre() {
-            document.getElementById("mySidenav").style.width = "250px";
-            }
-            // pra fechar o menu
-            function fecha() {
-            document.getElementById("mySidenav").style.width = "0";
-            }
-        </script>
     </head>
     <body>
         <div class="topo">
@@ -49,7 +39,7 @@
                 {% endfor %}
             {% endwith %}
             <div class="transf">
-                <h1>Insira o valor e a conta para que deseja transferir:</h1>
+                <h1>Insira o valor que deseja transferir:</h1>
                 <form action="" method="POST">
                     <span id="cifrão">
                         <label for="transferencia">R$</label>

@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 from urllib import response
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
@@ -11,11 +11,13 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
+
+#======================================= LOGINS =======================================
 
 # Rota da página de login (que é a página inicial)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
@@ -51,6 +53,36 @@ def login():
     else:
         return render_template('login.html')
 
+#LOGIN GERENTE
+@app.route('/loginGerente')
+def loginGerente():
+    if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
+        numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
+        senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
+        
+        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and modelo.mesmaConta(numero_conta, senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True. Se corretas confere se são referentes a mesma conta (modelo.mesmaConta)
+            linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+            linhaUsuario = bd.pegarLinha("usuario", "id_usuario", linhaConta['id_usuario'])
+            session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
+            session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
+            session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            session['numero_agencia'] = linhaConta['numero_agencia']
+            session['gerente'] = 'Agencia'
+            if not bd.valida('gerente_agencia', 'id_usuario', session['id_usuario']):
+                session['gerente'] = 'nao'
+                return redirect(url_for('home')) # Redirecionando para tela home
+                '''elif bd.valida('gerente_agencia', 'gerente_geral', 'SIM'):
+                session['gerente'] = 'geral'
+                return redirect(url_for('homeGerenteGeral'))'''
+            else:
+                session['gerente'] = 'agencia'
+                return redirect(url_for('homeGerenteAgencia'))
+        else:
+            flash("Número da Conta ou Senha incorretos", "info")
+            return redirect(url_for('login'))
+        
+    else:
+        return render_template('login.html')
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
@@ -256,7 +288,7 @@ def enviaReqEncerramento():
 
 #======================================= Requisições do Usuário =======================================
 
-@app.route('/mudancaCadastral', methods=['POST', 'GET'])
+@app.route('/reqMudancaCadastral', methods=['POST', 'GET'])
 def mudancaCadastral():
     if request.method == 'POST':
         form = request.form
@@ -268,7 +300,7 @@ def mudancaCadastral():
             return redirect(url_for('home'))
     else:
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
-        return render_template('user.html', linhaUsuario = linhaUsuario, gerente = session['gerente'])
+        return render_template('user.html', linhaUsuario = linhaUsuario, gerente = session['gerente'], alteracao = False)
 
 '''@app.route('/reqEncerramento')
 def reqEncerramento():
@@ -316,7 +348,7 @@ def respostaReq(decisao, tipo, id):
             linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
             if linhaOperacao['nome_alteracao'] != session['nome']:
                 session['nome'] = linhaOperacao['nome_alteracao']
-            modelo.alteraCadastro(linhaOperacao['id_usuario'])
+            modelo.alteraPorRequisicao(linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
             return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
@@ -335,7 +367,7 @@ def respostaReq(decisao, tipo, id):
             return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
 
 
-#======================================= Contando Usuários da agência =======================================
+#======================================= Gerenciando Usuários da agência =======================================
 
 @app.route('/usuarios_agencia')
 def usuarios_agencia():
@@ -343,8 +375,19 @@ def usuarios_agencia():
     tabelaConta = bd.pegarTabela('conta')
     return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'])
 
+@app.route('/alteracaoGerente/<id_usuario>', methods=['POST', 'GET'])
+def alteracaoGerente(id_usuario):
+    if request.method == 'POST':
+        form = request.form
+        modelo.alteraPorGerente(form, id_usuario)
+        return redirect(url_for(f'alteracaoGerente', id_usuario = id_usuario))
+    else:
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
+        return render_template('user.html', linhaUsuario = linhaUsuario, gerente = session['gerente'], id_usuario = id_usuario, alteracao = True)
+        
+        
 
-    
+        
 
 
 

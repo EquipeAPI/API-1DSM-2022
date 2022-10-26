@@ -8,7 +8,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -120,8 +120,8 @@ def apagaUsuario(numero_conta, id_usuario):
     bd.apaga_linha('usuario', 'id_usuario', id_usuario)
     return None 
 
-#função para alterar cadastro
-def alteraCadastro(id_usuario):
+#função para alterar cadastro apartir de uma requisição
+def alteraPorRequisicao(id_usuario):
     cur = mysql.connection.cursor()
     dicionario = bd.pegarLinha('alteracao_cadastral', 'id_usuario', id_usuario)
     for chave, valor in dicionario.items():
@@ -129,6 +129,17 @@ def alteraCadastro(id_usuario):
             continue
         else:
             chave = chave.replace('alteracao', 'usuario')
+            cur.execute (f"update usuario set {chave} = '{valor}' where id_usuario = {id_usuario}")
+    mysql.connection.commit() # Dando commit
+    cur.close()
+    return None
+
+def alteraPorGerente(linhaAlteracao, id_usuario):
+    cur = mysql.connection.cursor()
+    for chave, valor in linhaAlteracao.items():
+        if valor == '' or valor == None or chave == 'id_alteracao' or chave == 'numero_agencia' or valor == '0':
+            continue
+        else:
             cur.execute (f"update usuario set {chave} = '{valor}' where id_usuario = {id_usuario}")
     mysql.connection.commit() # Dando commit
     cur.close()

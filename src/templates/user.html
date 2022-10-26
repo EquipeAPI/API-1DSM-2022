@@ -72,17 +72,17 @@
                 <div class="useralt"><br>
                     <form action="#" method="post">
                         <label for="nome">Nome:</label><br>
-                        <input type="text" name="nome"><br>
+                        <input type="text" name="nome_usuario"><br>
                         <div type="separações" class="separações">Rua ou Avenida:</div>
-                        <input type="text" name="rua" placeholder="Rua ou Avenida">
+                        <input type="text" name="rua_avenida_usuario" placeholder="Rua ou Avenida">
                         <div type="separações" class="separações">Número:</div>
-                        <input type="text" name="numero" placeholder="Número"><br>
+                        <input type="text" name="numero_casa_usuario" placeholder="Número"><br>
                         <div type="separações" class="separações">Bairro:</div>
-                        <input type="text" name="bairro" placeholder="Bairro"><br>
+                        <input type="text" name="bairro_usuario" placeholder="Bairro"><br>
                         <div type="separações" class="separações">Cidade:</div>
-                        <input type="text" name="cidade" placeholder="Cidade">
+                        <input type="text" name="cidade_usuario" placeholder="Cidade">
                         <div type="separações" class="separações">Estado:</div>
-                        <select name="estado" id="estado">
+                        <select name="estado_usuario" id="estado">
                             <option value=''></option>
                             <option value="Acre">Acre</option>
                             <option value="Alagoas">Alagoas</option>
@@ -113,28 +113,35 @@
                             <option value="Tocantins">Tocantins</option>
                         </select><br>
                         <label for="datNascimento">Data de Nascimento:</label><br>
-                        <input type="date" name="dataNascimento" placeholder="Data de Nascimento"><br>
+                        <input type="date" name="data_nascimento_usuario" placeholder="Data de Nascimento"><br>
                         <label for="genero">Gênero:</label><br>
-                        <select name="genero" id="generos">
+                        <select name="genero_usuario" id="generos">
                             <option value=""></option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Outro">Outro</option>
                             <option value="Prefiro não informar">Prefiro não informar</option>
                         </select><br><br>
-                     
+                    
                         <input type="submit" value="Alterar Dados" id="alterar">
                     </form>
                 </div>
             </div>
         </div>
-        <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
-        {% if gerente == 'agencia' %}
-            <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
-        {% elif gerente == 'geral' %}
-            <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+        
+        {% if alteracao == True %}
+            <a href="/EncerraConta"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+            <a href="/usuarios_agencia" class="voltar"><button> Voltar </button></a>
+            
         {% else %}
-            <a href="/home" class="voltar"><button> Voltar </button></a>
+            <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+            {% if gerente == 'agencia' %}
+                <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
+            {% elif gerente == 'geral' %}
+                <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+            {% else %}
+                <a href="/home" class="voltar"><button> Voltar </button></a>
+            {% endif %}
         {% endif %}
     </body>
 </html>

@@ -107,9 +107,11 @@
 
                                 {% endif %}
                             {% endfor %}
+                            {% set id = linhaUsuario['id_usuario'] %}
+                            <button><a href="{{'/alteracaoGerente/%s' % (id)}}"class="nav-link2">Alterar dados</a></button>
+                    {% endif %}
                         </form>
                         
-                    {% endif %}
                 {% endfor %}
             {% endfor %}
             
