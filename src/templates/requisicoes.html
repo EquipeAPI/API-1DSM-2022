@@ -52,48 +52,50 @@
     </header>
 </head>
 <!-- Requisições de depósito -->
-{% if tipo == 'confirmacao_deposito' %}
+{% if tipo == 'historico_operacao' %}
 
     {% for requisição in requisicoes %}
-    <div class="row">
-        <div class="coluna">
-        <form class="req-form">
-            {% for linhaConta in tabelaConta %}
-                {% if linhaConta['numero_conta'] == requisição['numero_conta'] %}
-                    {% for linhaUsuario in tabelaUsuario  %}
-                        {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] %}
-                            <h2>Requisição de {{linhaUsuario['nome_usuario']}}</h2>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+        {% if requisição['status_operacao'] == 'Pendente' %}
+        <div class="row">
+            <div class="coluna">
+            <form class="req-form">
+                {% for linhaConta in tabelaConta %}
+                    {% if linhaConta['numero_conta'] == requisição['numero_conta'] %}
+                        {% for linhaUsuario in tabelaUsuario  %}
+                            {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] %}
+                                <h2>Requisição de {{linhaUsuario['nome_usuario']}}</h2>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
         
-        {% for chave, valor in requisição.items() %}
-            {% if chave == 'id_confirmacao_deposito' %}
-                {% set id = valor %}
-                <label for="id_confirmacao_deposito">Id da operação:</label>
-                <input type="text" name="id_confirmacao_deposito" value="{{valor}}" readonly><br>
-            {% elif chave == 'valor_confirmacao_deposito'  %}
-                <label for="valor_confirmacao_deposito">Valor:</label>
-                <input type="text" name="valor_confirmacao_deposito" value="{{valor}}" readonly><br>
-            {% elif chave == 'numero_conta' %}
-                <label for="numero_conta">Número da conta:</label>
-                <input type="text" name="numero_conta" value="{{valor}}" readonly>
-            {% elif chave == 'numero_agencia' %}
-                <label for="numero_agencia">Agência:</label>
-                <input type="text" name="numero_agencia" value="{{valor}}" readonly><br>
-            {% elif chave == 'data_hora' %}
-                <label for="data_hora">Data e Hora:</label>
-                <input type="text" name="data_hora" value="{{valor}}" readonly>
-            {% endif %}
+            {% for chave, valor in requisição.items() %}
+                {% if chave == 'id_operacao' %}
+                    {% set id = valor %}
+                    <label for="id_operacao">Id da operação:</label>
+                    <input type="text" name="id_operacao" value="{{valor}}" readonly><br>
+                {% elif chave == 'valor_operacao'  %}
+                    <label for="valor_operacao">Valor:</label>
+                    <input type="text" name="valor_operacao" value="{{valor}}" readonly><br>
+                {% elif chave == 'numero_conta' %}
+                    <label for="numero_conta">Número da conta:</label>
+                    <input type="text" name="numero_conta" value="{{valor}}" readonly>
+                {% elif chave == 'numero_agencia' %}
+                    <label for="numero_agencia">Agência:</label>
+                    <input type="text" name="numero_agencia" value="{{valor}}" readonly><br>
+                {% elif chave == 'data_hora_operacao' %}
+                    <label for="data_hora_operacao">Data e Hora:</label>
+                    <input type="text" name="data_hora_operacao" value="{{valor}}" readonly>
+                {% endif %}
             
-        {% endfor %}
-        {% set id = requisição["id_confirmacao_deposito"] %}        
-        <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link">Aceitar</a></button>
-            <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link">Recusar</a></button>
-        </form>
-        </div>
-        </div>
+            {% endfor %}
+            {% set id = requisição["id_operacao"] %}        
+            <button><a href="{{'/resposta/aceita/%s/%s' % (tipo, id)}}" class="nav-link">Aceitar</a></button>
+                <button><a href="{{'/resposta/recusa/%s/%s' % (tipo, id)}}" class="nav-link">Recusar</a></button>
+            </form>
+            </div>
+            </div>
+        {% endif %}
     {% endfor %}
 {% endif %}
 

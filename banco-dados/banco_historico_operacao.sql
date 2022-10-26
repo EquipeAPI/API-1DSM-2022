@@ -26,15 +26,19 @@ DROP TABLE IF EXISTS `historico_operacao`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historico_operacao` (
   `id_operacao` int NOT NULL AUTO_INCREMENT,
-  `data_hora` datetime NOT NULL,
+  `data_hora_operacao` datetime NOT NULL,
+  `data_hora_confirmacao` datetime,
   `saldo_operacao` double NOT NULL,
   `valor_operacao` double NOT NULL,
-  `tipo_operacao` set('Deposito','Saque','Transação') NOT NULL,
+  `tipo_operacao` set('Depósito','Saque','Tranferência') NOT NULL,
   `numero_conta` int NOT NULL,
-  `status_operacao` varchar(12) DEFAULT 'Aprovado',
+  `numero_agencia` int NOT NULL,
+  `status_operacao` set('Pendente', 'Aprovado', 'Negado'),
   PRIMARY KEY (`id_operacao`),
   KEY `fk_conta_historico` (`numero_conta`),
-  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
+  KEY `fk_agencia_historico` (`numero_agencia`),
+  CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`),
+  CONSTRAINT `fk_agencia_historico` FOREIGN KEY (`numero_agencia`) REFERENCES `conta` (`numero_agencia`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

@@ -19,9 +19,22 @@
             <h4>Operação: {{dados['tipo_operacao']}}</h4>
             <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
             <h4>Valor: {{dados['valor_operacao']}}</h4>
-            <h4>Data e hora: {{dados['data_hora']}}</h4>
+            {% if dados['tipo_operacao'] == 'Depósito' %}
+                {% if dados['status_operacao'] != 'Pendente' %}
+                    <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+                    <h4>Status: {{dados['status_operacao']}} em {{dados['data_hora_confirmacao']}}</h4>
+                {% else %}
+                    <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+                    <h4>Status: {{dados['status_operacao']}}</h4>
+                {% endif %}
+            {% else %}
+            <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+            {% endif %}
+            {% set id = dados['id_operacao'] %}
+            <button id="esconde"><a href="/comprovante/">Gerar comprovante</a></button>
             <hr>
         </div>
+        
     {% endfor %}
      
     <div id="esconde">

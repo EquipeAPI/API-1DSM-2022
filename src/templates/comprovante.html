@@ -12,15 +12,21 @@
     <img src="../static/public/favicon.png" alt="">
     </div>
     <div class="comprovante">
-        <h1>Comprovante de {{operacao}}</h1>
+        <h1>Comprovante de {{info['tipo_operacao']}}</h1>
         <h2>Dados da conta: </h2>
         <h3>Nome: {{nome}}</h3>
-        <h3>Operação: {{operacao}}</h3>
-        <h3>Agência: {{numero_agencia}}</h3>
-        <h3>Número da conta: {{numero_conta}} </h3>
-        <h3>Saldo anterior: {{saldoAntes}}</h3>
-        <h3>Valor: {{valor}}</h3>
-        <h2 id="datahora">{{operacao}} realizado em: {{dataHora}}</h2>
+        <h3>Operação: {{info['tipo_operacao']}}</h3>
+        <h3>Agência: {{info['numero_agencia']}}</h3>
+        <h3>Número da conta: {{info['numero_conta']}} </h3>
+        <h3>Saldo anterior: {{info['saldo_operacao']}}</h3>
+        <h3>Valor: {{info['valor_operacao']}}</h3>
+        {% if info['tipo_operacao'] == 'Depósito'%}
+        <h3>Status da operação: {{info['status_operacao']}}</h3>
+        {% endif %}
+        <h2 id="datahora">{{info['tipo_operacao']}} realizado em: {{info['data_hora_operacao']}}</h2>
+        {% if info['status_operacao'] != 'Pendente' %}
+        <h2 id="datahora">{{info['status_operacao']}} em: {{info['data_hora_operacao']}}</h2>
+        {% endif %}
 
     </div>
     <div id="esconde">

@@ -1,7 +1,7 @@
 from asyncio.windows_events import NULL
 from flask import Flask
 from flask_mysqldb import MySQL
-from app import mysql, app
+from app import mysql
 import modelo
 
 
@@ -99,18 +99,24 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
 #insere linha de operação realisada ou requisitada (caso depósito) na tabela desejada.
 def inserirOperacao(tabela, operacao, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO {tabela} (numero_conta, tipo_operacao, valor_operacao, data_hora, saldo_operacao) VALUES(%s, %s, %s, %s, %s)", (dic_dados['numero_conta'], operacao, dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes']))
+    cur.execute (f"INSERT INTO {tabela} (numero_conta, numero_agencia, tipo_operacao, valor_operacao, data_hora_operacao, saldo_operacao, status_operacao) VALUES(%s, %s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], operacao, dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes'], dic_dados['status_operacao']))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
 
-def reqDeposito(dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
+""" def reqDeposito(dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO confirmacao_deposito (numero_conta, numero_agencia, valor_confirmacao_deposito, data_hora, saldo_operacao) VALUES(%s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes']))
+    cur.execute (f"INSERT INTO confirmacao_deposito (numero_conta, numero_agencia, valor_confirmacao_deposito, data_hora, saldo_operacao) VALUES(%s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes']))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
-    return None
+    return None """
 
+def atualizaDeposito(tabela, data_hora_confirmacao, status_novo, id):
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE {tabela} SET data_hora_confirmacao = %s, status_operacao = %s WHERE id_operacao = %s", (data_hora_confirmacao, status_novo, id))
+    mysql.connection.commit() # Dando commit
+    cur.close()
+    return None
 
 #Requisicao de fechamento de conta
 def reqFecha(id_usuário, numero_agencia, saldo):

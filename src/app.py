@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -133,8 +133,9 @@ def deposito():
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'deposito'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
+                #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
                 flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('comprovante')) # Redirecionando para a tela home
@@ -158,8 +159,8 @@ def saque():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                 dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'saque', 'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                bd.inserirOperacao('historico_operacao', 'saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
+                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                bd.inserirOperacao('historico_operacao', 'Saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
                 session['dic_dados'] = dic_dados
                 flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('comprovante')) # Redirecionando para a tela home
@@ -201,14 +202,13 @@ def transferencia():
         return redirect(url_for('login'))
 
 
-@app.route('/comprovante') #Gerador de comprovante
+@app.route('/comprovante/') #Gerador de comprovante
 def comprovante():
-    return render_template('comprovante.html', nome = session['nome'], numero_conta = session['numero_conta'], saldoAntes = session['dic_dados']['saldoAntes'], operacao = session['dic_dados']['operacao'], valor = session['dic_dados']['valor'], dataHora =session['dic_dados']['dataHora'], numero_agencia = session['numero_agencia'], gerente = session['gerente'])
+    return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'])
+
 @app.route('/extrato')
 def extrato():
-    dic_dados = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta'])
-    a = session['numero_conta']
-    return render_template('extrato.html', operacoes = dic_dados, numero_conta = session['numero_conta'], nome = session['nome'], numero_agencia = session['numero_agencia'], gerente = session['gerente'])
+    return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
 
 
 #tentativa de fazer pdf
@@ -287,19 +287,17 @@ def requisicoes(tipo):
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
 def respostaReq(decisao, tipo, id):
-    if tipo == 'confirmacao_deposito':
+    if tipo == 'historico_operacao':
         if decisao == 'aceita':
-            linhaOperacao = bd.pegarLinha('confirmacao_deposito', 'id_confirmacao_deposito', id)
+            linhaOperacao = bd.pegarLinha('historico_operacao', 'id_operacao', id)
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
-            saldoAtual = linhaConta['saldo_conta']
             dataHora = modelo.dataHora(True)
-            dic_dados = {'numero_conta': linhaOperacao['numero_conta'], 'operacao': 'deposito', 'valor': linhaOperacao['valor_confirmacao_deposito'], 'dataHora': dataHora, 'saldoAntes': saldoAtual}
-            modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_confirmacao_deposito'])
-            bd.inserirOperacao('historico_operacao', 'deposito', dic_dados)
-            bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
+            modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
+            bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
             return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:
-            bd.apaga_linha(tipo, 'id_confirmacao_deposito', id) #Deleta linha na tabela confirmacao depósito
+            dataHora = modelo.dataHora(True)
+            bd.atualizaDeposito(tipo, dataHora, 'Negado', id)
             return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
     
     elif tipo == 'confirmacao_cadastro':

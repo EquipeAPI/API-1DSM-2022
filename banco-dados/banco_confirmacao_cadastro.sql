@@ -37,12 +37,10 @@ CREATE TABLE `confirmacao_cadastro` (
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
   `numero_agencia` int NOT NULL,
-  `numero_conta` int DEFAULT NULL,
+  `numero_conta` int,
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
-  KEY `fk_cadastro_conta` (`numero_conta`),
-  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`),
-  CONSTRAINT `fk_cadastro_conta` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_agencia`)
+  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
