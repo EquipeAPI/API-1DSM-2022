@@ -37,10 +37,10 @@ CREATE TABLE `confirmacao_cadastro` (
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
   `numero_agencia` int NOT NULL,
-  `numero_conta` int,
+  `numero_conta` int DEFAULT NULL,
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
-  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `gerente_agencia` (`numero_agencia`)
+  CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `agencia` (`numero_agencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-24  7:41:52
+-- Dump completed on 2022-10-26 10:39:02

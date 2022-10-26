@@ -18,30 +18,30 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `transacao`
+-- Table structure for table `gerente_geral`
 --
 
-DROP TABLE IF EXISTS `transacao`;
+DROP TABLE IF EXISTS `gerente_geral`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transacao` (
-  `numero_conta_destino` int NOT NULL,
-  `id_operacao` int NOT NULL,
-  `numero_conta_origem` int DEFAULT NULL,
-  KEY `fk_historico_transacao` (`id_operacao`),
-  KEY `fk_transacao_conta` (`numero_conta_origem`),
-  CONSTRAINT `fk_historico_transacao` FOREIGN KEY (`id_operacao`) REFERENCES `historico_operacao` (`id_operacao`),
-  CONSTRAINT `fk_transacao_conta` FOREIGN KEY (`numero_conta_origem`) REFERENCES `conta` (`numero_conta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `gerente_geral` (
+  `numero_matricula` int NOT NULL AUTO_INCREMENT,
+  `id_usuario` int NOT NULL,
+  `tipo_gerente` set('Gerente Geral','Gerente de Agência') NOT NULL,
+  PRIMARY KEY (`numero_matricula`),
+  KEY `fk_geral_usuario` (`id_usuario`),
+  CONSTRAINT `fk_geral_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `transacao`
+-- Dumping data for table `gerente_geral`
 --
 
-LOCK TABLES `transacao` WRITE;
-/*!40000 ALTER TABLE `transacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transacao` ENABLE KEYS */;
+LOCK TABLES `gerente_geral` WRITE;
+/*!40000 ALTER TABLE `gerente_geral` DISABLE KEYS */;
+INSERT INTO `gerente_geral` VALUES (1,1,'Gerente Geral'),(2,2,'Gerente de Agência'),(3,3,'Gerente de Agência');
+/*!40000 ALTER TABLE `gerente_geral` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:02
+-- Dump completed on 2022-10-26 10:39:03

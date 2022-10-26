@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,31 +18,29 @@ USE `banco`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `gerente_agencia`
+-- Table structure for table `agencia`
 --
 
-DROP TABLE IF EXISTS `gerente_agencia`;
+DROP TABLE IF EXISTS `agencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `gerente_agencia` (
+CREATE TABLE `agencia` (
   `numero_agencia` int NOT NULL AUTO_INCREMENT,
-  `matricula_gerente_agencia` varchar(3) NOT NULL,
-  `id_usuario` int NOT NULL,
+  `numero_matricula` int NOT NULL,
   PRIMARY KEY (`numero_agencia`),
-  UNIQUE KEY `matricula_gerente_agencia` (`matricula_gerente_agencia`),
-  KEY `fk_usuario_gerente` (`id_usuario`),
-  CONSTRAINT `fk_usuario_gerente` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+  KEY `fk_agencia_gerente` (`numero_matricula`),
+  CONSTRAINT `fk_agencia_gerente` FOREIGN KEY (`numero_matricula`) REFERENCES `gerente_geral` (`numero_matricula`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `gerente_agencia`
+-- Dumping data for table `agencia`
 --
 
-LOCK TABLES `gerente_agencia` WRITE;
-/*!40000 ALTER TABLE `gerente_agencia` DISABLE KEYS */;
-INSERT INTO `gerente_agencia` VALUES (1,'001',1),(2,'002',2);
-/*!40000 ALTER TABLE `gerente_agencia` ENABLE KEYS */;
+LOCK TABLES `agencia` WRITE;
+/*!40000 ALTER TABLE `agencia` DISABLE KEYS */;
+INSERT INTO `agencia` VALUES (1,2),(2,3);
+/*!40000 ALTER TABLE `agencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 19:00:57
+-- Dump completed on 2022-10-26 10:39:02
