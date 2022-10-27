@@ -1,5 +1,3 @@
-
-
 from urllib import response
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
@@ -12,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -242,9 +240,13 @@ def transferencia():
 def comprovante():
     return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'])
 
-@app.route('/extrato')
+@app.route('/extrato', methods = ['GET', 'POST'])
 def extrato():
-    return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
+    if request.method == 'POST':
+        periodo = request.form
+        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.extratoPersonalizado(session['numero_conta'], periodo['data_inicio'], periodo['data_fim']), gerente = session['gerente'])
+    else:
+        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
 
 
 #tentativa de fazer pdf

@@ -49,6 +49,13 @@ def tabelaPersonalizada(tabela, dado, valor):
     cur.close()
     return tabelaPersonalizada
 
+def extratoPersonalizado(conta, data_inicio, data_fim):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM historico_operacao where numero_conta = %s AND data_hora_operacao >= %s AND data_hora_operacao <= %s", (conta, data_inicio, data_fim))
+    extratoPersonalizado = cur.fetchall()
+    cur.close()
+    return extratoPersonalizado
+
 # Função que pega uma tabela
 def pegarTabela(tabela):
     cur = mysql.connection.cursor()

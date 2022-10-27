@@ -12,8 +12,16 @@
     <h1>Extrato da conta</h1>
     <h2>Agência: {{numero_agencia}}</h2>
     <h2>Número da conta: {{numero_conta}}</h2>
-    <h2>Nome: {{nome}}</h2>
-    <br><hr>
+    <h2>Nome: {{nome}}</h2><br>
+
+    <form action="#", method="POST">
+        <input type="datetime-local" name="data_inicio" step="1" required>
+        <input type="datetime-local" name="data_fim" step="1" required>
+        <input type="submit" value="Filtrar">
+    </form>
+    <hr>
+
+
     {% for dados in operacoes %}
         <div>
             <h4>Operação: {{dados['tipo_operacao']}}</h4>
