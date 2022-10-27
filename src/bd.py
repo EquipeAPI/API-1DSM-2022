@@ -97,7 +97,7 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
         else:
             forms[chave] = valor
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute(f"INSERT INTO alteracao_cadastral(nome_alteracao, rua_avenida_alteracao, numero_casa_alteracao, bairro_alteracao, cidade_alteracao, estado_alteracao, genero_alteracao, id_usuario, numero_agencia, data_nascimento_alteracao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['genero'], id_usuario, numero_agencia, forms['dataNascimento'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute(f"INSERT INTO alteracao_cadastral(nome_alteracao, rua_avenida_alteracao, numero_casa_alteracao, bairro_alteracao, cidade_alteracao, estado_alteracao, genero_alteracao, id_usuario, numero_agencia, data_nascimento_alteracao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_usuario'], forms['rua_avenida_usuario'], forms['numero_casa_usuario'], forms['bairro_usuario'], forms['cidade_usuario'], forms['estado_usuario'], forms['genero_usuario'], id_usuario, numero_agencia, forms['data_nascimento_usuario'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.close()
     return None

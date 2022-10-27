@@ -39,14 +39,30 @@
             </div>
             <div id="mySidenav" class="sidenav">
                 <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
-                <a href="/home">Home</a>
+                {% if gerente == 'geral' %}
+                    <a href="/homeGerenteGeral">Home
+                {% elif gerente == 'agencia' %}
+                    <a href="/homeGerenteAgencia">Home</a>
+                {% else %}
+                    <a href="/home">Home</a>
+                {% endif %}
                 <a href="/loggout">Sair</a>
             </div>
-            <a href="/home">
-                <img src="../static/public/logo.png" alt="logo">
-            </a>
+            {% if gerente == 'geral' %}
+                <a href="/homeGerenteGeral">Home
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% elif gerente == 'agencia' %}
+                <a href="/homeGerenteAgencia">
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% else %}
+                <a href="/home">
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% endif %}
             <div class="user">
-                <a href="/user">
+                <a href="/reqMudancaCadastral">
                 <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
             </div>
             </div>
@@ -56,7 +72,7 @@
             
             {% for linhaUsuario in usuario %}
                 {% for linhaConta in conta %}
-                    {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia %}
+                    {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia and linhaUsuario['id_usuario'] != 1 %}
                         <form class="req-form">
                             
                             {% for chave, valor in linhaUsuario.items() %}

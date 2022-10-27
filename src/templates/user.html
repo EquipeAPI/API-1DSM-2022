@@ -24,19 +24,37 @@
             </div>
             <div id="mySidenav" class="sidenav">
                 <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
-                <a href="/home">Home</a>
+                {% if gerente == 'geral' %}
+                    <a href="/homeGerenteGeral">Home
+                {% elif gerente == 'agencia' %}
+                    <a href="/homeGerenteAgencia">Home</a>
+                {% else %}
+                    <a href="/home">Home</a>
+                {% endif %}
                 <a href="/saque">Saque</a>
                 <a href="/deposito">Deposito</a>
                 <a href="/extrato">Extrato</a>        
-                <a href="/mudancaCadastral">Perfil de usuário</a>
+                <a href="//reqMudancaCadastral">Perfil de usuário</a>
                 <a href="/loggout">Sair</a>
                 <br>
             </div>
-            <a href="/home">
-                <img src="../static/public/logo.png" alt="logo">
-            </a>
+            {% if gerente == 'geral' %}
+                <a href="/homeGerenteGeral">Home
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% elif gerente == 'agencia' %}
+                <a href="/homeGerenteAgencia">
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% else %}
+                <a href="/home">
+                    <img src="../static/public/logo.png" alt="logo">
+                </a>
+            {% endif %}
+                
+            
             <div class="user">
-                <a href="/mudancaCadastral">
+                <a href="/reqMudancaCadastral">
                 <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
             </div>
         </header>

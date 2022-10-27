@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -118,7 +118,7 @@ def home():
         return render_template('home.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']))
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
     else:
         return redirect(url_for('login'))
 
@@ -132,7 +132,7 @@ def homeGerenteAgencia():
         return render_template('homegerente.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']))
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
     else:
         return redirect(url_for('login'))
 
@@ -147,7 +147,7 @@ def homeGerenteGeral():
         return render_template('homegerentegeral.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']))
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
     else:
         return redirect(url_for('login'))
 

@@ -37,14 +37,24 @@
                 </div>
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
-                    <a href="/home">Home</a>
+                    <a href="/homeGerente">Home</a>
                     <a href="/loggout">Sair</a>
                 </div>
-                <a href="/home">
-                    <img src="../static/public/logo.png" alt="logo">
-                </a>
+                {% if gerente == 'geral' %}
+                    <a href="/homeGerenteGeral">Home
+                        <img src="../static/public/logo.png" alt="logo">
+                    </a>
+                {% elif gerente == 'agencia' %}
+                    <a href="/homeGerenteAgencia">
+                        <img src="../static/public/logo.png" alt="logo">
+                    </a>
+                {% else %}
+                    <a href="/home">
+                        <img src="../static/public/logo.png" alt="logo">
+                    </a>
+                {% endif %}
                 <div class="user">
-                    <a href="/user">
+                    <a href="/reqMudancaCadastral">
                     <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
                 </div>
                 </div>
@@ -55,7 +65,7 @@
 {% if tipo == 'historico_operacao' %}
 
     {% for requisição in requisicoes %}
-        {% if requisição['status_operacao'] == 'Pendente' %}
+        {% if requisição['status_operacao'] == 'Pendente' and requisi%}
         <div class="row">
             <div class="coluna">
             <form class="req-form">
