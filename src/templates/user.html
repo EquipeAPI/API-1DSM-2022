@@ -148,7 +148,7 @@
         </div>
         
         {% if alteracao == True %}
-            <a href="/EncerraConta"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+            <a href="{{'/encerraConta/%s' % (id_usuario)}}"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
             <a href="/usuarios_agencia" class="voltar"><button> Voltar </button></a>
             
         {% else %}

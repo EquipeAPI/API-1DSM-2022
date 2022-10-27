@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -395,7 +395,11 @@ def alteracaoGerente(id_usuario):
         return render_template('user.html', linhaUsuario = linhaUsuario, gerente = session['gerente'], id_usuario = id_usuario, alteracao = True)
         
         
-
+@app.route('/encerraConta/<id_usuario>', methods=['POST', 'GET'])
+def encerraConta(id_usuario):
+    linhaConta = bd.pegarLinha('conta', 'id_usuario', id_usuario)
+    modelo.apagaUsuario(linhaConta['numero_conta'], id_usuario)
+    return redirect(url_for('usuarios_agencia'))
         
 
 
