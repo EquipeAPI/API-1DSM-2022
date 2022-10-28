@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,6 +27,12 @@ DROP TABLE IF EXISTS `agencia`;
 CREATE TABLE `agencia` (
   `numero_agencia` int NOT NULL AUTO_INCREMENT,
   `numero_matricula` int NOT NULL,
+  `nome_agencia` varchar(50) NOT NULL,
+  `rua_avenida_agencia` varchar(100) NOT NULL,
+  `numero_local_agencia` varchar(5) NOT NULL,
+  `bairro_agencia` varchar(50) NOT NULL,
+  `cidade_agencia` varchar(50) NOT NULL,
+  `estado_agencia` varchar(20) NOT NULL,
   PRIMARY KEY (`numero_agencia`),
   KEY `fk_agencia_gerente` (`numero_matricula`),
   CONSTRAINT `fk_agencia_gerente` FOREIGN KEY (`numero_matricula`) REFERENCES `gerente_geral` (`numero_matricula`)
@@ -39,7 +45,7 @@ CREATE TABLE `agencia` (
 
 LOCK TABLES `agencia` WRITE;
 /*!40000 ALTER TABLE `agencia` DISABLE KEYS */;
-INSERT INTO `agencia` VALUES (1,2),(2,3);
+INSERT INTO `agencia` VALUES (1,2,'','','','','',''),(2,3,'','','','','','');
 /*!40000 ALTER TABLE `agencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:02
+-- Dump completed on 2022-10-28 15:51:13

@@ -144,6 +144,16 @@ def apaga_linha(tabela, coluna, dado):
     return None
 
 
+#================= Função para somar capital do banco ======================
+
+def soma_capital(tabela, coluna):
+    cur = mysql.connection.cursor()
+    cur.execute (f'select sum({coluna}) from {tabela}')
+    capital_total = cur.fetchall()
+    cur.close()
+    return capital_total
+
+
 
 
 
