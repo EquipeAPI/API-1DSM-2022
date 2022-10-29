@@ -34,6 +34,11 @@ CREATE TABLE `capital_banco` (
 -- Dumping data for table `capital_banco`
 --
 
+ALTER TABLE capital_banco DROP primary key;
+ALTER TABLE capital_banco ADD id_capital int(1) PRIMARY KEY;
+ALTER TABLE capital_banco ADD capital_inicial double default 100000000;
+insert into capital_banco(id_capital, capital_total) values (0, 0);
+
 LOCK TABLES `capital_banco` WRITE;
 /*!40000 ALTER TABLE `capital_banco` DISABLE KEYS */;
 /*!40000 ALTER TABLE `capital_banco` ENABLE KEYS */;
