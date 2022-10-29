@@ -416,6 +416,14 @@ def encerraConta(id_usuario):
     return redirect(url_for('usuarios_agencia'))
         
 
+#======================================= Rotas de gerente geral =======================================
+
+@app.route('/agencias')
+def agencias():
+    tabelaAgencia = bd.pegarTabela('gerente_agencia')
+    tabelaUsuario = bd.pegarTabela('usuario')
+    return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario)
+
 
 
 if __name__ == '__main__':

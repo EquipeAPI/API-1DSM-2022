@@ -8,6 +8,18 @@
     <title>Agencias</title>
 </head>
 <body>
-    
+    {% for linhaAgencia in tabelaAgencia %}
+        <div>
+            <h3>Número da agencia: {{linhaAgencia['numero_agencia']}}</h3>
+            {% for linhaUsuario in tabelaUsuario %}
+                {% if linhaAgencia['id_usuario'] == linhaUsuario['id_usuario'] %}
+                    <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
+                    <h3>Numero de matricula: {{linhaAgencia['matricula_gerente_agencia']}}</h3>
+                    <h3>id de usuario: {{linhaAgencia['id_usuario']}}</h3>
+                {% endif %}
+            {% endfor %}
+            <button><a href=""class="nav-link2">Alterar dados</a></button>
+        </div>
+    {% endfor %}
 </body>
 </html>
