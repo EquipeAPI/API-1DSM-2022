@@ -424,7 +424,11 @@ def agencias():
     tabelaUsuario = bd.pegarTabela('usuario')
     return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario)
 
-
+@app.route('/usuariosAgencia/<numero_agencia>')
+def usuariosAgencia(numero_agencia):
+    tabelaUsuario = bd.pegarTabela('usuario')
+    tabelaConta = bd.pegarTabela('conta')
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = numero_agencia, gerente = session['gerente'])
 
 if __name__ == '__main__':
     app.run(debug = True)

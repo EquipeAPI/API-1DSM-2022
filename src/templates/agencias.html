@@ -6,20 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <title>Agencias</title>
+    <script>
+        // pra abrir o menu
+        function abre() {
+        document.getElementById("mySidenav").style.width = "250px";
+        }
+        // pra fechar o menu
+        function fecha() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 </head>
 <body>
-    {% for linhaAgencia in tabelaAgencia %}
-        <div>
-            <h3>Número da agencia: {{linhaAgencia['numero_agencia']}}</h3>
-            {% for linhaUsuario in tabelaUsuario %}
-                {% if linhaAgencia['id_usuario'] == linhaUsuario['id_usuario'] %}
-                    <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
-                    <h3>Numero de matricula: {{linhaAgencia['matricula_gerente_agencia']}}</h3>
-                    <h3>id de usuario: {{linhaAgencia['id_usuario']}}</h3>
-                {% endif %}
-            {% endfor %}
-            <button><a href=""class="nav-link2">Alterar dados</a></button>
-        </div>
-    {% endfor %}
+    <div class="topo">
+        <header class="navbar">
+            <div class="menu">
+                <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
+                <a href="/homeGerenteGeral">Home</a>
+                <a href="/saque">Saque</a>
+                <a href="/deposito">Deposito</a>
+                <a href="/extrato">Extrato</a>        
+                <a href="//reqMudancaCadastral">Perfil de usuário</a>
+                <a href="/loggout">Sair</a>
+                <br>
+            </div>
+            <a href="/homeGerenteGeral">
+                <img src="../static/public/logo.png" alt="logo">
+            </a>
+            <div class="user">
+                <a href="/reqMudancaCadastral">
+                <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+            </div>
+        </header>
+    </div>
+    <div class="blocoAgencia">
+        {% for linhaAgencia in tabelaAgencia %}  
+            <div>
+                <h3>Número da agencia: {{linhaAgencia['numero_agencia']}}</h3>
+                {% for linhaUsuario in tabelaUsuario %}
+                    {% if linhaAgencia['id_usuario'] == linhaUsuario['id_usuario'] %}
+                        <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
+                        <h3>Numero de matricula: {{linhaAgencia['matricula_gerente_agencia']}}</h3>
+                        <h3>id de usuario: {{linhaAgencia['id_usuario']}}</h3>
+                    {% endif %}
+                    
+                {% endfor %}
+                {% set numero_agencia = linhaAgencia['numero_agencia'] %}
+                <button><a href="{{'/usuariosAgencia/%s' % (numero_agencia)}}"class="nav-link">Gerenciar Usuários</a></button>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="cent">
+        <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+        
+    </div>
 </body>
 </html>
