@@ -34,6 +34,8 @@ def validaOperacao(input):
         return False
 
 
+
+
 def geradorNumeroConta ():
     numero = random.sample(range(100000,1000000), 1) # Gera uma lista com um elemento numerico aleatório entre 100000 e 999999
     numero = numero[0] # retorna o inteiro que está na lista para a variável numero
@@ -68,8 +70,13 @@ def deposito(id_usuario, valor):
 def transferencia(id_usuario, valor, recebedor):
     if bd.valida('conta', 'numero_conta', recebedor):
         atualRecebedor = bd.pegarLinha('conta', 'numero_conta', recebedor)
-        saque(id_usuario, valor)
-        deposito(atualRecebedor['id_usuario'], valor)
+        atualEnvio = bd.pegarLinha('conta', 'id_usuario', id_usuario)
+        id_recebedor = atualRecebedor['id_usuario']
+        valor = float(valor)
+        atualEnvio = atualEnvio['saldo_conta'] - valor
+        atualRecebedor = atualRecebedor['saldo_conta'] + valor
+        bd.mudaSaldo(atualEnvio, id_usuario)
+        bd.mudaSaldo(atualRecebedor, id_recebedor)
         return True
     else:
         return False

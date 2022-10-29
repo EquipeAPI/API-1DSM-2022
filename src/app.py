@@ -227,12 +227,13 @@ def transferencia():
             transferencia = request.form['transferencia']
             numero_recebedor = request.form['numero']
             if modelo.validaOperacao(transferencia):
-                linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
-                saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                if modelo.transferencia(session['numero_conta'], transferencia, numero_recebedor):
+                linhaContaEnvio = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                saldoAntesEnvio = linhaContaEnvio['saldo_conta'] #Guardando o valor do saldo antes da operação
+                linhaContaRecebido = bd.pegarLinha('conta', 'numero_conta', numero_recebedor)
+                if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
                     dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                    dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'contaDestino': numero_recebedor} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                    '''bd.inserirOperacao('HistoricoOperacao', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                    dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
                     flash('transferencia realizada com sucesso', 'info')
                     return redirect(url_for('comprovante'))
