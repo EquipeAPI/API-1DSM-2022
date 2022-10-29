@@ -52,6 +52,13 @@ def tabelaPersonalizada(tabela, dado, valor):
     cur.close()
     return tabelaPersonalizada
 
+def extrato(historico, numero_conta, conta, conta_recebido):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM {historico} where {numero_conta} = {conta} or {conta_recebido} = {conta}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    tabelaPersonalizada = cur.fetchall() #Armazena todas as informações desse cliente na variável usuário
+    cur.close()
+    return tabelaPersonalizada
+
 def extratoPersonalizado(conta, data_inicio, data_fim):
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT * FROM historico_operacao where numero_conta = %s AND data_hora_operacao >= %s AND data_hora_operacao <= %s", (conta, data_inicio, data_fim))

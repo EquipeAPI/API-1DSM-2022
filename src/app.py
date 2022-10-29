@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Meusequel@d0' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -177,7 +177,7 @@ def deposito():
                 #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
                 flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
-                return redirect(url_for('comprovante')) # Redirecionando para a tela home
+                return redirect(url_for('comprovante', origem = 'deposito')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos.' 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('deposito')) # recarrega a página
@@ -198,7 +198,7 @@ def saque():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 ct = bd.pegarLinha('capital_banco', 'id_capital', 0)
                 ct = ct['capital_total']
-                if int(saque) <= ct:
+                if int(float(saque)) <= ct:
                     modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                     dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
@@ -206,7 +206,7 @@ def saque():
                     modelo.atualizaCapital()
                     session['dic_dados'] = dic_dados
                     flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
-                    return redirect(url_for('comprovante')) # Redirecionando para a tela home
+                    return redirect(url_for('comprovante', origem = 'saque')) # Redirecionando para a tela home
                 else:
                     flash('Não podemos realizar essa operação no momento, tente mais tarde', 'info') # Mensagem de que o input não é válido
                     return redirect(url_for('saque')) # recarrega a página
@@ -230,13 +230,14 @@ def transferencia():
                 linhaContaEnvio = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntesEnvio = linhaContaEnvio['saldo_conta'] #Guardando o valor do saldo antes da operação
                 linhaContaRecebido = bd.pegarLinha('conta', 'numero_conta', numero_recebedor)
+                dadosContaRecebido = bd.pegarLinha('usuario', 'id_usuario', linhaContaRecebido['id_usuario'])
                 if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
                     dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                    dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia'], 'nome_destino': dadosContaRecebido['nome_usuario']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
                     flash('transferencia realizada com sucesso', 'info')
-                    return redirect(url_for('comprovante'))
+                    return redirect(url_for('comprovante', origem = 'transferencia'))
                 else:
                     flash('Número de conta invalido', 'erro')
                     return redirect(url_for('transferencia'))
@@ -249,9 +250,12 @@ def transferencia():
         return redirect(url_for('login'))
 
 
-@app.route('/comprovante/') #Gerador de comprovante
-def comprovante():
-    return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'])
+@app.route('/comprovante/<origem>') #Gerador de comprovante
+def comprovante(origem):
+    if origem == 'transferencia':
+        return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), nome_destino = session['dic_dados']['nome_destino'], gerente = session['gerente'])
+    elif origem == 'deposito' or 'saque':
+        return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'])
 
 @app.route('/extrato', methods = ['GET', 'POST'])
 def extrato():
@@ -259,7 +263,7 @@ def extrato():
         periodo = request.form
         return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.extratoPersonalizado(session['numero_conta'], periodo['data_inicio'], periodo['data_fim']), gerente = session['gerente'])
     else:
-        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.tabelaPersonalizada('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
+        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.extrato('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
 
 
 #tentativa de fazer pdf
