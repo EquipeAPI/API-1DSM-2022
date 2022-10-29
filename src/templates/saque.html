@@ -64,6 +64,11 @@
                 {% endfor %}
             {% endwith %}
             <div class="corposaque">
+                {% with mensagens = get_flashed_messages() %}
+                    {% for msg in mensagens %}
+                        <p id="confimacaoSenha">{{msg}}</p>
+                    {% endfor %}
+                {% endwith %}
                 <h2>Saldo atual: {{saldo}}</h2>
                 <h1>Insira o valor que deseja sacar:</h1>
                 <form action="" method="POST">

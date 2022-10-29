@@ -112,6 +112,7 @@ def loginGerente():
 # Rota da página home
 @app.route('/home')
 def home():
+    modelo.atualizaCapital()
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -124,6 +125,7 @@ def home():
 
 @app.route('/homeGerenteAgencia')
 def homeGerenteAgencia():
+    modelo.atualizaCapital()
     if session['gerente'] == 'agencia':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -139,15 +141,18 @@ def homeGerenteAgencia():
 
 @app.route('/homeGerenteGeral')
 def homeGerenteGeral():
+    modelo.atualizaCapital()
     if session['gerente'] == 'geral':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
         session['nome'] = linhaUsuario['nome_usuario']
+        capitalTotal = bd.pegarLinha('capital_banco', 'id_capital', 0)
+        capitalTotal = capitalTotal['capital_total']
         return render_template('homegerentegeral.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal)
     else:
         return redirect(url_for('login'))
 
@@ -191,13 +196,20 @@ def saque():
             if modelo.validaOperacao(saque): # Confere se o input do usuário é composto apenas de números e um .
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
-                dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                bd.inserirOperacao('historico_operacao', 'Saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
-                session['dic_dados'] = dic_dados
-                flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
-                return redirect(url_for('comprovante')) # Redirecionando para a tela home
+                ct = bd.pegarLinha('capital_banco', 'id_capital', 0)
+                ct = ct['capital_total']
+                if int(saque) <= ct:
+                    modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
+                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    bd.inserirOperacao('historico_operacao', 'Saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
+                    modelo.atualizaCapital()
+                    session['dic_dados'] = dic_dados
+                    flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
+                    return redirect(url_for('comprovante')) # Redirecionando para a tela home
+                else:
+                    flash('Não podemos realizar essa operação no momento, tente mais tarde', 'info') # Mensagem de que o input não é válido
+                    return redirect(url_for('saque')) # recarrega a página
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos. Não são aceitos números com mais de 6 caracteres antes do ponto.', 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('saque')) # recarrega a página
@@ -334,6 +346,7 @@ def respostaReq(decisao, tipo, id):
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
             dataHora = modelo.dataHora(True)
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
+            modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
             return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
         else:

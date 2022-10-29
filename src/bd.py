@@ -41,6 +41,9 @@ def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o
     cur.close()
     return linha
 
+
+
+
 # Função que pega linhas 
 def tabelaPersonalizada(tabela, dado, valor):
     cur = mysql.connection.cursor()

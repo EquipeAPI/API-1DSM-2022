@@ -8,8 +8,12 @@
     <title></title>
   </head>
   <body>
+    {% extends "home.html" %}
+    {% block capitalTotal  %}
+      <h2>Capital total do banco: {{capitalTotal}}</h2>
+    {% endblock %}
     <span>
-      {% extends "home.html" %} {% block gerente %}
+       {% block gerente %}
       <div class="centHomeG">
         <button id="req"><a href="/requisicoes/historico_operacao" class="nav-link">Requisições de depósito</a></button>
         <button id="req"><a href="/requisicoes/alteracao_cadastral" class="nav-link">Requisições alterações cadastrais</a></button>
