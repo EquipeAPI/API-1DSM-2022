@@ -152,6 +152,75 @@ def alteraPorGerente(linhaAlteracao, id_usuario):
     cur.close()
     return None
 
+def dadosTransferenciaOrigem(operacoes):
+    listaContasOrigem = []
+    for operacao in operacoes:
+        for coluna, registro in operacao.items():
+            if coluna == 'numero_conta' and registro != None and registro != session['numero_conta']: #Se no histórico, o número da conta origem for diferente do número da conta logado == transferência foi recebida
+                usuarioOrigem = bd.pegarLinha('conta', 'numero_conta', registro) 
+                listaContasOrigem.append(usuarioOrigem) #Armazena as contas cujas transferências foram recebidas
+    dadosUsuario = [] #listas vazias para iterar
+    nomesOrigem = []
+    dadosContas = []
+    contasOrigem = []
+
+    # ---- CONTAS DE TRANSFERÊNCIAS RECEBIDAS ----
+    for conta in listaContasOrigem:
+        for coluna, registro in conta.items():
+            if coluna == 'id_usuario':
+                dados = bd.pegarLinha('usuario', 'id_usuario', registro)
+                cont = bd.pegarLinha('conta', 'id_usuario', registro )
+                dadosUsuario.append(dados)
+                dadosContas.append(cont)
+    for usuario in dadosUsuario:
+        nomesOrigem.append(usuario['nome_usuario'])
+
+    for conta in dadosContas:
+        contasOrigem.append(conta['numero_conta'])
+
+    dic_nome_conta_origem = {}
+    for nome in nomesOrigem:
+        for conta in contasOrigem:
+            dic_nome_conta_origem[nome] = conta
+            contasOrigem.remove(conta)
+            break
+
+    return dic_nome_conta_origem
+
+def dadosTransferenciaDestino(operacoes):
+    listaContasDestino = []
+    for operacao in operacoes:
+        for coluna, registro in operacao.items():
+            if coluna == 'numero_conta_destino' and registro != None and registro != session['numero_conta']: #Se no histórico, o número da conta destino for diferente do número da conta logado == transferência foi enviada pelo usuário
+                usuarioDestino = bd.pegarLinha('conta', 'numero_conta', registro)
+                listaContasDestino.append(usuarioDestino) #Armazena as contas cujas transferências foram enviadas
+    dadosUsuario = [] #listas vazias para iterar
+    nomesDestino = []
+    dadosContas = []
+    contasDestino = []
+
+    # ---- CONTAS DE TRANSFERÊNCIAS ENVIADAS ----
+    for conta in listaContasDestino:
+        for coluna, registro in conta.items():
+            if coluna == 'id_usuario':
+                dados = bd.pegarLinha('usuario', 'id_usuario', registro)
+                cont = bd.pegarLinha('conta', 'id_usuario', registro )
+                dadosUsuario.append(dados)
+                dadosContas.append(cont)
+    for usuario in dadosUsuario:
+        nomesDestino.append(usuario['nome_usuario'])
+
+    for conta in dadosContas:
+        contasDestino.append(conta['numero_conta'])
+
+    dic_nome_conta_destino = {}
+    for nome in nomesDestino:
+        for conta in contasDestino:
+            dic_nome_conta_destino[nome] = conta
+            contasDestino.remove(conta)
+            break
+
+    return dic_nome_conta_destino
 
 #=============================== FUNÇÕES DE CAPITAL TOTAL ===============================
 

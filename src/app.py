@@ -261,9 +261,15 @@ def comprovante(origem):
 def extrato():
     if request.method == 'POST':
         periodo = request.form
-        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.extratoPersonalizado(session['numero_conta'], periodo['data_inicio'], periodo['data_fim']), gerente = session['gerente'])
+        operacoes = bd.extratoPersonalizado(session['numero_conta'], periodo['data_inicio'], periodo['data_fim'])
+        dic_nome_conta_origem = modelo.dadosTransferenciaOrigem(operacoes)
+        dic_nome_conta_destino = modelo.dadosTransferenciaDestino(operacoes)
+        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = operacoes, dic_nome_conta_destino = dic_nome_conta_destino, dic_nome_conta_origem = dic_nome_conta_origem, gerente = session['gerente'])
     else:
-        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = bd.extrato('historico_operacao', 'numero_conta', session['numero_conta']), gerente = session['gerente'])
+        operacoes = bd.extrato(session['numero_conta'])
+        dic_nome_conta_origem = modelo.dadosTransferenciaOrigem(operacoes)
+        dic_nome_conta_destino = modelo.dadosTransferenciaDestino(operacoes)
+        return render_template('extrato.html', nome = session['nome'], numero_conta = session['numero_conta'], numero_agencia = session['numero_agencia'], operacoes = operacoes, dic_nome_conta_destino = dic_nome_conta_destino, dic_nome_conta_origem = dic_nome_conta_origem, gerente = session['gerente'])
 
 
 #tentativa de fazer pdf

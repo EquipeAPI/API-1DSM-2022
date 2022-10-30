@@ -24,21 +24,44 @@
 
     {% for dados in operacoes %}
         <div>
-            <h4>Operação: {{dados['tipo_operacao']}}</h4>
-            <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
-            <h4>Valor: {{dados['valor_operacao']}}</h4>
-            {% if dados['tipo_operacao'] == 'Depósito' %}
-                {% if dados['status_operacao'] != 'Pendente' %}
-                    <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
-                    <h4>Status: {{dados['status_operacao']}} em {{dados['data_hora_confirmacao']}}</h4>
+            {% if dados['tipo_operacao'] == 'Transferência' %}
+                {% if dados['numero_conta'] == numero_conta %}
+                    <h4>Operação: {{dados['tipo_operacao']}} Enviada </h4>
+                    {% for chave, valor in dic_nome_conta_destino.items() %}
+                        {% if valor == dados['numero_conta_destino'] %}
+                            <h4>Destino: {{chave}}</h4>
+                            <h4>Conta: {{valor}}</h4>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h4>Operação: {{dados['tipo_operacao']}} Recebida </h4>
+                    {% for chave, valor in dic_nome_conta_origem.items() %}
+                        {% if valor == dados['numero_conta'] %}
+                            <h4>Origem: {{chave}}</h4>
+                            <h4>Conta: {{valor}}</h4>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
+                <h4>Valor: {{dados['valor_operacao']}}</h4>
+                <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+            {% else %}
+                <h4>Operação: {{dados['tipo_operacao']}}</h4>
+                <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
+                <h4>Valor: {{dados['valor_operacao']}}</h4>
+                {% if dados['tipo_operacao'] == 'Depósito' %}
+                    {% if dados['status_operacao'] != 'Pendente' %}
+                        <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+                        <h4>Status: {{dados['status_operacao']}} em {{dados['data_hora_confirmacao']}}</h4>
+                    {% else %}
+                        <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+                        <h4>Status: {{dados['status_operacao']}}</h4>
+                    {% endif %}
                 {% else %}
                     <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
-                    <h4>Status: {{dados['status_operacao']}}</h4>
                 {% endif %}
-            {% else %}
-            <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
+                {% set id = dados['id_operacao'] %}
             {% endif %}
-            {% set id = dados['id_operacao'] %}
             <button id="esconde"><a href="/comprovante/">Gerar comprovante</a></button>
             <hr>
         </div>
