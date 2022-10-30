@@ -233,6 +233,32 @@ def atualizaCapital():
     cur = mysql.connection.cursor()
     cur.execute (f"update capital_banco set capital_total = {atual} where id_capital = 0")
     mysql.connection.commit()
+    cur.close()
     return None
 
+##=============================== FUNÇÕES DE AGENCIA ===============================
 
+def atualizaNumeroAgencia(dicionario, numero_antigo):
+    tabelaGerenteAgencia = bd.pegarTabela('gerente_agencia')
+    jaExiste = False
+    for linha in range(0, len(tabelaGerenteAgencia)):
+        if tabelaGerenteAgencia[linha]['numero_agencia'] == dicionario['numero_agencia']:
+            jaExiste = True
+    if not jaExiste:
+        bd.mudaAgencia(dicionario)
+        tabelaConta = bd.pegarTabela('conta')
+        tabelaHistorico = bd.pegarTabela('historico_operacao')
+        tabelaConfirmacaoCadastro = bd.pegarTabela('confirmacao_cadastro')
+        tabelaAlteracaoCadastro = bd.pegarTabela('alteracao_cadastral')
+        tabelaEncerraConta = bd.pegarTabela('encerramento_conta')
+        listaTabelas = [tabelaConta, tabelaHistorico, tabelaConfirmacaoCadastro, tabelaAlteracaoCadastro, tabelaEncerraConta]
+        cur = mysql.connection.cursor()
+        for tabela in listaTabelas:
+            for linha in tabela:
+                if linha['numero_agencia'] == numero_antigo:
+                    cur.execute (f"update {tabela} set numero_agencia = {dicionario['numero_agencia']} where numero_agencia = {numero_antigo}")  
+            mysql.connection.commit()
+        cur.close()
+        return True
+    else:
+        return False

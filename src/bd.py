@@ -172,8 +172,19 @@ def soma_capital(tabela, coluna):
     cur.close()
     return capital_total
 
+#================= Funções de agencia ======================
 
-
-
+def mudaAgencia(dicionario):
+    forms = {}
+    for chave, valor in dicionario.items():
+        if dicionario[chave] == '':
+            forms[chave] = None
+        else:
+            forms[chave] = valor
+    cur = mysql.connection.cursor()
+    cur.execute (f'UPDATE gerente_agencia SET numero_agencia = {dicionario["numero_agencia"]} WHERE numero_agencia = {dicionario["numero_agencia"]}')
+    mysql.connection.commit()
+    cur.close()
+    return None
 
 

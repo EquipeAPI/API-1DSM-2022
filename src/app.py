@@ -441,5 +441,19 @@ def usuariosAgencia(numero_agencia):
     agencia = int(numero_agencia)
     return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = agencia, gerente = session['gerente'])
 
+@app.route('/alteraAgencia/<numero_agencia>', methods = ['POST', 'GET'])
+def alteraAgencia(numero_agencia):
+    numero_agencia = int(numero_agencia)
+    if request.method == 'POST':
+        form = request.form
+        if modelo.atualizaNumeroAgencia(form, numero_agencia):
+            flash('alteração realizada com sucesso')
+            return redirect(url_for('alteraAgencia'))
+        else:
+            flash('esse número de agencia já existe')
+            return redirect(url_for('alteraAgencia'))
+    else:
+        return render_template('alteraAgencia.html', agencia = numero_agencia)
+
 if __name__ == '__main__':
     app.run(debug = True)
