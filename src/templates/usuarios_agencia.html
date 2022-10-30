@@ -73,6 +73,7 @@
             {% for linhaUsuario in usuario %}
                 {% for linhaConta in conta %}
                     {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia and linhaUsuario['id_usuario'] != 1 %}
+                        
                         <form class="req-form">
                             
                             {% for chave, valor in linhaUsuario.items() %}
@@ -137,7 +138,7 @@
         {% if gerente == 'agencia' %}
             <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
         {% else %}
-            <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+            <a href="/agencias" class="voltar"><button> Voltar </button></a>
         {% endif %}
     </div>       
 </body>

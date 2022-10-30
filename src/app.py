@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Meusequel@d0' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -438,7 +438,8 @@ def agencias():
 def usuariosAgencia(numero_agencia):
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaConta = bd.pegarTabela('conta')
-    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = numero_agencia, gerente = session['gerente'])
+    agencia = int(numero_agencia)
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = agencia, gerente = session['gerente'])
 
 if __name__ == '__main__':
     app.run(debug = True)
