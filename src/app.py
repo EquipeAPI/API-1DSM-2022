@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -177,7 +177,7 @@ def deposito():
                 #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                 session['dic_dados'] = dic_dados
                 flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
-                return redirect(url_for('comprovante', origem = 'deposito')) # Redirecionando para a tela home
+                return redirect(url_for('comprovante', origem = 'operacao', operacao = 'deposito', id = '0')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos.' 'info') # Mensagem de que o input não é válido
                 return redirect(url_for('deposito')) # recarrega a página
@@ -206,7 +206,7 @@ def saque():
                     modelo.atualizaCapital()
                     session['dic_dados'] = dic_dados
                     flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
-                    return redirect(url_for('comprovante', origem = 'saque')) # Redirecionando para a tela home
+                    return redirect(url_for('comprovante', origem = 'operacao', operacao = 'saque', id = '0')) # Redirecionando para a tela home
                 else:
                     flash('Não podemos realizar essa operação no momento, tente mais tarde', 'info') # Mensagem de que o input não é válido
                     return redirect(url_for('saque')) # recarrega a página
@@ -237,7 +237,7 @@ def transferencia():
                     bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
                     flash('transferencia realizada com sucesso', 'info')
-                    return redirect(url_for('comprovante', origem = 'transferencia'))
+                    return redirect(url_for('comprovante', origem = 'operacao', operacao = 'transferencia', id = '0'))
                 else:
                     flash('Número de conta invalido', 'erro')
                     return redirect(url_for('transferencia'))
@@ -250,12 +250,24 @@ def transferencia():
         return redirect(url_for('login'))
 
 
-@app.route('/comprovante/<origem>') #Gerador de comprovante
-def comprovante(origem):
-    if origem == 'transferencia':
-        return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), nome_destino = session['dic_dados']['nome_destino'], gerente = session['gerente'])
-    elif origem == 'deposito' or 'saque':
-        return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'])
+@app.route('/comprovante/<origem>/<operacao>/<id>') #Gerador de comprovante
+def comprovante(origem, operacao, id):
+    if origem == 'operacao':
+        if operacao == 'transferencia':
+            return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), nome_destino = session['dic_dados']['nome_destino'], gerente = session['gerente'], origem = origem)
+        elif operacao == 'deposito' or 'saque':
+            return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'data_hora_operacao', session['dic_dados']['dataHora']), gerente = session['gerente'], origem = origem)
+    else:
+        if operacao == 'transferencia':
+            info = bd.pegarLinha('historico_operacao', 'id_operacao', id)
+            contaDestino = bd.pegarLinha('conta', 'numero_conta', info['numero_conta_destino'])
+            contaOrigem = bd.pegarLinha('conta', 'numero_conta', info['numero_conta'])
+            pessoaDestino = bd.pegarLinha('usuario', 'id_usuario', contaDestino['id_usuario'])
+            pessoaOrigem = bd.pegarLinha('usuario', 'id_usuario', contaOrigem['id_usuario'])
+            return render_template('comprovante.html', nome = session['nome'], info = info , gerente = session['gerente'], origem = origem, pessoaDestino = pessoaDestino, pessoaOrigem = pessoaOrigem)
+        else:
+            return render_template('comprovante.html', nome = session['nome'], info = bd.pegarLinha('historico_operacao', 'id_operacao', id), gerente = session['gerente'], origem = origem)
+
 
 @app.route('/extrato', methods = ['GET', 'POST'])
 def extrato():

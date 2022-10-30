@@ -23,8 +23,10 @@
 
 
     {% for dados in operacoes %}
+    {% set id = dados['id_operacao'] %}
         <div>
             {% if dados['tipo_operacao'] == 'Transferência' %}
+                {% set operacao = 'transferencia' %}
                 {% if dados['numero_conta'] == numero_conta %}
                     <h4>Operação: {{dados['tipo_operacao']}} Enviada </h4>
                     {% for chave, valor in dic_nome_conta_destino.items() %}
@@ -46,6 +48,7 @@
                 <h4>Valor: {{dados['valor_operacao']}}</h4>
                 <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
             {% else %}
+            {% set operacao = 'deposito-saque' %}
                 <h4>Operação: {{dados['tipo_operacao']}}</h4>
                 <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
                 <h4>Valor: {{dados['valor_operacao']}}</h4>
@@ -60,9 +63,8 @@
                 {% else %}
                     <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
                 {% endif %}
-                {% set id = dados['id_operacao'] %}
             {% endif %}
-            <button id="esconde"><a href="/comprovante/">Gerar comprovante</a></button>
+            <button id="esconde"><a href="{{'/comprovante/extrato/%s/%s' % (operacao, id)}}">Gerar comprovante</a></button>
             <hr>
         </div>
         

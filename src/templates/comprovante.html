@@ -5,28 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprovante</title>
-    <link rel="stylesheet" href="../static/styles/comprovante.css">
+    <link rel="stylesheet" href="/static/styles/comprovante.css">
 </head>
 <body>
     <div id="logo">
-    <img src="../static/public/favicon.png" alt="">
+    <img src="/static/public/favicon.png" alt="">
     </div>
     <div class="comprovante">
         <h1>Comprovante de {{info['tipo_operacao']}}</h1>
         <h3>Operação: {{info['tipo_operacao']}}</h3>
         <h3>Valor: {{info['valor_operacao']}}</h3>
-        {% if info['tipo_operacao'] == 'Transferência' %}
-            <h2>Dados da conta Origem: </h2>
-        {% else %}
+        {% if info['tipo_operacao'] != 'Transferência' %}
             <h2>Dados da conta: </h2>
+        {% else %}
+            <h2>Dados da conta Origem: </h2>
         {% endif %}
-        <h3>Nome: {{nome}}</h3>
+        {% if info['tipo_operacao'] == 'Transferência' and numero_conta != info['numero_conta'] and origem == 'extrato'%}
+            <h3>Nome: {{pessoaOrigem['nome_usuario']}}</h3>
+        {% else %}
+            <h3>Nome: {{nome}}</h3>
+        {% endif %}
         <h3>Agência: {{info['numero_agencia']}}</h3>
         <h3>Número da conta: {{info['numero_conta']}} </h3>
-        <h3>Saldo anterior: {{info['saldo_operacao']}}</h3>
+        {% if info['tipo_operacao'] == 'Transferência'%}
+        {% else %}
+            <h3>Saldo anterior: {{info['saldo_operacao']}}</h3>
+        {% endif %}
         {% if info['tipo_operacao'] == 'Transferência'%}
             <h2>Dados da conta Destino: </h2>
-            <h3>Nome: {{nome_destino}} </h3>
+            {% if info['tipo_operacao'] == 'Transferência' and numero_conta == info['numero_conta_destino'] %}
+                <h3>Nome: {{nome}} </h3>
+            {% else %}
+                {% if origem == 'extrato' %}
+                    <h3>Nome: {{pessoaDestino['nome_usuario']}} </h3>
+                {% else %}
+                    <h3>Nome: {{nome_destino}}</h3>
+                {% endif %}
+            {% endif %}
             <h3>Agência: {{info['numero_agencia_destino']}}</h3>
             <h3>Número da conta: {{info['numero_conta_destino']}} </h3>
         {% endif%}
