@@ -215,9 +215,9 @@ body {
 }
 
 #info {
-  position: absolute;
+  margin-left:80vh;
   font-size: 1.5vw;
-  color: white;
+  color:#FF884D;
   font-weight: 700;
   left: 33%;
   top: 24%;
@@ -638,4 +638,11 @@ span.botoes
 
   background-color: #f0e5c7;
   border-radius: 35px;
+}
+
+.transf2{
+  text-align:center;
+  margin-right:6vw;
+  margin-left:auto;
+  margin-top:10px;
 }

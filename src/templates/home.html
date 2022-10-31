@@ -70,23 +70,24 @@
         {% endif %}
         <h2>Conta: {{numero_conta}}   Agência: {{numero_agencia}}</h2>
         <h2>Saldo: {{saldo}}</h2>
+
         <div>
             
             <button><a href="/saque" class="nav-link">Saque</a></button>
             <button><a href="/deposito" class="nav-link">Depósito</a></button>
-            <button><a href="/transferencia" class="nav-link">Transferência</a></button>
+            <div class="transf2"><button><a href="/transferencia" class="nav-link">Transferência</a></button></div>
         </div>
     </div>
+     <!-- Mensagem de saque ou depósito realizado com sucesso -->
+     {% with mensagens = get_flashed_messages() %}
+     {% for msg in mensagens %}
+         <p id="info">{{msg}}</p>
+     {% endfor %}
+ {% endwith %}
 
     <div>
     {% block gerente %}
     {% endblock %}
     </div>
-     <!-- Mensagem de saque ou depósito realizado com sucesso -->
-    {% with mensagens = get_flashed_messages() %}
-        {% for msg in mensagens %}
-            <p id="info">{{msg}}</p>
-        {% endfor %}
-    {% endwith %}
 </body>
 </html>
