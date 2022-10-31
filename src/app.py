@@ -10,7 +10,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -442,9 +442,10 @@ def encerraConta(id_usuario):
 
 @app.route('/agencias')
 def agencias():
-    tabelaAgencia = bd.pegarTabela('gerente_agencia')
+    tabelaAgencia = bd.pegarTabela('agencia')
     tabelaUsuario = bd.pegarTabela('usuario')
-    return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario)
+    tabelaGerente = bd.pegarTabela('gerente_geral')
+    return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente)
 
 @app.route('/usuariosAgencia/<numero_agencia>')
 def usuariosAgencia(numero_agencia):

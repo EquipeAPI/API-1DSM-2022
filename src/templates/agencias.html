@@ -46,14 +46,28 @@
         {% for linhaAgencia in tabelaAgencia %}  
             <div>
                 <h3>Número da agencia: {{linhaAgencia['numero_agencia']}}</h3>
-                {% for linhaUsuario in tabelaUsuario %}
-                    {% if linhaAgencia['id_usuario'] == linhaUsuario['id_usuario'] %}
-                        <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
-                        <h3>Numero de matricula: {{linhaAgencia['matricula_gerente_agencia']}}</h3>
-                        <h3>id de usuario: {{linhaAgencia['id_usuario']}}</h3>
+                <h3>Nome Agência: {{linhaAgencia['nome_agencia']}}</h3>
+                <h3>Rua/Avenida: {{linhaAgencia['rua_avenida_agencia']}}</h3>
+                <h3>Número de endereço: {{linhaAgencia['numero_local_agencia']}}</h3>
+                <h3>Bairro: {{linhaAgencia['bairro_agencia']}}</h3>
+                <h3>Cidade: {{linhaAgencia['cidade_agencia']}}</h3>
+                <h3>Estado: {{linhaAgencia['estado_agencia']}}</h3>
+                
+                
+                {% for linhaGerente in tabelaGerente %}
+                    {% if linhaAgencia['numero_matricula'] == linhaGerente['numero_matricula'] %}
+
+                        {% for linhaUsuario in tabelaUsuario %}
+                            
+                            {% if linhaGerente['id_usuario'] == linhaUsuario['id_usuario'] %}
+                                <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
+                                <h3>Numero de matricula: {{linhaAgencia['numero_agencia']}}</h3>
+                                <h3>id de usuario: {{linhaUsuario['id_usuario']}}</h3>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
-                    
                 {% endfor %}
+
                 {% set numero_agencia = linhaAgencia['numero_agencia'] %}
                 <button><a href="{{'/usuariosAgencia/%s' % (numero_agencia)}}"class="nav-link">Gerenciar Usuários</a></button>
             </div>

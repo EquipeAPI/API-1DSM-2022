@@ -42,6 +42,8 @@ CREATE TABLE `agencia` (
 --
 -- Dumping data for table `agencia`
 --
+update agencia set nome_agencia = 'Guará São Paulo', rua_avenida_agencia = 'Avenida Paulista', numero_local_agencia = 80, bairro_agencia = 'Centro', cidade_agencia = 'São Paulo', estado_agencia = 'SP' where numero_matricula = 2;
+update agencia set nome_agencia = 'Guará Jacareí', rua_avenida_agencia = 'Barão de Jacareí', numero_local_agencia = 21, bairro_agencia = 'Centro', cidade_agencia = 'Jacareí', estado_agencia = 'SP' where numero_matricula = 3;
 
 LOCK TABLES `agencia` WRITE;
 /*!40000 ALTER TABLE `agencia` DISABLE KEYS */;
