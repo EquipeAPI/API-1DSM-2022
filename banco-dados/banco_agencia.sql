@@ -37,13 +37,14 @@ CREATE TABLE `agencia` (
   KEY `fk_agencia_gerente` (`numero_matricula`),
   CONSTRAINT `fk_agencia_gerente` FOREIGN KEY (`numero_matricula`) REFERENCES `gerente_geral` (`numero_matricula`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
+update agencia set nome_agencia = 'Guará São Paulo', rua_avenida_agencia = 'Avenida Paulista', numero_local_agencia = 80, bairro_agencia = 'Centro', cidade_agencia = 'São Paulo', estado_agencia = 'SP' where numero_matricula = 2;
+update agencia set nome_agencia = 'Guará Jacareí', rua_avenida_agencia = 'Barão de Jacareí', numero_local_agencia = 21, bairro_agencia = 'Centro', cidade_agencia = 'Jacareí', estado_agencia = 'SP' where numero_matricula = 3;
+/*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Dumping data for table `agencia`
 --
-update agencia set nome_agencia = 'Guará São Paulo', rua_avenida_agencia = 'Avenida Paulista', numero_local_agencia = 80, bairro_agencia = 'Centro', cidade_agencia = 'São Paulo', estado_agencia = 'SP' where numero_matricula = 2;
-update agencia set nome_agencia = 'Guará Jacareí', rua_avenida_agencia = 'Barão de Jacareí', numero_local_agencia = 21, bairro_agencia = 'Centro', cidade_agencia = 'Jacareí', estado_agencia = 'SP' where numero_matricula = 3;
+
 
 LOCK TABLES `agencia` WRITE;
 /*!40000 ALTER TABLE `agencia` DISABLE KEYS */;

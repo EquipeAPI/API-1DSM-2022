@@ -32,7 +32,7 @@ CREATE TABLE `historico_operacao` (
   `valor_operacao` double NOT NULL,
   `tipo_operacao` set('Depósito','Saque','Transferência') DEFAULT NULL,
   `numero_conta` int NOT NULL,
-  `numero_agencia` int NOT NULL,
+  `numero_agencia` int,
   `status_operacao` set('Pendente','Aprovado','Negado') DEFAULT NULL,
   `numero_conta_destino` int NULL,
   `numero_agencia_destino` int NULL,

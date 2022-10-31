@@ -456,17 +456,23 @@ def usuariosAgencia(numero_agencia):
 
 @app.route('/alteraAgencia/<numero_agencia>', methods = ['POST', 'GET'])
 def alteraAgencia(numero_agencia):
+    linhaAgencia =bd.pegarLinha('agencia','numero_agencia', numero_agencia)
+    # a = linhaAgencia
+    # return f"{a} e {numero_agencia}"
+    linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'])
+    linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
     numero_agencia = int(numero_agencia)
     if request.method == 'POST':
         form = request.form
+        # return modelo.atualizaNumeroAgencia(form, numero_agencia)
         if modelo.atualizaNumeroAgencia(form, numero_agencia):
             flash('alteração realizada com sucesso')
-            return redirect(url_for('alteraAgencia'))
+            return redirect(url_for('alteraAgencia', numero_agencia = form['numero_agencia']))
         else:
             flash('esse número de agencia já existe')
-            return redirect(url_for('alteraAgencia'))
+            return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
     else:
-        return render_template('alteraAgencia.html', agencia = numero_agencia)
+        return render_template('alteraAgencia.html', agencia = numero_agencia, linhaAgencia = linhaAgencia, linhaGerente = linhaGerente, linhaUsuario =linhaUsuario)
 
 if __name__ == '__main__':
     app.run(debug = True)

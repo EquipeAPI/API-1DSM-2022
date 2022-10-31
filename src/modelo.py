@@ -239,25 +239,41 @@ def atualizaCapital():
 ##=============================== FUNÇÕES DE AGENCIA ===============================
 
 def atualizaNumeroAgencia(dicionario, numero_antigo):
-    tabelaGerenteAgencia = bd.pegarTabela('gerente_agencia')
+    tabelaAgencia = bd.pegarTabela('agencia')
     jaExiste = False
-    for linha in range(0, len(tabelaGerenteAgencia)):
-        if tabelaGerenteAgencia[linha]['numero_agencia'] == dicionario['numero_agencia']:
+    for linha in range(0, len(tabelaAgencia)):
+        if tabelaAgencia[linha]['numero_agencia'] == dicionario['numero_agencia']:
             jaExiste = True
     if not jaExiste:
-        bd.mudaAgencia(dicionario)
+        
         tabelaConta = bd.pegarTabela('conta')
         tabelaHistorico = bd.pegarTabela('historico_operacao')
         tabelaConfirmacaoCadastro = bd.pegarTabela('confirmacao_cadastro')
         tabelaAlteracaoCadastro = bd.pegarTabela('alteracao_cadastral')
         tabelaEncerraConta = bd.pegarTabela('encerramento_conta')
         listaTabelas = [tabelaConta, tabelaHistorico, tabelaConfirmacaoCadastro, tabelaAlteracaoCadastro, tabelaEncerraConta]
+        listaTexto = ['conta', 'historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta']
         cur = mysql.connection.cursor()
-        for tabela in listaTabelas:
-            for linha in tabela:
-                if linha['numero_agencia'] == numero_antigo:
-                    cur.execute (f"update {tabela} set numero_agencia = {dicionario['numero_agencia']} where numero_agencia = {numero_antigo}")  
-            mysql.connection.commit()
+        contador = 0
+        if dicionario['numero_agencia'] != '':
+            for tabela in listaTabelas:
+                for linha in tabela:
+                    if linha['numero_agencia'] == numero_antigo:
+                        # return linha
+                        cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = NULL WHERE numero_agencia = {numero_antigo}")  
+                mysql.connection.commit()
+                contador += 1
+        
+        bd.mudaAgencia(dicionario, numero_antigo)
+        contador = 0
+        if dicionario['numero_agencia'] != '':
+            for tabela in listaTabelas:
+                for linha in tabela:
+                    if linha['numero_agencia'] == numero_antigo:
+                        # return linha
+                        cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {dicionario['numero_agencia']} WHERE numero_agencia = NULL")  
+                mysql.connection.commit()
+                contador += 1
         cur.close()
         return True
     else:

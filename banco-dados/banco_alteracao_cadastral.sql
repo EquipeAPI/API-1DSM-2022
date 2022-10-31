@@ -34,7 +34,7 @@ CREATE TABLE `alteracao_cadastral` (
   `estado_alteracao` varchar(20) DEFAULT NULL,
   `senha_alteracao` varchar(16) DEFAULT NULL,
   `id_usuario` int NOT NULL,
-  `numero_agencia` int NOT NULL,
+  `numero_agencia` int,
   `numero_casa_alteracao` varchar(5) DEFAULT NULL,
   `data_nascimento_alteracao` date DEFAULT NULL,
   PRIMARY KEY (`id_alteracao`),

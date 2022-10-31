@@ -61,7 +61,7 @@
                             
                             {% if linhaGerente['id_usuario'] == linhaUsuario['id_usuario'] %}
                                 <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
-                                <h3>Numero de matricula: {{linhaAgencia['numero_agencia']}}</h3>
+                                <h3>Numero de matricula: {{linhaAgencia['numero_matricula']}}</h3>
                                 <h3>id de usuario: {{linhaUsuario['id_usuario']}}</h3>
                             {% endif %}
                         {% endfor %}
@@ -70,6 +70,7 @@
 
                 {% set numero_agencia = linhaAgencia['numero_agencia'] %}
                 <button><a href="{{'/usuariosAgencia/%s' % (numero_agencia)}}"class="nav-link">Gerenciar Usuários</a></button>
+                <button><a href="{{'/alteraAgencia/%s' % (numero_agencia)}}"class="nav-link">Alterar dados da agência</a></button>
             </div>
         {% endfor %}
     </div>

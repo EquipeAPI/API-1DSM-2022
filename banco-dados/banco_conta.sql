@@ -29,7 +29,7 @@ CREATE TABLE `conta` (
   `data_abertura_conta` date NOT NULL,
   `saldo_conta` double NOT NULL DEFAULT '0',
   `id_usuario` int NOT NULL,
-  `numero_agencia` int NOT NULL,
+  `numero_agencia` int,
   PRIMARY KEY (`numero_conta`),
   KEY `fk_id_usuario` (`id_usuario`),
   KEY `fk_agencia_conta` (`numero_agencia`),

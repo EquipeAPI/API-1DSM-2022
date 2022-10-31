@@ -36,7 +36,7 @@ CREATE TABLE `confirmacao_cadastro` (
   `bairro_cadastro` varchar(50) NOT NULL,
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
-  `numero_agencia` int NOT NULL,
+  `numero_agencia` int,
   `numero_conta` int DEFAULT NULL,
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),

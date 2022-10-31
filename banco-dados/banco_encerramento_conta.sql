@@ -28,7 +28,7 @@ CREATE TABLE `encerramento_conta` (
   `id_encerramento` int NOT NULL AUTO_INCREMENT,
   `saldo_encerramento` double NOT NULL,
   `id_usuario` int NOT NULL,
-  `numero_agencia` int NOT NULL,
+  `numero_agencia` int,
   PRIMARY KEY (`id_encerramento`),
   KEY `fk_encerramento_usuario` (`id_usuario`),
   KEY `fk_encerramento_agencia` (`numero_agencia`),
