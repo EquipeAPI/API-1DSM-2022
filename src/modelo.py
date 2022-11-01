@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from dataclasses import replace
 from flask import Flask, session
 from flask_mysqldb import MySQL
@@ -8,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '4321'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -238,7 +239,7 @@ def atualizaCapital():
 
 #=============================== FUNÇÕES DE AGENCIA ===============================
 
-def numeroAgenciaNull(dicionario, numero_antigo, valor):
+def numeroAgenciaNull(valorAntigo, valor):
     tabelaConta = bd.pegarTabela('conta')
     tabelaHistorico = bd.pegarTabela('historico_operacao')
     tabelaConfirmacaoCadastro = bd.pegarTabela('confirmacao_cadastro')
@@ -248,46 +249,39 @@ def numeroAgenciaNull(dicionario, numero_antigo, valor):
     listaTexto = ['conta', 'historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta']
     cur = mysql.connection.cursor()
     contador = 0
-    if dicionario['numero_agencia'] != '':
+    if valorAntigo != 'Null':
         for tabela in listaTabelas:
             for linha in tabela:
-                if linha['numero_agencia'] == numero_antigo or linha['numero_agencia'] == '':
+                if linha['numero_agencia'] == valorAntigo:
                     # return linha
-                    cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia = {numero_antigo}")  
+                    cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia = {valorAntigo}")  
             mysql.connection.commit()
             contador += 1
-            cur.close()
+    else:
+        for tabela in listaTabelas:
+            for linha in tabela:
+                if linha['numero_agencia'] == valorAntigo or linha['numero_agencia'] == None or linha['numero_agencia'] == '':
+                    # return linha
+                    cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia is NULL")  
+            mysql.connection.commit()
+            contador += 1
+    cur.close()
     return None
 
 def atualizaNumeroAgencia(dicionario, numero_antigo):
     tabelaAgencia = bd.pegarTabela('agencia')
     jaExiste = False
-    numero_valor = dicionario['numero_agencia']
+    
     for linha in range(0, len(tabelaAgencia)):
         if tabelaAgencia[linha]['numero_agencia'] == dicionario['numero_agencia']:
             jaExiste = True
     if not jaExiste:        
         if dicionario['numero_agencia'] != '':
-            a = numeroAgenciaNull(dicionario, numero_antigo, 'Null')
+            numeroAgenciaNull(numero_antigo, 'Null')
         bd.mudaAgencia(dicionario, numero_antigo) 
         if dicionario['numero_agencia'] != '':
-            a = numeroAgenciaNull(dicionario, 'Null', numero_valor)
-            """ tabelaConta = bd.pegarTabela('conta')
-            tabelaHistorico = bd.pegarTabela('historico_operacao')
-            tabelaConfirmacaoCadastro = bd.pegarTabela('confirmacao_cadastro')
-            tabelaAlteracaoCadastro = bd.pegarTabela('alteracao_cadastral')
-            tabelaEncerraConta = bd.pegarTabela('encerramento_conta')
-            listaTabelas = [tabelaConta, tabelaHistorico, tabelaConfirmacaoCadastro, tabelaAlteracaoCadastro, tabelaEncerraConta]
-            listaTexto = ['conta', 'historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta'] """
-            """ cur = mysql.connection.cursor()
-            for tabela in listaTabelas:
-                for linha in tabela:
-                    if linha['numero_agencia'] == numero_antigo:
-                        # return linha
-                        cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {dicionario['numero_agencia']} WHERE numero_agencia = NULL")  
-                mysql.connection.commit()
-                contador += 1
-            cur.close() """
+            numeroAgenciaNull('Null', dicionario['numero_agencia'])
+            
         return True
     else:
         return False
