@@ -6,6 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Transferencia</title>
         <link rel="stylesheet" href="../static/styles/styles.css">
+        <script>
+            // pra abrir o menu
+            function abre() {
+            document.getElementById("mySidenav").style.width = "250px";
+            }
+            // pra fechar o menu
+            function fecha() {
+            document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
     </head>
     <body>
         <div class="topo">
@@ -16,7 +26,7 @@
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
                     {% if gerente == 'geral' %}
-                        <a href="/homeGerenteGeral">Home
+                        <a href="/homeGerenteGeral">Home</a>
                     {% elif gerente == 'agencia' %}
                         <a href="/homeGerenteAgencia">Home</a>
                     {% else %}
@@ -24,6 +34,7 @@
                     {% endif %}
                     <a href="/saque">Saque</a>
                     <a href="/deposito">Deposito</a>
+                    <a href="/transferencia">Transferencia</a>
                     <a href="/extrato">Extrato</a>        
                     <a href="/reqMudancaCadastral">Perfil de usuário</a>
                     <a href="/loggout">Sair</a>

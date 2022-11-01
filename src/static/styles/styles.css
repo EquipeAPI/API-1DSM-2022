@@ -431,6 +431,8 @@ fieldset{
 .coluna {   
     float:center;
     width: 100%;
+    margin-top: 1.5vh;
+    margin-bottom: 0.5vh;
 }
 
 .row:after {
@@ -455,7 +457,8 @@ fieldset{
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 2vh;
+  margin-bottom: 1.5vh;
 }
 
 .blocoAgencia > div{
@@ -591,7 +594,7 @@ span.botoes
   display: block;
   margin-right: auto;
   margin-left: auto;
-  margin-top: 10px;
+  margin-top: 1vh;
 
     color: black;
     font-size: 2vw;
@@ -631,13 +634,35 @@ span.botoes
 
 .transf {
   width: 37vw;
-  height: 34vh;
+  height: 40vh;
   margin: 12vh auto;
   padding-top: 1vh;
   padding-left: 1vw;
 
   background-color: #f0e5c7;
   border-radius: 35px;
+}
+
+.transf button {
+  position: absolute;
+
+  color: white;
+  font-size: 2vw;
+  border: none;
+  border-radius: 10px;
+
+  left: 10%;
+  top: 120%;
+  padding: 0 0.7vw;
+}
+
+.transf button a {
+  text-decoration: none;
+
+}
+
+.transf button a:link {
+  color: black;
 }
 
 .transf2{

@@ -61,7 +61,7 @@ def extrato(conta):
 
 def extratoPersonalizado(conta, data_inicio, data_fim):
     cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM historico_operacao where numero_conta = %s or numero_conta_destino = %s AND data_hora_operacao >= %s AND data_hora_operacao <= %s ORDER BY data_hora_operacao DESC", (conta, conta, data_inicio, data_fim))
+    cur.execute(f"SELECT * FROM historico_operacao where numero_conta = {conta} or numero_conta_destino = {conta} AND data_hora_operacao >= %s AND data_hora_operacao <= %s ORDER BY data_hora_operacao DESC", (data_inicio, data_fim))
     extratoPersonalizado = cur.fetchall()
     cur.close()
     return extratoPersonalizado
