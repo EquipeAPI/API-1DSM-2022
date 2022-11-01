@@ -150,9 +150,6 @@ def reqFecha(id_usuário, numero_agencia, saldo):
     cur.close() # Fechando o cursor
     return None
 
-
-
-
 # ========================= Função de apagar linha ===========================
 
 def apaga_linha(tabela, coluna, dado):
@@ -161,7 +158,6 @@ def apaga_linha(tabela, coluna, dado):
     mysql.connection.commit()
     cur.close()
     return None
-
 
 #================= Função para somar capital do banco ======================
 
@@ -185,4 +181,5 @@ def mudaAgencia(dicionario, numero_antigo):
     cur.close()
     return None
 
+# Função para apagar agência
 
