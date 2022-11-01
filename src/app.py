@@ -493,9 +493,30 @@ def mudaGerente(id_usuario):
         return render_template('alteraGerente.html', linhaUsuario = linhaUsuario, linhaGerente = linhaGerente, linhaAgencia =linhaAgencia)
 
 
-@app.route('/criaAgencia')
+@app.route('/criaAgencia', methods = ['POST', 'GET'])
 def criaAgencia():
-    return render_template('criaAgencia.html')
+    tabelaGerente = bd.pegarTabela('gerente_geral')
+    tabelaUsuario = bd.pegarTabela('usuario')
+    if request.method == 'POST':
+        form = request.form
+        if form['numero_matricula'] == '':
+            bd.criacaoAgencia(form, False)
+            return redirect(url_for('atribuindoGerente', numero_agencia = form['numero_agencia']))
+        else:
+            bd.criacaoAgencia(form, True)
+            return redirect(url_for('agencias'))
+    else:
+        return render_template('criaAgencia.html', tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente)
+
+@app.route('/atribuindoGerente/<numero_agencia>', methods = ['POST', 'GET'])
+def atribuindoGerente(numero_agencia):
+    if request.method == 'POST':
+        form = request.form
+        #atribuiGerente
+        return redirect(url_for('agencias'))
+    else:
+        return render_template ('criandoGerente.html')
+
 
 if __name__ == '__main__':
     app.run(debug = True)

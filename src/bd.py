@@ -190,3 +190,12 @@ def mudaMatricula(numero_matricula, numero_antigo):
     cur.close()
     return None
 
+def criacaoAgencia(form, atribuido):
+    cur = mysql.connection.cursor()
+    if atribuido:
+        cur.execute(f"INSERT INTO agencia (numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['numero_matricula']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['esado_agencia']} )")
+    else:
+        cur.execute(f"INSERT INTO agencia (numero_agencia, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['esado_agencia']} )")
+    mysql.connection.commit()
+    cur.close()
+    return None
