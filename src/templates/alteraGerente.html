@@ -28,7 +28,6 @@
                 <a href="/homeGerenteGeral">Home</a>
                 <a href="/saque">Saque</a>
                 <a href="/deposito">Deposito</a>
-                <a href="/transferencia">Transferencia</a>
                 <a href="/extrato">Extrato</a>        
                 <a href="//reqMudancaCadastral">Perfil de usuário</a>
                 <a href="/loggout">Sair</a>
@@ -43,56 +42,52 @@
             </div>
         </header>
     </div>
-    {% with mensagens = get_flashed_messages() %}
-        {% for msg in mensagens %}
-            <p id="confimacaoSenha">{{msg}}</p>
-        {% endfor %}
-    {% endwith %}
     <div class="divtabuser">
         <div class="dirowuser">
             <div class="userinfo">
                 <fieldset disabled="disabled">
-                    <br>
-                    <label for="nome_agencia">Nome:</label><br>
-                    <input type="text" name="nome_agencia" value="{{linhaAgencia['nome_agencia']}}"><br>
-                    <label for="numero_agencia">Número agência:</label><br>
-                    <input type="text" name="numero_agencia" value="{{linhaAgencia['numero_agencia']}}"><br>
-                    <label for="rua_avenida_agencia">Avenida/Rua:</label><br>
-                    <input type="text" name="rua_avenida_agencia" value="{{linhaAgencia['rua_avenida_agencia']}}"><br>
-                    <label for="numero_local_agencia">Número do endereço:</label><br>
-                    <input type="text" name="numero_local_agencia", value="{{linhaAgencia['numero_local_agencia']}}"><br>
-                    <label for="bairro_agencia">Bairro:</label><br>
-                    <input type="text" name="bairro_agencia" value="{{linhaAgencia['bairro_agencia']}}"><br>
-                    <label for="cidade_agencia">Cidade:</label><br>
-                    <input type="text" name="cidade_agencia" value="{{linhaAgencia['cidade_agencia']}}"><br>
-                    <label for="estado_agencia">Estado:</label><br>
-                    <input type="text" name="estado_agencia" value="{{linhaAgencia['estado_agencia']}}"><br>
-                    <label for="nome_usuario">Gerente:</label><br>
-                    <input type="text" name="nome_usuario" value="{{linhaUsuario['nome_usuario']}}"><br>
-                    <label for="id_usuario">ID de usuário:</label><br>
-                    <input type="text" name="id_usuario" value="{{linhaUsuario['id_usuario']}}"><br>
-                    <label for="numero_matricula">Número matrícula:</label><br>
-                    <input type="text" name="numero_matricula" value="{{linhaAgencia['numero_matricula']}}"><br>
-
-                    </fieldset>
+                <br>
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" name="nome" value="{{linhaUsuario['nome_usuario']}}"><br>
+                    <label for="numero_matricula">Número de Matrícula:</label>
+                    <input type="number" value="{{linhaGerente['numero_matricula']}}">
+                    <div type="separações" class="separações">Rua ou Avenida:</div>
+                    <input type="text" name="rua" value="{{linhaUsuario['rua_avenida_usuario']}}">
+                    <div type="separações" class="separações">Número:</div>
+                    <input type="text" name="numero" value="{{linhaUsuario['numero_casa_usuario']}}"><br>
+                    <div type="separações" class="separações">Bairro:</div>
+                    <input type="text" name="bairro" value="{{linhaUsuario['bairro_usuario']}}"><br>
+                    <div type="separações" class="separações">Cidade:</div>
+                    <input type="text" name="cidade" value="{{linhaUsuario['cidade_usuario']}}">
+                    <div type="separações" class="separações">Estado:</div>
+                    <select name="estado" value="{{linhaUsuario['rua_avenida_usuario']}}" id="estado">
+                        <option value="{{linhaUsuario['estado_usuario']}}">{{linhaUsuario['estado_usuario']}}</option>
+                    </select><br>
+                    <label for="datNascimento">Data de Nascimento:</label><br>
+                    <input type="date" name="dataNascimento" value="{{linhaUsuario['data_nascimento_usuario']}}"><br>
+                    <label for="genero">Gênero:</label><br>
+                    <select name="genero" id="generos">
+                        <option value="{{linhaUsuario['genero_usuario']}}">{{linhaUsuario['genero_usuario']}}</option>
+                    </select>
+                </feldset>
             </div>
             <div class="espaço"></div>
             <div class="useralt"><br>
                 <form action="#" method="post">
-                    <label for="nome_agencia">Nome:</label><br>
-                    <input type="text" name="nome_agencia" value=""><br>
-                    <label for="numero_agencia">Número agência:</label><br>
-                    <input type="number" name="numero_agencia" value=""><br>
-                    <label for="rua_avenida_agencia">Avenida/Rua:</label><br>
-                    <input type="text" name="rua_avenida_agencia" value=""><br>
-                    <label for="numero_local_agencia">Número do endereço:</label><br>
-                    <input type="number" name="numero_local_agencia", value=""><br>
-                    <label for="bairro_agencia">Bairro:</label><br>
-                    <input type="text" name="bairro_agencia" value=""><br>
-                    <label for="cidade_agencia">Cidade:</label><br>
-                    <input type="text" name="cidade_agencia" value=""><br>
-                    <label for="estado_agencia">Estado:</label><br>
-                    <select name="estado_agencia" id="estado">
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" name="nome_usuario"><br>
+                    <label for="numero_matricula">Número de Matrícula:</label>
+                    <input type="number" name="numero_matricula">
+                    <div type="separações" class="separações">Rua ou Avenida:</div>
+                    <input type="text" name="rua_avenida_usuario" placeholder="Rua ou Avenida">
+                    <div type="separações" class="separações">Número:</div>
+                    <input type="text" name="numero_casa_usuario" placeholder="Número"><br>
+                    <div type="separações" class="separações">Bairro:</div>
+                    <input type="text" name="bairro_usuario" placeholder="Bairro"><br>
+                    <div type="separações" class="separações">Cidade:</div>
+                    <input type="text" name="cidade_usuario" placeholder="Cidade">
+                    <div type="separações" class="separações">Estado:</div>
+                    <select name="estado_usuario" id="estado">
                         <option value=''></option>
                         <option value="Acre">Acre</option>
                         <option value="Alagoas">Alagoas</option>
@@ -122,23 +117,24 @@
                         <option value="Sergipe">Sergipe</option>
                         <option value="Tocantins">Tocantins</option>
                     </select><br>
-                    <!-- <label for="nome_usuario">Gerente:</label>
-                    <input type="text" name="nome_usuario" value="{{linhaUsuario['nome_usuario']}}">
-                    <label for="id_usuario">ID de usuário:</label>
-                    <input type="text" name="id_usuario" value="{{linhaUsuario['id_usuario']}}">
-                    <label for="numero_matricula">Número matrícula:</label>
-                    <input type="text" name="numero_matricula" value="{{linhaAgencia['numero_matricula']}}"> -->
-                    <br><br>
+                    <label for="datNascimento">Data de Nascimento:</label><br>
+                    <input type="date" name="data_nascimento_usuario" placeholder="Data de Nascimento"><br>
+                    <label for="genero">Gênero:</label><br>
+                    <select name="genero_usuario" id="generos">
+                        <option value=""></option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Outro">Outro</option>
+                        <option value="Prefiro não informar">Prefiro não informar</option>
+                    </select><br><br>
                 
                     <input type="submit" value="Alterar Dados" id="alterar">
-                    
                 </form>
             </div>
         </div>
     </div>
     <br>
-    <a href="{{'/alteraGerente/%s' % (linhaGerente['id_usuario'])}}" class="voltar"><button> Mudar dados do gerente </button></a>
-    <a href="{{'/encerraConta/%s' % (linhaGerente['id_usuario'])}}"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
-    <a href="/agencias" class="voltar"><button> Voltar </button></a>
+    <a href="{{'/demiteGerente/%s' % (id_usuario)}}"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+    <a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar"><button> Voltar </button></a>
 </body>
 </html>

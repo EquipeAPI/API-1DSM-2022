@@ -1,3 +1,4 @@
+
 from urllib import response
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
@@ -10,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -330,6 +331,7 @@ def enviaReqEncerramento():
 
 
 
+
 #======================================= Requisições do Usuário =======================================
 
 @app.route('/reqMudancaCadastral', methods=['POST', 'GET'])
@@ -457,8 +459,6 @@ def usuariosAgencia(numero_agencia):
 @app.route('/alteraAgencia/<numero_agencia>', methods = ['POST', 'GET'])
 def alteraAgencia(numero_agencia):
     linhaAgencia =bd.pegarLinha('agencia','numero_agencia', numero_agencia)
-    # a = linhaAgencia
-    # return f"{a} e {numero_agencia}"
     linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'])
     linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
     numero_agencia = int(numero_agencia)
@@ -473,6 +473,29 @@ def alteraAgencia(numero_agencia):
             return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
     else:
         return render_template('alteraAgencia.html', agencia = numero_agencia, linhaAgencia = linhaAgencia, linhaGerente = linhaGerente, linhaUsuario =linhaUsuario)
+
+
+@app.route('/alteraGerente/<id_usuario>', methods = ['POST', 'GET'])
+def mudaGerente(id_usuario):
+    linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', id_usuario)
+    linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', id_usuario)
+    linhaAgencia = bd.pegarLinha('agencia', 'numero_matricula', linhaGerente['numero_matricula'])
+    if request.method == 'POST':
+        form = request.form
+        if form['numero_matricula'] == '':
+            modelo.alteraPorGerente(form,id_usuario)
+            return redirect(url_for('mudaGerente', id_usuario = id_usuario))
+        else:
+            modelo.alteraPorGerente(form, id_usuario)
+            bd.mudaMatricula(form['numero_matricula'], linhaGerente['numero_matricula'])
+            return redirect(url_for('mudaGerente', id_usuario = id_usuario))
+    else:
+        return render_template('alteraGerente.html', linhaUsuario = linhaUsuario, linhaGerente = linhaGerente, linhaAgencia =linhaAgencia)
+
+
+@app.route('/criaAgencia')
+def criaAgencia():
+    return render_template('criaAgencia.html')
 
 if __name__ == '__main__':
     app.run(debug = True)

@@ -181,5 +181,12 @@ def mudaAgencia(dicionario, numero_antigo):
     cur.close()
     return None
 
-# Função para apagar agência
+def mudaMatricula(numero_matricula, numero_antigo):
+    cur = mysql.connection.cursor()
+    cur.execute(f'UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_antigo}')
+    cur.execute(f'UPDATE gerente_geral SET numero_matricula = {numero_matricula} WHERE numero_matricula = {numero_antigo}')
+    cur.execute(f'UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_matricula is NULL')
+    mysql.connection.commit()
+    cur.close()
+    return None
 

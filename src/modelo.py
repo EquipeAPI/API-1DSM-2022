@@ -145,7 +145,7 @@ def alteraPorRequisicao(id_usuario):
 def alteraPorGerente(linhaAlteracao, id_usuario):
     cur = mysql.connection.cursor()
     for chave, valor in linhaAlteracao.items():
-        if valor == '' or valor == None or chave == 'id_alteracao' or chave == 'numero_agencia' or valor == '0':
+        if valor == '' or valor == None or chave == 'id_alteracao' or chave == 'numero_agencia' or valor == '0' or chave == 'numero_matricula':
             continue
         else:
             cur.execute (f"update usuario set {chave} = '{valor}' where id_usuario = {id_usuario}")

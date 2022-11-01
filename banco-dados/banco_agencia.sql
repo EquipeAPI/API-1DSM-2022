@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `agencia`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agencia` (
   `numero_agencia` int NOT NULL AUTO_INCREMENT,
-  `numero_matricula` int NOT NULL,
+  `numero_matricula` int,
   `nome_agencia` varchar(50) NOT NULL,
   `rua_avenida_agencia` varchar(100) NOT NULL,
   `numero_local_agencia` varchar(5) NOT NULL,
@@ -37,9 +37,6 @@ CREATE TABLE `agencia` (
   KEY `fk_agencia_gerente` (`numero_matricula`),
   CONSTRAINT `fk_agencia_gerente` FOREIGN KEY (`numero_matricula`) REFERENCES `gerente_geral` (`numero_matricula`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-update agencia set nome_agencia = 'Guará São Paulo', rua_avenida_agencia = 'Avenida Paulista', numero_local_agencia = 80, bairro_agencia = 'Centro', cidade_agencia = 'São Paulo', estado_agencia = 'SP' where numero_matricula = 2;
-update agencia set nome_agencia = 'Guará Jacareí', rua_avenida_agencia = 'Barão de Jacareí', numero_local_agencia = 21, bairro_agencia = 'Centro', cidade_agencia = 'Jacareí', estado_agencia = 'SP' where numero_matricula = 3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Dumping data for table `agencia`
@@ -48,7 +45,7 @@ update agencia set nome_agencia = 'Guará Jacareí', rua_avenida_agencia = 'Bar�
 
 LOCK TABLES `agencia` WRITE;
 /*!40000 ALTER TABLE `agencia` DISABLE KEYS */;
-INSERT INTO `agencia` VALUES (1,2,'','','','','',''),(2,3,'','','','','','');
+INSERT INTO `agencia` VALUES (1,2,'Guará São Paulo','Avenida Paulista','80','Centro','São Paulo','São Paulo'),(2,3,'Guará Jacareí','Barão de Jacareí','21','Centro','Jacareí','São Paulo');
 /*!40000 ALTER TABLE `agencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
