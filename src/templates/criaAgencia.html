@@ -43,6 +43,7 @@
         </header>
     </div>
     <div>
+
         <form action="#" method="post" class="cadastro-form">
             {% with mensagens = get_flashed_messages() %}
                 {% for msg in mensagens %}
@@ -98,14 +99,16 @@
             <select name="numero_matricula" id="estados">
                 <option value=""></option>
                 {% for linhaGerente in tabelaGerente %}
-                    {% if linhaGerente['numero_agencia'] == None %}
-                        {% for linhaUsuario in tabelaUsuario %}
-                            {% if linhaUsuario['id_usuario'] == linhaGerente['id_usuario'] %}
-                                <option value="{{linhaGerente['numero_matricula']}}">{{linhaUsuario['nome_usuario']}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                    {% if linhaGerente['numero_matricula'] != 1 %}
+                            {% for linhaUsuario in tabelaUsuario %}
+                                {% if linhaUsuario['id_usuario'] == linhaGerente['id_usuario'] and linhaGerente['atribuicao'] == 'Nao' %}
+                                    <option value="{{linhaGerente['numero_matricula']}}">{{linhaUsuario['nome_usuario']}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% set atribuido = false %}
                 {% endfor %}
+                        
             </select>
 
             <input type="submit" value="Criar agência" id="alterar">

@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '4321' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -330,7 +330,10 @@ def enviaReqEncerramento():
         return redirect(url_for('login')) # Redireciona para o login.
 
 
-
+@app.route('/atribuicao/<tipo>/<numero_matricula>')
+def atribuicao (tipo, numero_matricula):
+    bd.atribuirDesatribuirGerente(tipo, numero_matricula)
+    return redirect(url_for('agencia'))
 
 #======================================= Requisições do Usuário =======================================
 
@@ -498,6 +501,8 @@ def mudaGerente(id_usuario):
 def criaAgencia():
     tabelaGerente = bd.pegarTabela('gerente_geral')
     tabelaUsuario = bd.pegarTabela('usuario')
+    tabelaAgencia = bd.pegarTabela('agencia')
+    
     if request.method == 'POST':
         form = request.form
         if not bd.valida('agencia', 'numero_agencia', form['numero_agencia']):
@@ -510,7 +515,16 @@ def criaAgencia():
         else:
             flash('Esse número de agencia já existe. Tente outro.')
     else:
-        return render_template('criaAgencia.html', tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente)
+        return render_template('criaAgencia.html', tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente, tabelaAgencia = tabelaAgencia)
+
+@app.route('/criaGerenteNaoAtribuido', methods = ['POST', 'GET'])
+def criaGerenteNaoAtribuido():
+        if request.method == 'POST':
+            form = request.form
+            bd.criacaoGerente(form, 'Nao')
+            return redirect(url_for('agencias'))
+        else:
+            return render_template('criaGerente.html')
 
 @app.route('/atribuindoGerente/<numero_agencia>', methods = ['POST', 'GET'])
 def atribuindoGerente(numero_agencia):

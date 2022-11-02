@@ -28,6 +28,7 @@ CREATE TABLE `gerente_geral` (
   `numero_matricula` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `tipo_gerente` set('Gerente Geral','Gerente de Agência') NOT NULL,
+  `atribuicao` set('Sim', 'Nao'),
   PRIMARY KEY (`numero_matricula`),
   KEY `fk_geral_usuario` (`id_usuario`),
   CONSTRAINT `fk_geral_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
@@ -40,7 +41,7 @@ CREATE TABLE `gerente_geral` (
 
 LOCK TABLES `gerente_geral` WRITE;
 /*!40000 ALTER TABLE `gerente_geral` DISABLE KEYS */;
-INSERT INTO `gerente_geral` VALUES (1,1,'Gerente Geral'),(2,2,'Gerente de Agência'),(3,3,'Gerente de Agência');
+INSERT INTO `gerente_geral` VALUES (1,1,'Gerente Geral', Null),(2,2,'Gerente de Agência', 'Sim'),(3,3,'Gerente de Agência', 'Sim');
 /*!40000 ALTER TABLE `gerente_geral` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

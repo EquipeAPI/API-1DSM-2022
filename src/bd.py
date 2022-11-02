@@ -195,14 +195,15 @@ def mudaMatricula(numero_matricula, numero_antigo):
 def criacaoAgencia(form, atribuido):
     cur = mysql.connection.cursor()
     if atribuido:
-        cur.execute(f"INSERT INTO agencia (numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['numero_matricula']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['estado_agencia']} )")
+        cur.execute(f"INSERT INTO agencia (numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ('{form['numero_agencia']}', {form['numero_matricula']}, '{form['nome_agencia']}', '{form['rua_avenida_agencia']}', '{form['numero_local_agencia']}', '{form['bairro_agencia']}', '{form['cidade_agencia']}', '{form['estado_agencia']}' )")
+        cur.execute(f"UPDATE gerente_geral SET atribuicao = 'SIM' WHERE numero_matricula = {form['numero_matricula']}")
     else:
         cur.execute(f"INSERT INTO agencia (numero_agencia, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, '{form['nome_agencia']}', '{form['rua_avenida_agencia']}', '{form['numero_local_agencia']}', '{form['bairro_agencia']}', '{form['cidade_agencia']}', '{form['estado_agencia']}')")
     mysql.connection.commit()
     cur.close()
     return None
 
-def criacaoGerente(form):
+def criacaoGerente(form, atribuicao):
     numero_conta = modelo.geradorNumeroConta()
     dataHora = modelo.dataHora(True)
     dataAbertura = dataHora[0:10]
@@ -212,8 +213,20 @@ def criacaoGerente(form):
     cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
     cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s)", (numero_conta, dataAbertura, id['id_usuario'], None)) #Criando linha na tabela conta
-    cur.execute(f"INSERT INTO gerente_geral(id_usuario, numero_matricula, tipo_gerente) VALUES({id['id_usuario']}, {form['numero_matricula']}, 'Gerente de Agência')")
+    cur.execute(f"INSERT INTO gerente_geral(id_usuario, numero_matricula, tipo_gerente, atribuicao) VALUES({id['id_usuario']}, {form['numero_matricula']}, 'Gerente de Agência', '{atribuicao}')")
     mysql.connection.commit()
     cur.close()
     id = id['id_usuario']
     return id
+
+def atribuirDesatribuirGerente(acao, numero_matricula):
+    cur = mysql.connection.cursor()
+    if acao == 'desatribuir':
+        cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
+        cur.execute(f"UPDATE gerente_gereal SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
+    else:
+        cur.execute(f"UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_matricula is NULL")
+        cur.execute(f"UPDATE gerente_gereal SET atribuicao = 'Sim' WHERE numero_matricula = {numero_matricula}")
+    mysql.connection.commit()
+    cur.close()
+    return None

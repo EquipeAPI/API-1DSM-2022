@@ -9,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '4321'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -293,7 +293,7 @@ def apagaAgencia(valorAntigo, valor):
 
 
 def criacaoGerenteComAgencia(form, numero_agencia):
-    id = bd.criacaoGerente(form)
+    id = bd.criacaoGerente(form, 'Sim')
     cur = mysql.connection.cursor()
     cur.execute(f"UPDATE agencia SET numero_matricula = {form['numero_matricula']} WHERE numero_agencia = {numero_agencia}")
     cur.execute(f"UPDATE conta SET numero_agencia = {numero_agencia} WHERE id_usuario = {id}")
