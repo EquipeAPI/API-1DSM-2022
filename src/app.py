@@ -447,7 +447,8 @@ def agencias():
     tabelaAgencia = bd.pegarTabela('agencia')
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaGerente = bd.pegarTabela('gerente_geral')
-    return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente)
+    tabelaConta = bd.pegarTabela('conta')
+    return render_template('agencias.html', tabelaAgencia = tabelaAgencia, tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente, tabelaConta = tabelaConta)
 
 @app.route('/usuariosAgencia/<numero_agencia>')
 def usuariosAgencia(numero_agencia):
@@ -499,12 +500,15 @@ def criaAgencia():
     tabelaUsuario = bd.pegarTabela('usuario')
     if request.method == 'POST':
         form = request.form
-        if form['numero_matricula'] == '':
-            bd.criacaoAgencia(form, False)
-            return redirect(url_for('atribuindoGerente', numero_agencia = form['numero_agencia']))
+        if not bd.valida('agencia', 'numero_agencia', form['numero_agencia']):
+            if form['numero_matricula'] == '':
+                bd.criacaoAgencia(form, False)
+                return redirect(url_for('atribuindoGerente', numero_agencia = form['numero_agencia']))
+            else:
+                bd.criacaoAgencia(form, True)
+                return redirect(url_for('agencias'))
         else:
-            bd.criacaoAgencia(form, True)
-            return redirect(url_for('agencias'))
+            flash('Esse número de agencia já existe. Tente outro.')
     else:
         return render_template('criaAgencia.html', tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente)
 
@@ -512,10 +516,14 @@ def criaAgencia():
 def atribuindoGerente(numero_agencia):
     if request.method == 'POST':
         form = request.form
-        #atribuiGerente
-        return redirect(url_for('agencias'))
+        if not bd.valida('gerente_geral', 'numero_matricula', form['numero_matricula']):
+            modelo.criacaoGerenteComAgencia(form, numero_agencia)
+            return redirect(url_for('agencias'))
+        else:
+            flash ('Esse número de matricula já existe. Escolha outro.')
+            return redirect(url_for('atribuindoGerente', numero_agencia = numero_agencia))
     else:
-        return render_template ('criandoGerente.html')
+        return render_template ('criaGerente.html')
 
 
 if __name__ == '__main__':

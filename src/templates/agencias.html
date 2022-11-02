@@ -64,6 +64,11 @@
                                 <h3>Gerente: {{linhaUsuario['nome_usuario']}}</h3>
                                 <h3>Numero de matricula: {{linhaAgencia['numero_matricula']}}</h3>
                                 <h3>id de usuario: {{linhaUsuario['id_usuario']}}</h3>
+                                {% for linhaConta in tabelaConta %}
+                                    {% if linhaGerente['id_usuario'] == linhaConta['id_usuario'] %}
+                                        <h3>Numero da conta: {{linhaConta['numero_conta']}}</h3>
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -76,7 +81,9 @@
         {% endfor %}
     </div>
     <div class="cent">
+        <a href="/criaAgencia" class="voltar"><button> Criar agência </button></a>
         <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
+        
         
     </div>
 </body>

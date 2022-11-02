@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from turtle import mode
 from flask import Flask
 from flask_mysqldb import MySQL
 from app import mysql
@@ -77,13 +78,14 @@ def pegarTabela(tabela):
 #========================== Funções que inserem linhas no BD ==========================
 
 def criaConta(forms, dataAbertura): #Insere uma linha com esses valores na tabela cliente
+    dataHora = modelo.dataHora(True)
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'], dataHora)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
-    cur.execute(f"SELECT * FROM usuario WHERE nome_usuario =%s", [forms['nome_cadastro']]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
     numero_agencia = modelo.atribuiAgencia()
-    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s)", [forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia]) #Criando linha na tabela conta
+    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia)) #Criando linha na tabela conta
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
@@ -193,9 +195,25 @@ def mudaMatricula(numero_matricula, numero_antigo):
 def criacaoAgencia(form, atribuido):
     cur = mysql.connection.cursor()
     if atribuido:
-        cur.execute(f"INSERT INTO agencia (numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['numero_matricula']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['esado_agencia']} )")
+        cur.execute(f"INSERT INTO agencia (numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['numero_matricula']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['estado_agencia']} )")
     else:
-        cur.execute(f"INSERT INTO agencia (numero_agencia, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, {form['nome_agencia']}, {form['rua_avenida_agencia']}, {form['numero_local_agencia']}, {form['bairro_agencia']}, {form['cidade_agencia']}, {form['esado_agencia']} )")
+        cur.execute(f"INSERT INTO agencia (numero_agencia, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia) VALUES ({form['numero_agencia']}, '{form['nome_agencia']}', '{form['rua_avenida_agencia']}', '{form['numero_local_agencia']}', '{form['bairro_agencia']}', '{form['cidade_agencia']}', '{form['estado_agencia']}')")
     mysql.connection.commit()
     cur.close()
     return None
+
+def criacaoGerente(form):
+    numero_conta = modelo.geradorNumeroConta()
+    dataHora = modelo.dataHora(True)
+    dataAbertura = dataHora[0:10]
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (form['nome_usuario'], form ['CPF'], form['rua'], form['numero'], form['bairro'], form['cidade'], form['estado'], form['dataNascimento'], form['genero'], form['senha'], dataHora)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    mysql.connection.commit()
+    cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    id = cur.fetchone() 
+    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s)", (numero_conta, dataAbertura, id['id_usuario'], None)) #Criando linha na tabela conta
+    cur.execute(f"INSERT INTO gerente_geral(id_usuario, numero_matricula, tipo_gerente) VALUES({id['id_usuario']}, {form['numero_matricula']}, 'Gerente de Agência')")
+    mysql.connection.commit()
+    cur.close()
+    id = id['id_usuario']
+    return id

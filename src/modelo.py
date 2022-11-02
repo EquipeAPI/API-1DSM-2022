@@ -95,7 +95,7 @@ def dataHora(comHora): #Função que retor a data e a hora do sistema em string 
 #Retorna a agencia a ser atribuida ao usuario que cadastrou, levando em conta qual agencia possui menos clientes
 
 def atribuiAgencia():
-    tabelaAgencia = bd.pegarTabela('gerente_agencia')
+    tabelaAgencia = bd.pegarTabela('agencia')
     agenciaUsuario = {}
     for linhaAgencia in tabelaAgencia:
         contador = 0
@@ -287,3 +287,11 @@ def atualizaNumeroAgencia(dicionario, numero_antigo):
         return False
 
 
+def criacaoGerenteComAgencia(form, numero_agencia):
+    id = bd.criacaoGerente(form)
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE agencia SET numero_matricula = {form['numero_matricula']} WHERE numero_agencia = {numero_agencia}")
+    cur.execute(f"UPDATE conta SET numero_agencia = {numero_agencia} WHERE id_usuario = {id}")
+    mysql.connection.commit()
+    cur.close()
+    return None

@@ -5,10 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criando agência</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <script>
+        // pra abrir o menu
+        function abre() {
+        document.getElementById("mySidenav").style.width = "250px";
+        }
+        // pra fechar o menu
+        function fecha() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 </head>
 <body>
+    <div class="topo">
+        <header class="navbar">
+            <div class="menu">
+                <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
+                <a href="/homeGerenteGeral">Home</a>
+                <a href="/saque">Saque</a>
+                <a href="/deposito">Deposito</a>
+                <a href="/extrato">Extrato</a>        
+                <a href="//reqMudancaCadastral">Perfil de usuário</a>
+                <a href="/loggout">Sair</a>
+                <br>
+            </div>
+            <a href="/homeGerenteGeral">
+                <img src="../static/public/logo.png" alt="logo">
+            </a>
+            <div class="user">
+                <a href="/reqMudancaCadastral">
+                <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+            </div>
+        </header>
+    </div>
     <div>
         <form action="#" method="post" class="cadastro-form">
+            {% with mensagens = get_flashed_messages() %}
+                {% for msg in mensagens %}
+                    <br><p id="confimacaoSenha">{{msg}}</p><br>
+                {% endfor %}
+            {% endwith %}
             <label for="nome_agencia">Nome da agência:</label>
             <input type="text" name="nome_agencia"><br>
             <label for="numero_agencia">Número de ID da agência:</label>
@@ -22,7 +62,7 @@
             <label for="cidade_agencia">Cidade:</label>
             <input type="text" name="cidade_agencia"><br>
             <label for="estado_agencia">Estado:</label>
-            <select name="estado_usuario" id="estado">
+            <select name="estado_agencia" id="estado">
                 <option value=''></option>
                 <option value="Acre">Acre</option>
                 <option value="Alagoas">Alagoas</option>
@@ -63,6 +103,7 @@
                             {% if linhaUsuario['id_usuario'] == linhaGerente['id_usuario'] %}
                                 <option value="{{linhaGerente['numero_matricula']}}">{{linhaUsuario['nome_usuario']}}</option>
                             {% endif %}
+                        {% endfor %}
                     {% endif %}
                 {% endfor %}
             </select>
@@ -71,6 +112,6 @@
         </form>
     </div>
     
-    numero_agencia, numero_matricula, nome_agencia, rua_avenida_agencia, numero_local_agencia, bairro_agencia, cidade_agencia, estado_agencia
+    
 </body>
 </html>
