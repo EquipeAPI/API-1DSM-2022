@@ -415,10 +415,9 @@ body {
 }
 
 #alterar {
-  font-size:18px;
+  font-size:1vw;
   padding:10px;
-  width:55%;
-  border-radius:px;
+  width:10vw;
   border:0;
   margin-left: auto;
   margin-right: auto;
@@ -722,6 +721,80 @@ span.botoes
 }
 
 .altera-form select{
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.voltar2 button {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1vh;
+
+    color: black;
+    font-size: 1.5vw;
+    border: none;
+    border-radius: 10px;
+    padding: 0 0.7vw;
+    text-decoration: none;
+
+}
+
+.voltar2 button:hover { 
+  background-color: #0073B6;
+  color:white;
+  transition: 300ms;
+}
+
+
+.atribui-form{
+  width:23vw;
+  top:30vh;
+  left:50%;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  border-radius: 10px;
+  background-color: #f0e5c7;
+  padding: 25px;
+  margin-top: 20vh;
+}
+
+.atribui-form h1{
+  font-size:30px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.atribui-form p{
+  font-size:20px;
+  margin: 15px 0;
+}
+
+.atribui-form input{
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1vh;
+
+    color: black;
+    font-size: 1.5vw;
+    border: none;
+    border-radius: 10px;
+    padding: 0 0.7vw;
+    text-decoration: none;
+
+}
+.atribui-form input:hover { 
+  background-color: #0073B6;
+  color:white;
+  transition: 300ms;
+}
+
+.atribui-form select{
   font-size: 18px;
   border: none;
   border-radius: 8px;
