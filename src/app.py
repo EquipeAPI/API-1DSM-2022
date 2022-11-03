@@ -354,6 +354,7 @@ def apagaAgencia(numero_agencia):
         for linha in tabelaAgencia:
             if linha['numero_agencia'] != numero_agencia:
                 agenciaReceptora = linha['numero_agencia']
+    modelo.apagaAgencia(numero_agencia, agenciaReceptora)
     return redirect(url_for('agencias'))
 
 #======================================= Requisições do Usuário =======================================
