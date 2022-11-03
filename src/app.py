@@ -345,6 +345,16 @@ def atribuicao (tipo, numero_agencia):
             return redirect(url_for('agencias'))
         return render_template('atribuicao.html', tabelaGerente = tabelaGerente, numero_agencia = numero_agencia, linhaAgencia = linhaAgencia, tabelaUsuario = tabelaUsuario)
 
+
+@app.route('/apagaAgencia/<numero_agencia>') #Rota de exclusão de agância
+def apagaAgencia(numero_agencia):
+    agenciaReceptora = modelo.atribuiAgencia()
+    tabelaAgencia = bd.pegarTabela('agencia')
+    if agenciaReceptora == numero_agencia:
+        for linha in tabelaAgencia:
+            if linha['numero_agencia'] != numero_agencia:
+                agenciaReceptora = linha['numero_agencia']
+
 #======================================= Requisições do Usuário =======================================
 
 @app.route('/reqMudancaCadastral', methods=['POST', 'GET'])
