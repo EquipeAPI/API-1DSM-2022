@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -91,7 +91,7 @@ def loginGerente():
                 linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
                 if linhaGerente['tipo_gerente'] == 'Gerente Geral':
                     session['gerente'] = 'geral'
-                    return redirect(url_for('homeGerenteGeral'))
+                    return redirect(url_for('configCapital'))
                 else:
                     session['gerente'] = 'agencia'
                     return redirect(url_for('homeGerenteAgencia'))
@@ -105,7 +105,18 @@ def loginGerente():
     else:
         return render_template('login.html', gerente = 'SIM')
 
-
+@app.route('/configCapital', methods = ['POST', 'GET'])
+def configCapital():
+    saldoInicial = bd.pegarLinha('capital_banco', 'id_capital', 1)
+    if saldoInicial != None:
+        return redirect(url_for('homeGerenteGeral'))
+    else:
+        if request.method == 'POST':
+            capitalInicial = request.form
+            bd.inserirCapitalInicial(capitalInicial)
+            return redirect(url_for('homeGerenteGeral'))
+        else:
+            return render_template('configCapital.html')
 
 
 #======================================= ROTAS HOME =======================================
@@ -149,7 +160,7 @@ def homeGerenteGeral():
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
         linhaConta = bd.pegarLinha('conta', 'id_usuario', session['id_usuario'])
         session['nome'] = linhaUsuario['nome_usuario']
-        capitalTotal = bd.pegarLinha('capital_banco', 'id_capital', 0)
+        capitalTotal = bd.pegarLinha('capital_banco', 'id_capital', 1)
         capitalTotal = capitalTotal['capital_total']
         return render_template('homegerentegeral.html', nome = session['nome'],
         saldo = linhaConta['saldo_conta'],
@@ -214,7 +225,7 @@ def saque():
             if modelo.validaOperacao(saque): # Confere se o input do usuário é composto apenas de números e um .
                 linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                ct = bd.pegarLinha('capital_banco', 'id_capital', 0)
+                ct = bd.pegarLinha('capital_banco', 'id_capital', 1)
                 ct = ct['capital_total']
                 if int(float(saque)) <= ct:
                     modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
@@ -326,7 +337,7 @@ def loggout():
         nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
         flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
     session.pop(all, None) # Apagando as informações armazenadas na session['nome']
-    if session['gerente'] != 'nao':
+    if session['gerente'] == 'nao':
         return redirect(url_for('login')) # Redireciona para o login.
     else:
         return redirect(url_for('loginGerente'))
