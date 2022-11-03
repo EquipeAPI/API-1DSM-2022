@@ -101,7 +101,10 @@ def atribuiAgencia():
         contador = 0
         agencia = linhaAgencia['numero_agencia']
         usuarios = bd.tabelaPersonalizada('conta', 'numero_agencia', agencia)
+        requisicoes = bd.tabelaPersonalizada('confirmacao_cadastro', 'numero_agencia', agencia )
         for linhaUsuario in usuarios: #Contando quantos usuários tem na agencia em questão
+            contador += 1
+        for linhaUsuario in requisicoes:
             contador += 1
         agenciaUsuario[f'{agencia}'] = contador  #Dicionário que relaciona a agencia com o número de usuários cadastrados nela
 
