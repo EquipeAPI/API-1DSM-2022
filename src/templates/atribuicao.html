@@ -5,7 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
+    <script>
+        // pra abrir o menu
+        function abre() {
+        document.getElementById("mySidenav").style.width = "250px";
+        }
+        // pra fechar o menu
+        function fecha() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 </head>
 <body>
     <div class="topo">
@@ -24,11 +34,11 @@
                 <br>
             </div>
             <a href="/homeGerenteGeral">
-                <img src="../static/public/logo.png" alt="logo">
+                <img src="/static/public/logo.png" alt="logo">
             </a>
             <div class="user">
                 <a href="/reqMudancaCadastral">
-                <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+                <img src="/static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
             </div>
         </header>
     </div>
