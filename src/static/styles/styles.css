@@ -25,6 +25,7 @@
 
 }
 
+
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
@@ -463,12 +464,13 @@ fieldset{
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
   margin-top: 2vh;
   margin-bottom: 1.5vh;
 }
 
 .blocoAgencia > div{
+  
   text-align:center;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f0e5c7;

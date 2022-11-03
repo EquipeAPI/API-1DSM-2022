@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -330,10 +330,20 @@ def enviaReqEncerramento():
         return redirect(url_for('login')) # Redireciona para o login.
 
 
-@app.route('/atribuicao/<tipo>/<numero_matricula>')
-def atribuicao (tipo, numero_matricula):
-    bd.atribuirDesatribuirGerente(tipo, numero_matricula)
-    return redirect(url_for('agencia'))
+@app.route('/atribuicao/<tipo>/<numero_agencia>', methods = ['POST', 'GET'])
+def atribuicao (tipo, numero_agencia):
+    tabelaGerente = bd.pegarTabela('gerente_geral')
+    linhaAgencia = bd.pegarLinha('agencia', 'numero_agencia', numero_agencia)
+    tabelaUsuario = bd.pegarTabela('usuario')
+    if tipo == 'desatribuir':
+        bd.atribuirDesatribuirGerente(tipo, linhaAgencia['numero_matricula'])
+        return redirect(url_for('agencias'))
+    else:
+        if request.method == 'POST':
+            form = request.form
+            bd.atribuirDesatribuirGerente(tipo, form['numero_matricula'])
+            return redirect(url_for('agencias'))
+        return render_template('atribuicao.html', tabelaGerente = tabelaGerente, numero_agencia = numero_agencia, linhaAgencia = linhaAgencia, tabelaUsuario = tabelaUsuario)
 
 #======================================= Requisições do Usuário =======================================
 
@@ -462,13 +472,18 @@ def usuariosAgencia(numero_agencia):
 
 @app.route('/alteraAgencia/<numero_agencia>', methods = ['POST', 'GET'])
 def alteraAgencia(numero_agencia):
+    atribuido = True
     linhaAgencia =bd.pegarLinha('agencia','numero_agencia', numero_agencia)
-    linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'])
-    linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
+    if linhaAgencia['numero_matricula'] != None:
+        linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'])
+        linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
+    else:
+        atribuido = False
+        linhaGerente = None
+        linhaUsuario = None
     numero_agencia = int(numero_agencia)
     if request.method == 'POST':
         form = request.form
-        
         if modelo.atualizaNumeroAgencia(form, numero_agencia):
             flash('alteração realizada com sucesso')
             return redirect(url_for('alteraAgencia', numero_agencia = form['numero_agencia']))
@@ -476,7 +491,7 @@ def alteraAgencia(numero_agencia):
             flash('esse número de agencia já existe')
             return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
     else:
-        return render_template('alteraAgencia.html', agencia = numero_agencia, linhaAgencia = linhaAgencia, linhaGerente = linhaGerente, linhaUsuario =linhaUsuario)
+        return render_template('alteraAgencia.html', agencia = numero_agencia, linhaAgencia = linhaAgencia, linhaGerente = linhaGerente, linhaUsuario =linhaUsuario, atribuido = atribuido)
 
 
 @app.route('/alteraGerente/<id_usuario>', methods = ['POST', 'GET'])

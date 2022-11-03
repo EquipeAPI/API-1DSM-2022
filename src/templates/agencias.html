@@ -75,8 +75,17 @@
                 {% endfor %}
 
                 {% set numero_agencia = linhaAgencia['numero_agencia'] %}
-                <button><a href="{{'/usuariosAgencia/%s' % (numero_agencia)}}"class="nav-link">Gerenciar Usuários</a></button>
-                <button><a href="{{'/alteraAgencia/%s' % (numero_agencia)}}"class="nav-link">Alterar dados da agência</a></button>
+                <div id="flexbox">
+                    <button><a href="{{'/usuariosAgencia/%s' % (numero_agencia)}}"class="nav-link">Gerenciar Usuários</a></button>
+                    <button><a href="{{'/alteraAgencia/%s' % (numero_agencia)}}"class="nav-link">Alterar dados da agência</a></button>
+                </div>
+                <div style="margin-top: 10px;">
+                    {% if linhaAgencia['numero_matricula'] == None %}
+                        <button><a href="{{'/atribuicao/%s/%s' % ('atribuir', numero_agencia)}}"class="nav-link">Atribuir gerente</a></button>
+                    {% else %}
+                        <button><a href="{{'/atribuicao/%s/%s' % ('desatribuir', numero_agencia)}}"class="nav-link">Desatribuir gerente</a></button>
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>

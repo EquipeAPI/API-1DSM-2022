@@ -223,10 +223,10 @@ def atribuirDesatribuirGerente(acao, numero_matricula):
     cur = mysql.connection.cursor()
     if acao == 'desatribuir':
         cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
-        cur.execute(f"UPDATE gerente_gereal SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
+        cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
     else:
         cur.execute(f"UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_matricula is NULL")
-        cur.execute(f"UPDATE gerente_gereal SET atribuicao = 'Sim' WHERE numero_matricula = {numero_matricula}")
+        cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Sim' WHERE numero_matricula = {numero_matricula}")
     mysql.connection.commit()
     cur.close()
     return None

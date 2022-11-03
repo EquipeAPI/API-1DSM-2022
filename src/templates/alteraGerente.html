@@ -42,6 +42,9 @@
             </div>
         </header>
     </div>
+    <div id="flexbox">
+        <h1>Alteração de dados de gerente de agência</h1>
+    </div>
     <div class="divtabuser">
         <div class="dirowuser">
             <div class="userinfo">
@@ -49,7 +52,7 @@
                 <br>
                     <label for="nome">Nome:</label><br>
                     <input type="text" name="nome" value="{{linhaUsuario['nome_usuario']}}"><br>
-                    <label for="numero_matricula">Número de Matrícula:</label>
+                    <label for="numero_matricula">Número de Matrícula:</label><br>
                     <input type="number" value="{{linhaGerente['numero_matricula']}}">
                     <div type="separações" class="separações">Rua ou Avenida:</div>
                     <input type="text" name="rua" value="{{linhaUsuario['rua_avenida_usuario']}}">
@@ -76,7 +79,7 @@
                 <form action="#" method="post">
                     <label for="nome">Nome:</label><br>
                     <input type="text" name="nome_usuario"><br>
-                    <label for="numero_matricula">Número de Matrícula:</label>
+                    <label for="numero_matricula">Número de Matrícula:</label><br>
                     <input type="number" name="numero_matricula">
                     <div type="separações" class="separações">Rua ou Avenida:</div>
                     <input type="text" name="rua_avenida_usuario" placeholder="Rua ou Avenida">

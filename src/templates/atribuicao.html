@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+</head>
+<body>
+    <div class="topo">
+        <header class="navbar">
+            <div class="menu">
+                <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="fecha()">&times;</a>
+                <a href="/homeGerenteGeral">Home</a>
+                <a href="/saque">Saque</a>
+                <a href="/deposito">Deposito</a>
+                <a href="/extrato">Extrato</a>        
+                <a href="//reqMudancaCadastral">Perfil de usuário</a>
+                <a href="/loggout">Sair</a>
+                <br>
+            </div>
+            <a href="/homeGerenteGeral">
+                <img src="../static/public/logo.png" alt="logo">
+            </a>
+            <div class="user">
+                <a href="/reqMudancaCadastral">
+                <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+            </div>
+        </header>
+    </div>
+    <div id="flexbox">
+        <h1>Atribuição de gerente de agência para a agência {{linhaAgencia['nome_agencia']}}</h1>
+    </div>
+    <form action="#" method="post" class="cadastro-form">
+        <select name="numero_matricula" id="estados" required>
+            <option value=""></option>
+            {% for linhaGerente in tabelaGerente %}
+                {% if linhaGerente['numero_matricula'] != 1 %}
+                        {% for linhaUsuario in tabelaUsuario %}
+                            {% if linhaUsuario['id_usuario'] == linhaGerente['id_usuario'] and linhaGerente['atribuicao'] == 'Nao' %}
+                                <option value="{{linhaGerente['numero_matricula']}}">{{linhaUsuario['nome_usuario']}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% set atribuido = false %}
+            {% endfor %} 
+        </select><br>
+        <input type="submit" value="Atribuir gerente" id="alterar"> <br><br>
+        <h3>Não tem um gerente sem agência? Crie um aqui:</h3>
+        <a href="{{'/atribuindoGerente/%s' % (linhaAgencia['numero_agencia'])}}">Criar gerente</a>
+        
+    </form>
+</div>
+<a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar"><button> Voltar </button></a>
+    
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/styles/styles.css">
+        <title>Atribuição</title>
+        <script>
+            // pra abrir o menu
+            function abre() {
+            document.getElementById("mySidenav").style.width = "250px";
+            }
+            // pra fechar o menu
+            function fecha() {
+            document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+    </head> -->

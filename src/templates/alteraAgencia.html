@@ -43,6 +43,9 @@
             </div>
         </header>
     </div>
+    <div id="flexbox">
+        <h1>Alteração de dados de agência</h1>
+    </div>
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}
             <p id="confimacaoSenha">{{msg}}</p>
@@ -67,13 +70,16 @@
                     <input type="text" name="cidade_agencia" value="{{linhaAgencia['cidade_agencia']}}"><br>
                     <label for="estado_agencia">Estado:</label><br>
                     <input type="text" name="estado_agencia" value="{{linhaAgencia['estado_agencia']}}"><br>
-                    <label for="nome_usuario">Gerente:</label><br>
-                    <input type="text" name="nome_usuario" value="{{linhaUsuario['nome_usuario']}}"><br>
-                    <label for="id_usuario">ID de usuário:</label><br>
-                    <input type="text" name="id_usuario" value="{{linhaUsuario['id_usuario']}}"><br>
-                    <label for="numero_matricula">Número matrícula:</label><br>
-                    <input type="text" name="numero_matricula" value="{{linhaAgencia['numero_matricula']}}"><br>
-
+                    {% if atribuido %}
+                        <label for="nome_usuario">Gerente:</label><br>
+                        <input type="text" name="nome_usuario" value="{{linhaUsuario['nome_usuario']}}"><br>
+                        <label for="id_usuario">ID de usuário:</label><br>
+                        <input type="text" name="id_usuario" value="{{linhaUsuario['id_usuario']}}"><br>
+                        <label for="numero_matricula">Número matrícula:</label><br>
+                        <input type="text" name="numero_matricula" value="{{linhaAgencia['numero_matricula']}}"><br>
+                    {% else %}
+                        <h3>ATENÇÃO: Agência sem gerente atribuido</h3>
+                    {% endif %}
                     </fieldset>
             </div>
             <div class="espaço"></div>
@@ -137,8 +143,14 @@
         </div>
     </div>
     <br>
-    <a href="{{'/alteraGerente/%s' % (linhaGerente['id_usuario'])}}" class="voltar"><button> Mudar dados do gerente </button></a>
-    <a href="{{'/encerraConta/%s' % (linhaGerente['id_usuario'])}}"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+    
+    <a href="{{'/encerraConta/%s' % (linhaGerente['id_usuario'])}}"><input type="button" value="EXCLUIR AGENCIA" id="deletar"></a>
+    {% if atribuido %}
+        <a href="{{'/alteraGerente/%s' % (linhaGerente['id_usuario'])}}" class="voltar"><button> Mudar dados do gerente </button></a>
+        <a href="{{'/atribuicao/%s/%s' % ('desatribuir', agencia)}}" class="voltar"><button> Desatribuir gerente </button></a>
+    {% else %}
+        <a href="{{'/atribuicao/%s/%s' % ('atribuir', agencia)}}" class="voltar"><button> Atribuir um gerente </button></a>
+    {% endif %}
     <a href="/agencias" class="voltar"><button> Voltar </button></a>
 </body>
 </html>
