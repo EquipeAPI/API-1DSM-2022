@@ -53,6 +53,11 @@
                         <br><p id="confimacaoSenha">{{msg}}</p><br>
                     {% endfor %}
                 {% endwith %}
+                <label for="tipo_conta">Tipo de conta</label><br>
+                <select name="tipo_conta" id="tipo_conta">
+                    <option value="Corrente">Corrente</option>
+                    <option value="Poupança">Poupança</option>
+                </select><br>
                 <label for="nome">Nome:</label><br>
                 <input type="text" name="nome" required><br>
                 <label for="CPF">CPF:</label><br>

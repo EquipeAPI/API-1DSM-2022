@@ -119,6 +119,9 @@
             {% if chave == 'id_cadastro' %}
                 <label for="id_cadastro">Id da operação:</label>
                 <input type="text" value="{{valor}}" readonly>
+            {% elif chave == 'tipo_conta' %}
+                <label for="tipo_conta">Tipo de conta:</label>
+                <input type="text" value="{{valor}}" readonly>
             {% elif chave == 'nome_cadastro' %}
                 <label for="nome_cadastro">Nome:</label>
                 <input type="text" value="{{valor}}" readonly>
