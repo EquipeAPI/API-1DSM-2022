@@ -144,7 +144,7 @@
     </div>
     <br>
     
-    <a href="{{'/encerraConta/%s' % (linhaGerente['id_usuario'])}}"><input type="button" value="EXCLUIR AGENCIA" id="deletar"></a>
+    <a href="{{'/apagaAgencia/%s' % (agencia)}}"><input type="button" value="EXCLUIR AGENCIA" id="deletar"></a>
     {% if atribuido %}
         <a href="{{'/alteraGerente/%s' % (linhaGerente['id_usuario'])}}" class="voltar"><button> Mudar dados do gerente </button></a>
         <a href="{{'/atribuicao/%s/%s' % ('desatribuir', agencia)}}" class="voltar"><button> Desatribuir gerente </button></a>
