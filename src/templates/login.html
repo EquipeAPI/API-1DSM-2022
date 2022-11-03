@@ -38,6 +38,7 @@
     {% endif %}
 
     <!-- Forms provisório -->
+    {% block content %}
     <div class="login-form">
         {% with mensagens = get_flashed_messages() %}
             {% for msg in mensagens %}
@@ -52,7 +53,7 @@
             <button type="submit" value="Entrar">Entrar</button>
         </form>  
     </div>
-
+    {% endblock %}
     
 
 </body>

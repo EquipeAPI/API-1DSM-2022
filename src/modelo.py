@@ -9,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -235,7 +235,7 @@ def atualizaCapital():
     inicial = inicial[0]['capital_inicial']
     atual = int(inicial) + somaContas
     cur = mysql.connection.cursor()
-    cur.execute (f"update capital_banco set capital_total = {atual} where id_capital = 0")
+    cur.execute (f"update capital_banco set capital_total = {atual} where id_capital = 1")
     mysql.connection.commit()
     cur.close()
     return None

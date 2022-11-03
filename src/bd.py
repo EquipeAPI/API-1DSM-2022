@@ -114,6 +114,12 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
     cur.close()
     return None
 
+def inserirCapitalInicial(form):
+    cur = mysql.connection.cursor()
+    cur.execute (f" INSERT INTO capital_banco (id_capital, capital_inicial, capital_total) VALUES (1, %s, %s)", (form['capital_inicial'], form['capital_inicial']))
+    mysql.connection.commit() # Dando commit
+    cur.close()
+    return None
 
 #insere linha de operação realisada ou requisitada (caso depósito) na tabela desejada.
 def inserirOperacao(tabela, operacao, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
