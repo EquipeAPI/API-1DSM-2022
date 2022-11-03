@@ -48,7 +48,7 @@ ALTER table conta ADD tipo_conta set('Poupança', 'Corrente');
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
 
-INSERT INTO `conta` VALUES (123456,'2020-10-26',1000,2,1,'Corrente'),(456123,'2020-10-26',0,1,1,'Corrente'),(654321,'2020-10-26',0,3,2,'Corrente');
+INSERT INTO `conta` VALUES (123456,'2020-10-26',0,2,1,'Corrente'),(456123,'2020-10-26',0,1,1,'Corrente'),(654321,'2020-10-26',0,3,2,'Corrente');
 
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
