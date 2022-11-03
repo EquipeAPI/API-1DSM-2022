@@ -38,7 +38,7 @@ CREATE TABLE `confirmacao_cadastro` (
   `estado_cadastro` varchar(20) NOT NULL,
   `numero_agencia` int,
   `numero_conta` int DEFAULT NULL,
-  `tipo_conta` varchar(50),
+  `tipo_cadastro` set('Corrente', 'Poupança'),
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
   CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `agencia` (`numero_agencia`)

@@ -27,7 +27,6 @@ DROP TABLE IF EXISTS `conta`;
 CREATE TABLE `conta` (
   `numero_conta` int NOT NULL,
   `data_abertura_conta` date NOT NULL,
-  `tipo_conta` set('Poupança', 'Corrente'),
   `saldo_conta` double NOT NULL DEFAULT '0',
   `id_usuario` int NOT NULL,
   `numero_agencia` int,
@@ -39,13 +38,16 @@ CREATE TABLE `conta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+ALTER table conta ADD tipo_conta set('Poupança', 'Corrente');
+
 --
 -- Dumping data for table `conta`
 --
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES (123456,'2020-10-26','Poupança',1000,2,1),(456123,'2020-10-26','Corrente',1000,1,1),(654321,'2020-10-26','Poupança',1000,3,2);
+INSERT INTO `conta` VALUES (123456,'2020-10-26',1000,2,1,'Corrente'),(456123,'2020-10-26',1000,1,1,'Corrente'),(654321,'2020-10-26',1000,3,2,'Corrente');
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

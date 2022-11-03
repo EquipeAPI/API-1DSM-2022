@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -135,7 +135,7 @@ def homeGerenteAgencia():
         return render_template('homegerente.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'])
     else:
         return redirect(url_for('login'))
 
@@ -147,13 +147,15 @@ def homeGerenteGeral():
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
+        linhaConta = bd.pegarLinha('conta', 'id_usuario', session['id_usuario'])
         session['nome'] = linhaUsuario['nome_usuario']
         capitalTotal = bd.pegarLinha('capital_banco', 'id_capital', 0)
         capitalTotal = capitalTotal['capital_total']
         return render_template('homegerentegeral.html', nome = session['nome'],
-        saldo = bd.consultaSaldo(session['id_usuario']),
+        saldo = linhaConta['saldo_conta'],
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal)
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal,
+        agencia = session['numero_agencia'])
     else:
         return redirect(url_for('login'))
 
@@ -170,14 +172,29 @@ def deposito():
         if request.method == 'POST':
             deposito = request.form['deposito'] # Atrela o valor inserido pelo usuário à variável deposito
             if modelo.validaOperacao(deposito): # Confere se o input do usuário é composto apenas de números e um .
-                linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
-                saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
-                dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-                bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
-                #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
-                session['dic_dados'] = dic_dados
-                flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
+                if session['gerente'] == 'geral':
+                    linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                    saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
+                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
+                    linhaOperacao = bd.pegarLinha('historico_operacao', 'data_hora_operacao', dic_dados['dataHora'])
+                    dataHora = modelo.dataHora(True)
+                    modelo.deposito(linhaConta['id_usuario'], deposito)
+                    modelo.atualizaCapital()
+                    bd.atualizaDeposito('historico_operacao', dataHora, 'Aprovado', 0)
+                    #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                    session['dic_dados'] = dic_dados
+                    flash('Depósito feito.', 'info') # Mensagem para indicar que a operação deu certo
+                else:
+                    linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+                    saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
+                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+                    bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
+                    #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
+                    session['dic_dados'] = dic_dados
+                    flash('Requisição de depósito enviada.', 'info') # Mensagem para indicar que a operação deu certo
                 return redirect(url_for('comprovante', origem = 'operacao', operacao = 'deposito', id = '0')) # Redirecionando para a tela home
             else:
                 flash('Insira apenas números e use "." para separar reais de centavos.' 'info') # Mensagem de que o input não é válido
@@ -363,11 +380,13 @@ def apagaAgencia(numero_agencia):
 def mudancaCadastral():
     if request.method == 'POST':
         form = request.form
-        bd.reqMudanca(form, session['id_usuario'], session['numero_agencia'])
-        flash('Requisição de mudança cadastral enviada.')
-        if session['gerente'] == 'agencia':
-            return redirect(url_for('homeGerenteAgencia'))
+        
+        if session['gerente'] == 'geral' or session['gerente'] == 'agencia':
+            modelo.alteraPorGerente(form, session['id_usuario'])
+            return redirect(url_for('mudancaCadastral'))
         else:
+            bd.reqMudanca(form, session['id_usuario'], session['numero_agencia'])
+            flash('Requisição de mudança cadastral enviada.')
             return redirect(url_for('home'))
     else:
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
@@ -380,12 +399,18 @@ def reqEncerramento():
 
 #======================================= Requisições para o gerente =======================================
 
-@app.route('/requisicoes/<tipo>') #nome das tabelas (possíveis valores do tipo): confirmacao_deposito, alteracao_cadastral, encerramento_conta, confirmacao_cadastro
-def requisicoes(tipo):
-    usuario = bd.pegarTabela('usuario')
-    conta = bd.pegarTabela('conta')
-    return render_template('requisicoes.html', 
-    requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', session['numero_agencia']), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta, gerente = session['gerente'])
+@app.route('/requisicoes/<tipo>/<numero_agencia>', methods = ['POST', 'GET']) #nome das tabelas (possíveis valores do tipo): confirmacao_deposito, alteracao_cadastral, encerramento_conta, confirmacao_cadastro
+def requisicoes(tipo, numero_agencia):
+    if request.method =='POST':
+        agencia = request.form['numero_agencia']
+        return redirect(url_for('requisicoes', tipo = tipo, numero_agencia = agencia))
+    
+    else:
+        usuario = bd.pegarTabela('usuario')
+        conta = bd.pegarTabela('conta')
+        agencia = bd.pegarTabela('agencia')
+        return render_template('requisicoes.html', 
+        requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', numero_agencia), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta, gerente = session['gerente'], tabelaAgencia =agencia, numero_agencia = numero_agencia)
 
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
@@ -398,11 +423,11 @@ def respostaReq(decisao, tipo, id):
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
             modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             dataHora = modelo.dataHora(True)
             bd.atualizaDeposito(tipo, dataHora, 'Negado', id)
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
     
     elif tipo == 'confirmacao_cadastro':
         if decisao == 'aceita':
@@ -410,10 +435,10 @@ def respostaReq(decisao, tipo, id):
             dataHora = modelo.dataHora(False)
             bd.criaConta(linhaOperacao, dataHora)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
     
     elif tipo == 'alteracao_cadastral':
         if decisao == 'aceita':
@@ -422,10 +447,10 @@ def respostaReq(decisao, tipo, id):
                 session['nome'] = linhaOperacao['nome_alteracao']
             modelo.alteraPorRequisicao(linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
 
     elif tipo == 'encerramento_conta':
         if decisao == 'aceita':
@@ -433,10 +458,10 @@ def respostaReq(decisao, tipo, id):
             linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaOperacao['id_usuario'])
             modelo.apagaUsuario(linhaConta['numero_conta'], linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, gerente = session['gerente']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
 
 
 #======================================= Gerenciando Usuários da agência =======================================

@@ -85,7 +85,7 @@ def criaConta(forms, dataAbertura): #Insere uma linha com esses valores na tabel
     cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
     numero_agencia = modelo.atribuiAgencia()
-    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia, forms['tipo_conta'])) #Criando linha na tabela conta
+    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia, forms['tipo_cadastro'])) #Criando linha na tabela conta
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
@@ -138,8 +138,22 @@ def inserirOperacaoTransferencia(tabela, operacao, dic_dados): #id_usuário, ope
     return None """
 
 def atualizaDeposito(tabela, data_hora_confirmacao, status_novo, id):
+    tabelaHistorico = tabelaPersonalizada('historico_operacao', 'status_operacao', "'Pendente'")
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE {tabela} SET data_hora_confirmacao = %s, status_operacao = %s WHERE id_operacao = %s", (data_hora_confirmacao, status_novo, id))
+    if id != 0:
+        cur.execute(f"UPDATE {tabela} SET data_hora_confirmacao = %s, status_operacao = %s WHERE id_operacao = %s", (data_hora_confirmacao, status_novo, id))
+    else:
+        contador = 0
+        for linha in tabelaHistorico:
+            if contador == 0:
+                id = linha['id_operacao']
+                contador += 1
+            else:
+                if id >= linha['id_operacao']:
+                    continue
+                else:
+                    id = linha['id_operacao']
+        cur.execute(f"UPDATE {tabela} SET data_hora_confirmacao = %s, status_operacao = %s WHERE id_operacao = %s", (data_hora_confirmacao, status_novo, id))
     mysql.connection.commit() # Dando commit
     cur.close()
     return None

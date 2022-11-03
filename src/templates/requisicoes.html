@@ -3,9 +3,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/styles/requisicoes.css">
+    <link rel="stylesheet" href="/static/styles/requisicoes.css">
     <title>Requisições</title>
-    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
         <header class="navbar">
             <script>
                 function cpf(i){
@@ -42,26 +42,43 @@
                 </div>
                 {% if gerente == 'geral' %}
                     <a href="/homeGerenteGeral">
-                        <img src="../static/public/logo.png" alt="logo">
+                        <img src="/static/public/logo.png" alt="logo">
                     </a>
                 {% elif gerente == 'agencia' %}
                     <a href="/homeGerenteAgencia">
-                        <img src="../static/public/logo.png" alt="logo">
+                        <img src="/static/public/logo.png" alt="logo">
                     </a>
                 {% else %}
                     <a href="/home">
-                        <img src="../static/public/logo.png" alt="logo">
+                        <img src="/static/public/logo.png" alt="logo">
                     </a>
                 {% endif %}
                 <div class="user">
                     <a href="/reqMudancaCadastral">
-                    <img src="../static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
+                    <img src="/static/public/user.png" alt="user" style="width:50px;height:50px;"></a>
                 </div>
                 </div>
             </div>
     </header>
 </head>
-<!-- Requisições de depósito -->
+<body>
+<div id="flexbox">   
+    <!-- Requisições de depósito -->
+    {% if gerente == 'geral' %}
+        <form action="#" method="POST" class="cadastro">
+            <select name="numero_agencia" id="estados" required>
+                <option value=""></option>
+                {% for agencia in tabelaAgencia %}
+                    <option value="{{agencia['numero_agencia']}}">Agencia {{agencia['numero_agencia']}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Filtrar">
+        </form>
+    {% endif %}
+    
+</div>
+<div id="flexbox"><h1>Agência: {{numero_agencia}}</h1></div>
+
 {% if tipo == 'historico_operacao' %}
 
     {% for requisição in requisicoes %}
@@ -230,7 +247,7 @@
 
 <!-- Requisições de encerramento de conta-->
 {% if tipo == 'encerramento_conta' %}
-    {% for requisição in requisicoes %}
+    {% for requisição in requisicoes  %}
         <div class="coluna">
         <form class="req-form">
         {% for linhaUsuario in tabelaUsuario  %}
@@ -270,4 +287,5 @@
         <a href="/homeGerenteGeral" class="voltar"><button> Voltar </button></a>
     {% endif %}
     
-    </div>
+</div>
+</body>

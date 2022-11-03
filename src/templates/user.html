@@ -153,7 +153,9 @@
             <a href="/agencias" class="voltar"><button> Voltar </button></a>
             
         {% else %}
-            <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+            {% if gerente != 'geral' %}
+                <a href="/enviaReqEncerramento"><input type="button" value="EXCLUIR CONTA" id="deletar"></a>
+            {% endif %}
             {% if gerente == 'agencia' %}
                 <a href="/homeGerenteAgencia" class="voltar"><button> Voltar </button></a>
             {% elif gerente == 'geral' %}
