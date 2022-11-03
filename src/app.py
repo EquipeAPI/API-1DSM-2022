@@ -320,7 +320,7 @@ def loggout():
         nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
         flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
     session.pop(all, None) # Apagando as informações armazenadas na session['nome']
-    if session['gerente'] != 'nao':
+    if session['gerente'] == 'nao':
         return redirect(url_for('login')) # Redireciona para o login.
     else:
         return redirect(url_for('loginGerente'))
