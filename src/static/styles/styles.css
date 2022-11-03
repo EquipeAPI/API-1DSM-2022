@@ -98,11 +98,9 @@ body {
 }
 
 .corposaque h1 {
-    margin: 0;
-    font-size: 2vw;
+    margin-left: 2vw;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
-    text-align: center;
     padding-top: 10px;
 }
 
@@ -241,7 +239,7 @@ body {
 /*PÁGINA CADASTRO*/
 .cadastro-form{
   width:23vw;
-  top:60%;
+  top:52vh;
   left:50%;
   position: absolute;
   transform: translate(-50%,-50%);
@@ -619,7 +617,8 @@ span.botoes
   background-color: red;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 3%;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
   display:block;
   cursor: pointer;
   height: 4vh;
@@ -641,13 +640,17 @@ span.botoes
 
 .transf {
   width: 37vw;
-  height: 40vh;
+  height: 43vh;
   margin: 12vh auto;
   padding-top: 1vh;
   padding-left: 1vw;
 
   background-color: #f0e5c7;
   border-radius: 35px;
+}
+
+.transf h1{
+  padding-left: 2vw;
 }
 
 .transf button {
@@ -677,4 +680,48 @@ span.botoes
   margin-right:6vw;
   margin-left:auto;
   margin-top:10px;
+}
+
+.altera-form{
+  width:23vw;
+  top:38vh;
+  left:50%;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  border-radius: 5px;
+  background-color: #f0e5c7;
+  padding: 25px;
+  margin-top: 20vh;
+}
+
+.altera-form h1{
+  font-size:30px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.altera-form p{
+  font-size:20px;
+  margin: 15px 0;
+}
+
+.altera-form input{
+  font-size:16px;
+  width:100%;
+  padding:15px 5px;
+  border: 0;
+  outline:none;
+  border-radius:10px;
+  margin-bottom:10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.altera-form select{
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
