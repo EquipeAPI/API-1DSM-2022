@@ -291,8 +291,10 @@ def atualizaNumeroAgencia(dicionario, numero_antigo):
 
 # Função para apagar agência
 def apagaAgencia(valorAntigo, valor):
-    numeroAgenciaNull(valorAntigo, valor)
-    bd.apaga_linha('agencia', 'numero agencia', valorAntigo)
+    numeroAgenciaNull(valorAntigo, 'Null')
+    numeroAgenciaNull('Null', valor)
+    bd.apaga_linha('agencia', 'numero_agencia', valorAntigo)
+    return None
 
 
 def criacaoGerenteComAgencia(form, numero_agencia):
