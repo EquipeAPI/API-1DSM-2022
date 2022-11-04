@@ -70,69 +70,124 @@
         <div class="row">
             <div class="coluna">
             
+        {% if not listaGerentes %}        
             {% for linhaUsuario in usuario %}
                 {% for linhaConta in conta %}
-                    {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia and linhaUsuario['id_usuario'] != 1 %}
-                        
-                        <form class="req-form">
+                    {% for linhaGerente in tabelaGerente %}
+                        {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] and linhaConta['numero_agencia'] == agencia and linhaUsuario['id_usuario'] == linhaGerente['id_usuario'] %}
                             
-                            {% for chave, valor in linhaUsuario.items() %}
-                                {% if chave == 'id_usuario' %}
-                                    <label for="id_usuario">ID do usuário:</label>
-                                    <input type="text" value="{{valor}}" readonly>
+                            <form class="req-form">
+                                
+                                {% for chave, valor in linhaUsuario.items() %}
+                                    {% if chave == 'id_usuario' %}
+                                        <label for="id_usuario">ID do usuário:</label>
+                                        <input type="text" value="{{valor}}" readonly>
+                                        
+                                    {% elif chave  == 'cpf_usuario' %}
+                                        <label for="cpf_usuario">CPF:</label>
+                                        <input type="text" value="{{valor}}" readonly>
                                     
-                                {% elif chave  == 'cpf_usuario' %}
-                                    <label for="cpf_usuario">CPF:</label>
-                                    <input type="text" value="{{valor}}" readonly>
-                                
-                                {% elif chave  == 'nome_usuario' %}
-                                    <label for="nome_usuario">Nome:</label>
-                                    <input type="text" value="{{valor}}" readonly>
-                                    <label for="conta">Saldo:</label>
-                                    <input type="text" value="{{linhaConta['saldo_conta']}}" readonly>
-                                    <label for="numero_conta">Numero da conta:</label>
-                                    <input type="text" value="{{linhaConta['numero_conta']}}" readonly>
+                                    {% elif chave  == 'nome_usuario' %}
+                                        <label for="nome_usuario">Nome:</label>
+                                        <input type="text" value="{{valor}}" readonly>
+                                        <label for="conta">Saldo:</label>
+                                        <input type="text" value="{{linhaConta['saldo_conta']}}" readonly>
+                                        <label for="numero_conta">Numero da conta:</label>
+                                        <input type="text" value="{{linhaConta['numero_conta']}}" readonly>
+                                        
+                                    {% elif chave  == 'data_nascimento_usuario' %}
+                                        <label for="data_nascimento_usuario">Data de nascimento:</label>
+                                        <input type="text" value="{{valor}}" readonly>
                                     
-                                {% elif chave  == 'data_nascimento_usuario' %}
-                                    <label for="data_nascimento_usuario">Data de nascimento:</label>
-                                    <input type="text" value="{{valor}}" readonly>
-                                
+                                        
+                                    {% elif chave  == 'genero_usuario' %}
+                                        <label for="genero_usuario">Genero:</label>
+                                        <input type="text" value="{{valor}}" readonly>
                                     
-                                {% elif chave  == 'genero_usuario' %}
-                                    <label for="genero_usuario">Genero:</label>
-                                    <input type="text" value="{{valor}}" readonly>
-                                
-                                {% elif chave  == 'rua_avenida_usuario' %}
-                                    <label for="rua_avenida_usuario">Rua/Avenida:</label>
-                                    <input type="text" value="{{valor}}" readonly>
-                                
-                                {% elif chave  == 'numero_casa_usuario' %}
-                                    <label for="numero_casa_usuario">Número da casa:</label>
-                                    <input type="text" value="{{valor}}" readonly>
+                                    {% elif chave  == 'rua_avenida_usuario' %}
+                                        <label for="rua_avenida_usuario">Rua/Avenida:</label>
+                                        <input type="text" value="{{valor}}" readonly>
+                                    
+                                    {% elif chave  == 'numero_casa_usuario' %}
+                                        <label for="numero_casa_usuario">Número da casa:</label>
+                                        <input type="text" value="{{valor}}" readonly>
 
-                                {% elif chave  == 'bairro_usuario' %}
-                                    <label for="bairro_usuario">Bairro:</label>
-                                    <input type="text" value="{{valor}}" readonly>
+                                    {% elif chave  == 'bairro_usuario' %}
+                                        <label for="bairro_usuario">Bairro:</label>
+                                        <input type="text" value="{{valor}}" readonly>
 
-                                {% elif chave  == 'cidade_usuario' %}
-                                    <label for="cidade_usuario">Cidade:</label>
-                                    <input type="text" value="{{valor}}" readonly>
+                                    {% elif chave  == 'cidade_usuario' %}
+                                        <label for="cidade_usuario">Cidade:</label>
+                                        <input type="text" value="{{valor}}" readonly>
 
-                                {% elif chave  == 'estado_usuario' %}
-                                    <label for="estado_usuario">Estado:</label>
-                                    <input type="text" value="{{valor}}" readonly>
+                                    {% elif chave  == 'estado_usuario' %}
+                                        <label for="estado_usuario">Estado:</label>
+                                        <input type="text" value="{{valor}}" readonly>
 
-                                {% endif %}
-                            {% endfor %}
-                            {% set id = linhaUsuario['id_usuario'] %}
-                            <button><a href="{{'/alteracaoGerente/%s' % (id)}}"class="nav-link2">Alterar dados</a></button>
-                    {% endif %}
-                        </form>
-                        
+                                    {% endif %}
+                                {% endfor %}
+                                {% set id = linhaUsuario['id_usuario'] %}
+                                <button><a href="{{'/alteracaoGerente/%s' % (id)}}"class="nav-link2">Alterar dados</a></button>
+                        {% endif %}
+                            </form>
+                    {% endfor %}        
                 {% endfor %}
                 <br>
             {% endfor %}
+        
+        {% else %}
+           
+                {% for linhaGerente in tabelaGerente %}
+                    
+                    {% if linhaGerente['atribuicao'] != None %}
+                        <br><form class="req-form">
+                            {% for linhaConta in conta %}
+                                {% if linhaConta['id_usuario'] == linhaGerente['id_usuario'] %}
+                                    {% if linhaGerente['atribuicao'] == 'Sim' %}
+                                        <h3>Gerente da agência: {{linhaConta['numero_agencia']}}</h3>
+                                    {% else %}
+                                        <h3>Gerente não atribuido</h3>
+                                    {% endif %}
+                                    <label for="numero_matricula">Número matrícula:</label>
+                                    <input type="text" value="{{linhaGerente['numero_matricula']}}" readonly>
+                                    <label for="id_usuario">ID do usuário:</label>
+                                    <input type="text" value="{{linhaConta['id_usuario']}}" readonly>
+                                    {% for linhaUsuario in usuario %}
+                                        {% if linhaUsuario['id_usuario'] == linhaConta['id_usuario'] %}
+                                            <label for="cpf_usuario">CPF:</label>
+                                            <input type="text" value="{{linhaUsuario['cpf_usuario']}}" readonly>
+                                            <label for="nome_usuario">Nome:</label>
+                                            <input type="text" value="{{linhaUsuario['nome_usuario']}}" readonly>
+                                            <label for="data_nascimento_usuario">Data de nascimento:</label>
+                                            <input type="text" value="{{linhaUsuario['data_nascimento_usuario']}}" readonly>
+                                            <label for="genero_usuario">Genero:</label>
+                                            <input type="text" value="{{linhaUsuario['genero_usuario']}}" readonly>
+                                            <label for="rua_avenida_usuario">Rua/Avenida:</label>
+                                            <input type="text" value="{{linhaUsuario['rua_avenida_usuario']}}" readonly>
+                                            <label for="numero_casa_usuario">Número da casa:</label>
+                                            <input type="text" value="{{linhaUsuario['numero_casa_usuario']}}" readonly>
+                                            <label for="bairro_usuario">Bairro:</label>
+                                            <input type="text" value="{{linhaUsuario['bairro_usuario']}}" readonly>
+                                            <label for="cidade_usuario">Cidade:</label>
+                                            <input type="text" value="{{linhaUsuario['cidade_usuario']}}" readonly>
+                                            <label for="estado_usuario">Estado:</label>
+                                            <input type="text" value="{{linhaUsuario['estado_usuario']}}" readonly>
+                                            {% if linhaGerente['atribuicao'] == 'Sim' %}
+                                                <button><a href="{{'/alteraGerente/%s' % (linhaGerente['id_usuario'])}}"class="nav-link2">Alterar dados</a></button>
+                                            {% else %}
+                                                <button><a href="{{'/alteracaoGerente/%s' % (linhaGerente['id_usuario'])}}"class="nav-link2">Alterar dados</a></button>
+                                            {% endif %}
+                            
+                                        {% endif %}
+                                    {% endfor %} 
+                                {% endif %}
+                            {% endfor %}  
+                        </form><br>
+                    {% endif %}
+                {% endfor %}             
             
+            
+        {% endif %}
             
         </div>
     </div>

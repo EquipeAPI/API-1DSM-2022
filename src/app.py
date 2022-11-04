@@ -494,7 +494,7 @@ def respostaReq(decisao, tipo, id):
 def usuarios_agencia():
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaConta = bd.pegarTabela('conta')
-    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'])
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'], listaGerentes = False)
 
 @app.route('/alteracaoGerente/<id_usuario>', methods=['POST', 'GET'])
 def alteracaoGerente(id_usuario):
@@ -628,6 +628,13 @@ def demiteGerente(id_usuario):
     bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
     return redirect(url_for('agencias'))
 
+@app.route('/listaGerentes')
+def listaGerentes():
+    tabelaGerente = bd.pegarTabela('gerente_geral')
+    tabelaUsuario = bd.pegarTabela('usuario')
+    tabelaConta = bd.pegarTabela('conta')
+
+    return render_template('usuarios_agencia.html', listaGerentes = True, usuario = tabelaUsuario, conta = tabelaConta, tabelaGerente = tabelaGerente)
 
 if __name__ == '__main__':
     app.run(debug = True)

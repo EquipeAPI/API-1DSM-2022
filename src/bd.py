@@ -251,6 +251,9 @@ def criacaoGerente(form, atribuicao):
     id = id['id_usuario']
     return id
 
+
+#===================================== Atribui/Desatribui agência =====================================
+
 def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     linhaGerente = pegarLinha('gerente_geral', 'numero_matricula', numero_matricula)
     linhaConta = pegarLinha('conta', 'id_usuario', linhaGerente['id_usuario'])
@@ -262,7 +265,6 @@ def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     if acao == 'desatribuir':
         cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
-        
         for linha in tabelaHistorico:
             cur.execute(f"UPDATE historico_operacao SET numero_agencia = NULL WHERE numero_conta = {linhaConta['numero_conta']}")
         for linha in tabelaAlteracaoCadastro:
@@ -284,3 +286,5 @@ def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     mysql.connection.commit()
     cur.close()
     return None
+
+#
