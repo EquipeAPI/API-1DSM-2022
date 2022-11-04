@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
 -- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
@@ -28,7 +26,7 @@ CREATE TABLE `capital_banco` (
   `capital_total` int NOT NULL,
   `id_capital` int NOT NULL AUTO_INCREMENT,
   `capital_inicial` double DEFAULT NULL,
-  `taxa_rendimento` double DEFAULT NULL,
+  `taxa_rendimento` double DEFAULT (0.005),
   `taxa_juros` double DEFAULT NULL,
   PRIMARY KEY (`id_capital`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-04 18:01:02
+-- Dump completed on 2022-11-04 18:32:20
