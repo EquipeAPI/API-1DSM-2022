@@ -389,10 +389,12 @@ def atribuicao (tipo, numero_agencia):
 def apagaAgencia(numero_agencia):
     agenciaReceptora = modelo.atribuiAgencia()
     tabelaAgencia = bd.pegarTabela('agencia')
+    numero_agencia = int(numero_agencia)
+    agenciaReceptora = int(agenciaReceptora)
     if agenciaReceptora == numero_agencia:
         for linha in tabelaAgencia:
             if linha['numero_agencia'] != numero_agencia:
-                agenciaReceptora = linha['numero_agencia']
+                agenciaReceptora = int(linha['numero_agencia'])    
     modelo.apagaAgencia(numero_agencia, agenciaReceptora)
     return redirect(url_for('agencias'))
 
