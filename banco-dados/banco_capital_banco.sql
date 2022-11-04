@@ -26,16 +26,17 @@ DROP TABLE IF EXISTS `capital_banco`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `capital_banco` (
   `capital_total` int NOT NULL,
-  PRIMARY KEY (`capital_total`)
+  `id_capital` int NOT NULL AUTO_INCREMENT,
+  `capital_inicial` double DEFAULT NULL,
+  `taxa_rendimento` double DEFAULT NULL,
+  `taxa_juros` double DEFAULT NULL,
+  PRIMARY KEY (`id_capital`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `capital_banco`
 --
-ALTER TABLE capital_banco DROP primary key;
-ALTER TABLE capital_banco ADD id_capital int PRIMARY KEY AUTO_INCREMENT;
-ALTER TABLE capital_banco ADD capital_inicial double;
 
 LOCK TABLES `capital_banco` WRITE;
 /*!40000 ALTER TABLE `capital_banco` DISABLE KEYS */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-28 15:51:13
+-- Dump completed on 2022-11-04 18:01:02
