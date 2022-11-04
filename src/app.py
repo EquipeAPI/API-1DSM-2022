@@ -543,7 +543,11 @@ def alteraAgencia(numero_agencia):
     numero_agencia = int(numero_agencia)
     if request.method == 'POST':
         form = request.form
+        desatribuidos = bd.tabelaPersonalizada('gerente_geral', 'atribuicao', "'Nao'")
         if modelo.atualizaNumeroAgencia(form, numero_agencia):
+            if form['numero_agencia'] != '':
+                for linha in desatribuidos:
+                    bd.atribuirDesatribuirGerente('desatribuir', linha['numero_matricula'], form['numero_agencia'])
             flash('alteração realizada com sucesso')
             return redirect(url_for('alteraAgencia', numero_agencia = form['numero_agencia']))
         else:

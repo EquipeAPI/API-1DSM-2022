@@ -94,7 +94,7 @@ def reqCriacao(forms):
     numero_agencia = modelo.atribuiAgencia()
     numero_conta = modelo.geradorNumeroConta() # Gera um número aleatório para atrelar à conta, esse número não será igual a mais nenhum outro do banco de dados
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO confirmacao_cadastro(nome_cadastro, cpf_cadastro, rua_avenida_cadastro, numero_casa_cadastro, bairro_cadastro, cidade_cadastro, estado_cadastro, data_naascimento_cadastro, genero_cadastro, senha_cadastro, numero_agencia, numero_conta, tipo_conta) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms ['CPF'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['dataNascimento'], forms['genero'], forms['senha'], numero_agencia, numero_conta, forms['tipo_conta'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO confirmacao_cadastro(nome_cadastro, cpf_cadastro, rua_avenida_cadastro, numero_casa_cadastro, bairro_cadastro, cidade_cadastro, estado_cadastro, data_naascimento_cadastro, genero_cadastro, senha_cadastro, numero_agencia, numero_conta, tipo_cadastro) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome'], forms ['CPF'], forms['rua'], forms['numero'], forms['bairro'], forms['cidade'], forms['estado'], forms['dataNascimento'], forms['genero'], forms['senha'], numero_agencia, numero_conta, forms['tipo_conta'])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.close()
     return None
@@ -245,8 +245,6 @@ def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     tabelaHistorico = tabelaPersonalizada('historico_operacao', 'numero_conta', linhaConta['numero_conta'])
     tabelaAlteracaoCadastro = tabelaPersonalizada('alteracao_cadastral', 'id_usuario', linhaGerente['id_usuario'])
     tabelaEncerraConta = tabelaPersonalizada('encerramento_conta', 'id_usuario', linhaGerente['id_usuario'])
-    listaTabelas = [tabelaHistorico, tabelaAlteracaoCadastro, tabelaEncerraConta]
-    listaTexto = ['historico_operacao', 'alteracao_cadastral', 'encerramento_conta']
     cur = mysql.connection.cursor()
     
     if acao == 'desatribuir':
