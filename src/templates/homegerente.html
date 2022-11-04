@@ -9,14 +9,14 @@
   </head>
   <body>
     <span>
-      {% extends "home.html" %} {% block gerente %}
-      <div class="centHomeG">
-        <button id="req"><a href="{{'/requisicoes/historico_operacao/%s' % (agencia)}}" class="nav-link">Requisições de depósito</a></button>
-        <button id="req"><a href="{{'/requisicoes/alteracao_cadastral/%s' % (agencia)}}" class="nav-link">Requisições alterações cadastrais</a></button>
-        <button id="req"><a href="{{'/requisicoes/encerramento_conta/%s' % (agencia)}}" class="nav-link">Requisições de encerramento de conta</a></button>
-        <button id="req"><a href="{{'/requisicoes/confirmacao_cadastro/%s' % (agencia)}}" class="nav-link">Requisições de abertura de conta</a></button>
-        <button id="req"><a href="/usuarios_agencia" class="nav-link">Usuários da agencia</a></button>
-    </div>
+    {% extends "home.html" %} {% block gerente %}
+        <div class="centHomeG">
+          <button id="req"><a href="{{'/requisicoes/historico_operacao/%s' % (agencia)}}" class="nav-link">Requisições de depósito</a></button>
+          <button id="req"><a href="{{'/requisicoes/alteracao_cadastral/%s' % (agencia)}}" class="nav-link">Requisições alterações cadastrais</a></button>
+          <button id="req"><a href="{{'/requisicoes/encerramento_conta/%s' % (agencia)}}" class="nav-link">Requisições de encerramento de conta</a></button>
+          <button id="req"><a href="{{'/requisicoes/confirmacao_cadastro/%s' % (agencia)}}" class="nav-link">Requisições de abertura de conta</a></button>
+          <button id="req"><a href="/usuarios_agencia" class="nav-link">Usuários da agencia</a></button>
+        </div>
     {% endblock %}
     </span>
   </body>

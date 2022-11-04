@@ -232,21 +232,45 @@ def criacaoGerente(form, atribuicao):
     mysql.connection.commit()
     cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
-    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia) VALUES(%s, %s, %s, %s)", (numero_conta, dataAbertura, id['id_usuario'], None)) #Criando linha na tabela conta
+    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (numero_conta, dataAbertura, id['id_usuario'], None, 'Corrente')) #Criando linha na tabela conta
     cur.execute(f"INSERT INTO gerente_geral(id_usuario, numero_matricula, tipo_gerente, atribuicao) VALUES({id['id_usuario']}, {form['numero_matricula']}, 'Gerente de Agência', '{atribuicao}')")
     mysql.connection.commit()
     cur.close()
     id = id['id_usuario']
     return id
 
-def atribuirDesatribuirGerente(acao, numero_matricula):
+def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
+    linhaGerente = pegarLinha('gerente_geral', 'numero_matricula', numero_matricula)
+    linhaConta = pegarLinha('conta', 'id_usuario', linhaGerente['id_usuario'])
+    tabelaHistorico = tabelaPersonalizada('historico_operacao', 'numero_conta', linhaConta['numero_conta'])
+    tabelaAlteracaoCadastro = tabelaPersonalizada('alteracao_cadastral', 'id_usuario', linhaGerente['id_usuario'])
+    tabelaEncerraConta = tabelaPersonalizada('encerramento_conta', 'id_usuario', linhaGerente['id_usuario'])
+    listaTabelas = [tabelaHistorico, tabelaAlteracaoCadastro, tabelaEncerraConta]
+    listaTexto = ['historico_operacao', 'alteracao_cadastral', 'encerramento_conta']
     cur = mysql.connection.cursor()
+    
     if acao == 'desatribuir':
         cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
+        
+        for linha in tabelaHistorico:
+            cur.execute(f"UPDATE historico_operacao SET numero_agencia = NULL WHERE numero_conta = {linhaConta['numero_conta']}")
+        for linha in tabelaAlteracaoCadastro:
+            cur.execute(f"UPDATE ateracao_cadastral SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")
+        for linha in tabelaEncerraConta:
+            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")
+        cur.execute(f"UPDATE conta SET numero_agencia = NULL WHERE id_usuario ={linhaGerente['id_usuario']}")
+        
     else:
         cur.execute(f"UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_matricula is NULL")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Sim' WHERE numero_matricula = {numero_matricula}")
+        for linha in tabelaHistorico:
+            cur.execute(f"UPDATE historico_operacao SET numero_agencia = {numero_agencia} WHERE numero_conta = {linhaConta['numero_conta']}")
+        for linha in tabelaAlteracaoCadastro:
+            cur.execute(f"UPDATE ateracao_cadastral SET numero_agencia = {numero_agencia} WHERE id_usuario = {linhaGerente['id_usuario']}")
+        for linha in tabelaEncerraConta:
+            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = {numero_agencia} WHERE id_usuario = {linhaGerente['id_usuario']}")
+        cur.execute(f"UPDATE conta SET numero_agencia = {numero_agencia} WHERE id_usuario ={linhaGerente['id_usuario']}")
     mysql.connection.commit()
     cur.close()
     return None

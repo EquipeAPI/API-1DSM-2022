@@ -80,11 +80,11 @@
         </div>
     </div>
      <!-- Mensagem de saque ou depósito realizado com sucesso -->
-     {% with mensagens = get_flashed_messages() %}
-     {% for msg in mensagens %}
-         <p id="info">{{msg}}</p>
-     {% endfor %}
- {% endwith %}
+    {% with mensagens = get_flashed_messages() %}
+        {% for msg in mensagens %}
+            <p id="info">{{msg}}</p>
+        {% endfor %}
+    {% endwith %}
 
     <div>
     {% block gerente %}

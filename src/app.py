@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -93,8 +93,13 @@ def loginGerente():
                     session['gerente'] = 'geral'
                     return redirect(url_for('configCapital'))
                 else:
-                    session['gerente'] = 'agencia'
-                    return redirect(url_for('homeGerenteAgencia'))
+                    if linhaGerente['atribuicao'] == 'Nao':
+                        session.clear()
+                        flash("Gerente não tem uma agência atribuida", "info")
+                        return redirect(url_for('loginGerente'))
+                    else:
+                        session['gerente'] = 'agencia'
+                        return redirect(url_for('homeGerenteAgencia'))
             else:
                 flash("Esse não é o número de um gerente. Você foi redirecionado para o login de usuário normal", "info")
                 return redirect(url_for('login'))
@@ -138,6 +143,8 @@ def home():
 @app.route('/homeGerenteAgencia')
 def homeGerenteAgencia():
     modelo.atualizaCapital()
+    linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
+    atribuido = linhaGerente['atribuicao']
     if session['gerente'] == 'agencia':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -146,7 +153,7 @@ def homeGerenteAgencia():
         return render_template('homegerente.html', nome = session['nome'],
         saldo = bd.consultaSaldo(session['id_usuario']),
         numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'])
+        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'], atribuido = atribuido)
     else:
         return redirect(url_for('login'))
 
@@ -336,10 +343,14 @@ def loggout():
     if 'nome' in session: # Se a pessoa estiver logada (nome está na session)
         nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
         flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
-    session.pop(all, None) # Apagando as informações armazenadas na session['nome']
+     # Apagando as informações armazenadas na session['nome']
     if session['gerente'] == 'nao':
+        session.clear()
+        flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
         return redirect(url_for('login')) # Redireciona para o login.
     else:
+        session.clear()
+        flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
         return redirect(url_for('loginGerente'))
 
 #Envia requisição de encerramento de conta
@@ -364,12 +375,12 @@ def atribuicao (tipo, numero_agencia):
     linhaAgencia = bd.pegarLinha('agencia', 'numero_agencia', numero_agencia)
     tabelaUsuario = bd.pegarTabela('usuario')
     if tipo == 'desatribuir':
-        bd.atribuirDesatribuirGerente(tipo, linhaAgencia['numero_matricula'])
+        bd.atribuirDesatribuirGerente(tipo, linhaAgencia['numero_matricula'], numero_agencia)
         return redirect(url_for('agencias'))
     else:
         if request.method == 'POST':
             form = request.form
-            bd.atribuirDesatribuirGerente(tipo, form['numero_matricula'])
+            bd.atribuirDesatribuirGerente(tipo, form['numero_matricula'], numero_agencia)
             return redirect(url_for('agencias'))
         return render_template('atribuicao.html', tabelaGerente = tabelaGerente, numero_agencia = numero_agencia, linhaAgencia = linhaAgencia, tabelaUsuario = tabelaUsuario)
 
@@ -585,6 +596,7 @@ def criaGerenteNaoAtribuido():
         if request.method == 'POST':
             form = request.form
             bd.criacaoGerente(form, 'Nao')
+            bd.atribuirDesatribuirGerente('desatribuir', form['numero_matricula'], 0)
             return redirect(url_for('agencias'))
         else:
             return render_template('criaGerente.html')
