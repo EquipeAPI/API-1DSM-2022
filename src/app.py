@@ -621,11 +621,16 @@ def atribuindoGerente(numero_agencia):
         return render_template ('criaGerente.html')
 
 
-@app.route('/demiteGerente/<id_usuario>')
-def demiteGerente(id_usuario):
+@app.route('/demiteGerente/<id_usuario>/<atribuido>')
+def demiteGerente(id_usuario, atribuido):
     linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', id_usuario)
-    bd.updateDado('agencia', 'numero_matricula', linhaGerente['numero_matricula'], 'numero_matricula', 'NULL')
-    bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
+    linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaGerente['id_usuario'])
+    if atribuido == "True":
+        bd.updateDado('agencia', 'numero_matricula', linhaGerente['numero_matricula'], 'numero_matricula', 'NULL')
+        bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
+    else:
+        bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
+        modelo.apagaUsuario(linhaConta['numero_conta'], linhaConta['id_usuario'])
     return redirect(url_for('agencias'))
 
 @app.route('/listaGerentes')

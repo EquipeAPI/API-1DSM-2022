@@ -43,7 +43,11 @@
         </header>
     </div>
     <div id="flexbox">
-        <h1>Alteração de dados de gerente de agência {{linhaAgencia['numero_agencia']}}</h1>
+        {% if linhaGerente['atribuicao'] == 'Sim' %}
+            <h1>Alteração de dados de gerente de agência {{linhaAgencia['numero_agencia']}}</h1>
+        {% else %}
+            <h1>Alteração de dados de gerente de agência sem agência atribuida</h1>
+        {% endif %}
     </div>
     <div class="divtabuser">
         <div class="dirowuser">
@@ -137,7 +141,12 @@
         </div>
     </div>
     <br>
-    <a href="{{'/demiteGerente/%s' % (linhaUsuario['id_usuario'])}}"><input type="button" value="EXCLUIR GERENTE" id="deletar"></a>
-    <a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar"><button> Voltar </button></a>
+    {% if linhaGerente['atribuicao'] == 'Sim' %}
+        <a href="{{'/demiteGerente/%s/%s' % (linhaUsuario['id_usuario'], True)}}"><input type="button" value="EXCLUIR GERENTE" id="deletar"></a>
+        <a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar"><button> Voltar </button></a>
+    {% else %}
+        <a href="{{'/demiteGerente/%s/%s' % (linhaUsuario['id_usuario'], False)}}"><input type="button" value="EXCLUIR GERENTE" id="deletar"></a>
+        <a href="{{'/agencias'}}" class="voltar"><button> Voltar </button></a>
+    {% endif %}
 </body>
 </html>
