@@ -77,15 +77,18 @@ def pegarTabela(tabela):
 
 #========================== Funções que inserem linhas no BD ==========================
 
-def criaConta(forms, dataAbertura): #Insere uma linha com esses valores na tabela cliente
+def criaConta(forms, dataAbertura, req): #Insere uma linha com esses valores na tabela cliente
     dataHora = modelo.dataHora(True)
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
     cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'], dataHora)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
-    numero_agencia = modelo.atribuiAgencia()
-    cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia, forms['tipo_cadastro'])) #Criando linha na tabela conta
+    if req:
+        cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], forms['numero_agencia'], forms['tipo_cadastro'])) #Criando linha na tabela conta
+    else:
+        numero_agencia = modelo.atribuiAgencia()
+        cur.execute("INSERT INTO conta(numero_conta, data_abertura_conta, id_usuario, numero_agencia, tipo_conta) VALUES(%s, %s, %s, %s, %s)", (forms['numero_conta'], dataAbertura, id['id_usuario'], numero_agencia, forms['tipo_cadastro'])) #Criando linha na tabela conta
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
@@ -170,6 +173,15 @@ def reqFecha(id_usuário, numero_agencia, saldo):
     cur.execute (f"INSERT INTO encerramento_conta(id_usuario, saldo_encerramento, numero_agencia) VALUES(%s, %s, %s)", (id_usuário, saldo, numero_agencia))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
+    return None
+
+# ========================= Função de UPDATE de um dado ===========================
+
+def updateDado(tabela, whereColuna, whereDado, coluna, dado):
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE {tabela} SET {coluna} = {dado} WHERE {whereColuna} = {whereDado}")
+    mysql.connect.commit()
+    cur.close()
     return None
 
 # ========================= Função de apagar linha ===========================

@@ -455,7 +455,7 @@ def respostaReq(decisao, tipo, id):
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('confirmacao_cadastro', 'id_cadastro', id)
             dataHora = modelo.dataHora(False)
-            bd.criaConta(linhaOperacao, dataHora)
+            bd.criaConta(linhaOperacao, dataHora, True)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
@@ -572,7 +572,7 @@ def mudaGerente(id_usuario):
             bd.mudaMatricula(form['numero_matricula'], linhaGerente['numero_matricula'])
             return redirect(url_for('mudaGerente', id_usuario = id_usuario))
     else:
-        return render_template('alteraGerente.html', linhaUsuario = linhaUsuario, linhaGerente = linhaGerente, linhaAgencia =linhaAgencia)
+        return render_template('alteraGerente.html', linhaUsuario = linhaUsuario, linhaGerente = linhaGerente, linhaAgencia =linhaAgencia, id_usuario = id_usuario)
 
 
 @app.route('/criaAgencia', methods = ['POST', 'GET'])
@@ -617,6 +617,14 @@ def atribuindoGerente(numero_agencia):
             return redirect(url_for('atribuindoGerente', numero_agencia = numero_agencia))
     else:
         return render_template ('criaGerente.html')
+
+
+@app.route('/demiteGerente/<id_usuario>')
+def demiteGerente(id_usuario):
+    linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', id_usuario)
+    bd.updateDado('agencia', 'numero_matricula', linhaGerente['numero_matricula'], 'numero_matricula', 'NULL')
+    bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
+    return redirect(url_for('agencias'))
 
 
 if __name__ == '__main__':
