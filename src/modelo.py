@@ -310,28 +310,39 @@ def criacaoGerenteComAgencia(form, numero_agencia):
 
 # Função para calcular rendimento de conta poupança
 def rendimentoPoupança():
-    operacoes = bd.extrato(session['numero_conta'])
-    depositos = []
-    for operacao in operacoes:
-        for coluna, registro in operacao.items():
-            if registro == 'Depósito':
-                depositos.append(operacao)
-    for deposito in depositos:
-        for coluna, registro in deposito.items():
-            if coluna == 'data_hora_confirmacao':
-                inicial = registro
-                if registro < inicial:
-                    inicial = registro
-
-    dataAtual = datetime.datetime.now()
-    dataInicial = inicial
-
-    quantidadeDias = (dataAtual - dataInicial).days
     saldo = bd.consultaSaldo(session['id_usuario'])
-    rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
+    if saldo > 0:
+        operacoes = bd.extrato(session['numero_conta'])
+        depositos = []
+        for operacao in operacoes:
+            for coluna, registro in operacao.items():
+                if registro == 'Depósito':
+                    depositos.append(operacao)
+        if len(depositos) > 1:
+            for deposito in depositos:
+                for coluna, registro in deposito.items():
+                    if coluna == 'data_hora_confirmacao': 
+                        inicial = registro
+                    if registro < inicial:
+                        inicial = registro
+        else:
+            for deposito in depositos:
+                for coluna, registro in deposito.items():
+                    if coluna == 'data_hora_confirmacao': 
+                        inicial = registro
+                
+
+        dataAtual = datetime.datetime.now()
+        dataInicial = inicial
+
+        quantidadeDias = (dataAtual - dataInicial).days
+        rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
     
-    while quantidadeDias >= 30:
-        saldo = saldo + (saldo * rendimento)
-        quantidadeDias = quantidadeDias - 30
+        while quantidadeDias >= 30:
+            saldo = saldo + (saldo * rendimento)
+            quantidadeDias = quantidadeDias - 30
         
-    return saldo
+        return saldo
+    else:
+        return saldo
+    
