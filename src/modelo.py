@@ -293,7 +293,8 @@ def atualizaNumeroAgencia(dicionario, numero_antigo):
 def apagaAgencia(valorAntigo, valor):
     dicionario = bd.pegarLinha('agencia', 'numero_agencia', valorAntigo)
     numeroAgenciaNull(valorAntigo, 'Null')
-    bd.atribuirDesatribuirGerente('desatribuir', dicionario['numero_matricula'], valorAntigo)
+    if dicionario['numero_matricula'] != None:
+        bd.atribuirDesatribuirGerente('desatribuir', dicionario['numero_matricula'], valorAntigo)
     numeroAgenciaNull('Null', valor)
     bd.apaga_linha('agencia', 'numero_agencia', valorAntigo)
     return None
