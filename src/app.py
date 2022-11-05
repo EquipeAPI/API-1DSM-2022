@@ -129,44 +129,57 @@ def configCapital():
 # Rota da página home
 @app.route('/home')
 def home():
-    conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
-    if conta['tipo_conta'] == 'Poupança':
-        rendimento = modelo.rendimentoPoupança()
-        bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
-        modelo.atualizaCapital()
-
-
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
-        return render_template('home.html', nome = session['nome'],
-        saldo = bd.consultaSaldo(session['id_usuario']),
-        numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
+        conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+        if conta['tipo_conta'] == 'Poupança':
+            rendimento = modelo.rendimentoPoupança()
+            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
+            modelo.atualizaCapital()
+            return render_template('home.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
+        else:
+            modelo.atualizaCapital()
+            return render_template('home.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
     else:
         return redirect(url_for('login'))
 
 @app.route('/homeGerenteAgencia')
 def homeGerenteAgencia():
-    modelo.atualizaCapital()
     linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
     atribuido = linhaGerente['atribuicao']
     if session['gerente'] == 'agencia':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
+        conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', session['id_usuario'])
         session['nome'] = linhaUsuario['nome_usuario']
-        return render_template('homegerente.html', nome = session['nome'],
-        saldo = bd.consultaSaldo(session['id_usuario']),
-        numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'], atribuido = atribuido)
+        if conta['tipo_conta'] == 'Poupança':
+            rendimento = modelo.rendimentoPoupança()
+            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
+            modelo.atualizaCapital()
+            return render_template('homegerente.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'], atribuido = atribuido)
+        else:
+            modelo.atualizaCapital()
+            return render_template('homegerente.html', nome = session['nome'],
+            saldo = bd.consultaSaldo(session['id_usuario']),
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], agencia = session['numero_agencia'], atribuido = atribuido)
     else:
         return redirect(url_for('login'))
 
 
 @app.route('/homeGerenteGeral')
 def homeGerenteGeral():
-    modelo.atualizaCapital()
     if session['gerente'] == 'geral':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -175,11 +188,23 @@ def homeGerenteGeral():
         session['nome'] = linhaUsuario['nome_usuario']
         capitalTotal = bd.pegarLinha('capital_banco', 'id_capital', 1)
         capitalTotal = capitalTotal['capital_total']
-        return render_template('homegerentegeral.html', nome = session['nome'],
-        saldo = linhaConta['saldo_conta'],
-        numero_conta = str(session['numero_conta']),
-        numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal,
-        agencia = session['numero_agencia'])
+        conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+        if conta['tipo_conta'] == 'Poupança':
+            rendimento = modelo.rendimentoPoupança()
+            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
+            modelo.atualizaCapital()
+            return render_template('homegerentegeral.html', nome = session['nome'],
+            saldo = linhaConta['saldo_conta'],
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal,
+            agencia = session['numero_agencia'])
+        else:
+            modelo.atualizaCapital()
+            return render_template('homegerentegeral.html', nome = session['nome'],
+            saldo = linhaConta['saldo_conta'],
+            numero_conta = str(session['numero_conta']),
+            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], capitalTotal = capitalTotal,
+            agencia = session['numero_agencia'])
     else:
         return redirect(url_for('login'))
 
