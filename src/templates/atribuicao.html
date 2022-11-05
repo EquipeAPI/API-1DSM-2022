@@ -60,10 +60,11 @@
             {% endfor %} 
         </select><br>
         <input type="submit" value="Atribuir gerente" class="teste1">
-        <h3>Não tem um gerente sem agência? Crie um aqui:</h3>
-        <a href="{{'/atribuindoGerente/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar2"> <button> Criar gerente </button></a>
         <br>
-        <a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar2" ><button> Voltar </button></a>
+        <h3>Não tem um gerente sem agência? Crie um aqui:</h3>
+        <a href="{{'/atribuindoGerente/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar2"> <button type="button"> Criar gerente </button></a>
+        <br>
+        <a href="{{'/alteraAgencia/%s' % (linhaAgencia['numero_agencia'])}}" class="voltar2" ><button type="button"> Voltar </button></a>
     </form>
 </div>
 </body>

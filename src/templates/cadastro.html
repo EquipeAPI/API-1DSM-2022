@@ -44,9 +44,9 @@
                 <img src="../static/public/logo.png" alt="logo">
             </a>
             </div>
-            </header>
-            
-            <form action="#" method="post" class="cadastro-form">
+        </header>
+        <div id="flexbox">
+            <form action="#" method="post" class="altera-form">
                 <h1>Cadastro</h1>
                 {% with mensagens = get_flashed_messages() %}
                     {% for msg in mensagens %}
@@ -115,5 +115,10 @@
                 <input type="password" name="senhaConfirma" placeholder="Até 16 dígitos" maxlength="16" required><br>
                 <input type="submit" value="Cadastrar" id="cadastrar">
             </form>
+        </div>
+        <br>
+        <a href="/login" class="voltar"><button> Voltar </button></a>
+        <br>
+        
     </body>
 </html>

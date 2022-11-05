@@ -1,5 +1,9 @@
 /*CONFIGURAÇÕES COMPARTILHADAS*/
 /* começo menu */
+
+a{
+  text-decoration: none;
+}
 .menu{  position: absolute;
   top:6vh;
   left: 13vw;

@@ -56,8 +56,8 @@
             </div>
         </header>
     </div>
-    <div>
-        <form action="#" method="post" class="cadastro-form">
+    <div id="flexbox">
+        <form action="#" method="post" class="altera-form">
             <h1>Criação de gerente</h1>
             {% with mensagens = get_flashed_messages() %}
                 {% for msg in mensagens %}
@@ -123,6 +123,10 @@
             <input type="password" name="senhaConfirma" placeholder="Até 16 dígitos" maxlength="16" required><br>
             <input type="submit" value="Cadastrar" id="cadastrar">
         </form>
+        
     </div>
+    <br>
+    <a href="/agencias" class="voltar"><button> Voltar </button></a>
+    <br>
 </body>
 </html>
