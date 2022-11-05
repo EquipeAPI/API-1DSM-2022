@@ -14,7 +14,7 @@
     <div class="comprovante">
         <h1>Comprovante de {{info['tipo_operacao']}}</h1>
         <h3>Operação: {{info['tipo_operacao']}}</h3>
-        <h3>Valor: {{info['valor_operacao']}}</h3>
+        <h3>Valor: {{info['valor_operacao'] | moeda }}</h3>
         {% if info['tipo_operacao'] != 'Transferência' %}
             <h2>Dados da conta: </h2>
         {% else %}
@@ -29,7 +29,7 @@
         <h3>Número da conta: {{info['numero_conta']}} </h3>
         {% if info['tipo_operacao'] == 'Transferência'%}
         {% else %}
-            <h3>Saldo anterior: {{info['saldo_operacao']}}</h3>
+            <h3>Saldo anterior: {{info['saldo_operacao'] | moeda }}</h3>
         {% endif %}
         {% if info['tipo_operacao'] == 'Transferência'%}
             <h2>Dados da conta Destino: </h2>

@@ -44,14 +44,14 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
-                <h4>Valor: {{dados['valor_operacao']}}</h4>
+                <h4>Saldo anterior: {{dados['saldo_operacao'] | moeda }}</h4>
+                <h4>Valor: {{dados['valor_operacao'] | moeda }}</h4>
                 <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
             {% else %}
             {% set operacao = 'deposito-saque' %}
                 <h4>Operação: {{dados['tipo_operacao']}}</h4>
-                <h4>Saldo anterior: {{dados['saldo_operacao']}}</h4>
-                <h4>Valor: {{dados['valor_operacao']}}</h4>
+                <h4>Saldo anterior: {{dados['saldo_operacao'] | moeda }}</h4>
+                <h4>Valor: {{dados['valor_operacao'] | moeda }}</h4>
                 {% if dados['tipo_operacao'] == 'Depósito' %}
                     {% if dados['status_operacao'] != 'Pendente' %}
                         <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
