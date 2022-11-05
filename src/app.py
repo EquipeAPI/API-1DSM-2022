@@ -1,7 +1,7 @@
-
 from urllib import response
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
+
 
 import bd, modelo # Importando os outros arquivos .py
 
@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Meusequel@d0' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -129,7 +129,13 @@ def configCapital():
 # Rota da página home
 @app.route('/home')
 def home():
-    modelo.atualizaCapital()
+    conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+    if conta['tipo_conta'] == 'Poupança':
+        rendimento = modelo.rendimentoPoupança()
+        bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
+        modelo.atualizaCapital()
+
+
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)

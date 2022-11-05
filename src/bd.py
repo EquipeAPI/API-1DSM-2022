@@ -42,10 +42,13 @@ def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o
     cur.close()
     return linha
 
+def pegarDado(tabela, coluna, valor, dado): #retorna uma linha da coluna que possui o valor inserido
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM {tabela} WHERE {coluna} =%s", [valor]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    linha = cur.fetchone() #Armazena todas as informações desse cliente na variável usuário
+    cur.close()
+    return linha[f'{dado}']
 
-
-
-# Função que pega linhas 
 def tabelaPersonalizada(tabela, dado, valor):
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT * FROM {tabela} where {dado} = {valor}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
@@ -67,7 +70,6 @@ def extratoPersonalizado(conta, data_inicio, data_fim):
     cur.close()
     return extratoPersonalizado
 
-# Função que pega uma tabela
 def pegarTabela(tabela):
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT * FROM {tabela}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
@@ -124,7 +126,7 @@ def inserirCapitalInicial(form):
     cur.close()
     return None
 
-#insere linha de operação realisada ou requisitada (caso depósito) na tabela desejada.
+#insere linha de operação realizada ou requisitada (caso depósito) na tabela desejada.
 def inserirOperacao(tabela, operacao, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()
     cur.execute (f"INSERT INTO {tabela} (numero_conta, numero_agencia, tipo_operacao, valor_operacao, data_hora_operacao, saldo_operacao, status_operacao) VALUES(%s, %s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], operacao, dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes'], dic_dados['status_operacao']))
@@ -138,13 +140,6 @@ def inserirOperacaoTransferencia(tabela, operacao, dic_dados): #id_usuário, ope
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None
-
-""" def reqDeposito(dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
-    cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO confirmacao_deposito (numero_conta, numero_agencia, valor_confirmacao_deposito, data_hora, saldo_operacao) VALUES(%s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes']))
-    mysql.connection.commit() # Dando commit
-    cur.close() # Fechando o cursor
-    return None """
 
 def atualizaDeposito(tabela, data_hora_confirmacao, status_novo, id):
     tabelaHistorico = tabelaPersonalizada('historico_operacao', 'status_operacao', "'Pendente'")
