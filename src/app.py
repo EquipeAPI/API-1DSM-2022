@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Meusequel@d0' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -592,14 +592,15 @@ def criaAgencia():
     if request.method == 'POST':
         form = request.form
         if not bd.valida('agencia', 'numero_agencia', form['numero_agencia']):
-            if form['numero_matricula'] == '':
+            if 'atribuicao' in request.form:
                 bd.criacaoAgencia(form, False)
-                return redirect(url_for('atribuindoGerente', numero_agencia = form['numero_agencia']))
+                return redirect(url_for('agencias', numero_agencia = form['numero_agencia']))
             else:
-                bd.criacaoAgencia(form, True)
-                return redirect(url_for('agencias'))
+                bd.criacaoAgencia(form, False)
+                return redirect(url_for('atribuicao', tipo='atribuir', numero_agencia=form['numero_agencia']))
         else:
             flash('Esse número de agencia já existe. Tente outro.')
+            return redirect(url_for('criaAgencia'))
     else:
         return render_template('criaAgencia.html', tabelaUsuario = tabelaUsuario, tabelaGerente = tabelaGerente, tabelaAgencia = tabelaAgencia)
 
