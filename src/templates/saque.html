@@ -70,7 +70,7 @@
                         <p id="confimacaoSenha">{{msg}}</p>
                     {% endfor %}
                 {% endwith %}
-                <h2>Saldo atual: {{saldo}}</h2>
+                <h2>Saldo atual: {{saldo | moeda }}</h2>
                 <h1>Insira o valor que deseja sacar:</h1>
                 <form action="" method="POST">
                 <span id="cifrão">

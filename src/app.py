@@ -17,6 +17,11 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
+@app.template_filter()
+def moeda(valor):
+    valor = float(valor)
+    return f'R${valor:.2f}'
+    
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
