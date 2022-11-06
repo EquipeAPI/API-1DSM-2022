@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -530,7 +530,7 @@ def respostaReq(decisao, tipo, id):
 def usuarios_agencia():
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaConta = bd.pegarTabela('conta')
-    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'], listaGerentes = False)
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = session['numero_agencia'], gerente = session['gerente'], listaGerentes = False, id_gerente = session['id_usuario'])
 
 @app.route('/alteracaoGerente/<id_usuario>', methods=['POST', 'GET'])
 def alteracaoGerente(id_usuario):
