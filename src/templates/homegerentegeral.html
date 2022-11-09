@@ -10,7 +10,7 @@
   <body>
     {% extends "home.html" %}
     {% block capitalTotal  %}
-      <h2>Capital total do banco: R$ {{capitalTotal | moeda }}</h2>
+      <h2>Capital total do banco: {{capitalTotal | moeda }}</h2>
     {% endblock %}
     <span>
        {% block gerente %}
