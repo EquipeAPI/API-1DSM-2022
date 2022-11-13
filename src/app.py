@@ -122,9 +122,13 @@ def configCapital():
         return redirect(url_for('homeGerenteGeral'))
     else:
         if request.method == 'POST':
-            capitalInicial = request.form
-            bd.inserirCapitalInicial(capitalInicial)
-            return redirect(url_for('homeGerenteGeral'))
+            form = request.form
+            if modelo.validaOperacao(form['capital_inicial']):
+                bd.inserirCapitalInicial(form)
+                return redirect(url_for('homeGerenteGeral'))
+            else:
+                flash('Use apenas números positivos')
+                return redirect(url_for('configCapital'))
         else:
             return render_template('configCapital.html')
 

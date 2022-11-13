@@ -26,10 +26,13 @@ def validaOperacao(input):
     if '.' in input: # Verifica se há . no input dado pelo usuário
         controle = input.split('.') # Separa o . dos números
         if controle[0].isnumeric() and controle[1].isnumeric(): # confere se além do . havia somente números, que é o exigido
-            return True
+            if int(controle[0]) >= 0 and int(controle[1]) >=0:
+                return True
+            else:
+                return False
         else:
             return False
-    elif input.isnumeric(): # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
+    elif input.isnumeric() and int(input) >=0: # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
         return True
     else:
         return False

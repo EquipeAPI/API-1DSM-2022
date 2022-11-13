@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `capital_banco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `capital_banco` (
-  `capital_total` int NOT NULL,
+  `capital_total` double NOT NULL,
   `id_capital` int NOT NULL AUTO_INCREMENT,
   `capital_inicial` double DEFAULT NULL,
   `taxa_rendimento` double DEFAULT (0.005),
