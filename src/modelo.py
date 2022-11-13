@@ -242,30 +242,37 @@ def atualizaCapital():
 
 #=============================== FUNÇÕES DE AGENCIA ===============================
 
-def numeroAgenciaNull(valorAntigo, valor):
-    tabelaConta = bd.pegarTabela('conta')
-    tabelaHistorico = bd.pegarTabela('historico_operacao')
-    tabelaConfirmacaoCadastro = bd.pegarTabela('confirmacao_cadastro')
-    tabelaAlteracaoCadastro = bd.pegarTabela('alteracao_cadastral')
-    tabelaEncerraConta = bd.pegarTabela('encerramento_conta')
+def numeroAgenciaNull(valorAntigo, valor): # inserir 'Null' ou no valor, ou no valor antigo
+    tabelaConta = bd.tabelaPersonalizada('conta', 'numero_agencia', valorAntigo)
+    tabelaHistorico = bd.pegaHistoricoNumeroAgencia(valorAntigo)
+    tabelaConfirmacaoCadastro = bd.tabelaPersonalizada('confirmacao_cadastro', 'numero_agencia', valorAntigo)
+    tabelaAlteracaoCadastro = bd.tabelaPersonalizada('alteracao_cadastral', 'numero_agencia', valorAntigo)
+    tabelaEncerraConta = bd.tabelaPersonalizada('encerramento_conta', 'numero_agencia', valorAntigo)
     listaTabelas = [tabelaConta, tabelaHistorico, tabelaConfirmacaoCadastro, tabelaAlteracaoCadastro, tabelaEncerraConta]
-    listaTexto = ['conta', 'historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta']
+    if valor == 'Null':
+        listaTexto = ['historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta', 'conta']
+    elif valorAntigo == 'Null':
+        listaTexto = ['conta', 'historico_operacao', 'confirmacao_cadastro', 'alteracao_cadastral', 'encerramento_conta']
     cur = mysql.connection.cursor()
     contador = 0
     if valorAntigo != 'Null':
         for tabela in listaTabelas:
-            for linha in tabela:
-                if linha['numero_agencia'] == valorAntigo:
-                    # return linha
-                    cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia = {valorAntigo}")  
+            if listaTexto[contador] != 'historico_operacao':
+                # return linha
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia = {valorAntigo}") 
+            if listaTexto[contador]  == 'historico_operacao':
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia_destino = {valor} WHERE numero_agencia_destino = {valorAntigo}")
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia = {valorAntigo}")
             mysql.connection.commit()
             contador += 1
     else:
         for tabela in listaTabelas:
-            for linha in tabela:
-                if linha['numero_agencia'] == valorAntigo or linha['numero_agencia'] == None or linha['numero_agencia'] == '':
-                    # return linha
-                    cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia is NULL")  
+            if listaTexto[contador] != 'historico_operacao':
+                # return linha
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia is NULL")
+            if listaTexto[contador]  == 'historico_operacao':
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia_destino = {valor} WHERE numero_agencia_destino is NULL")  
+                cur.execute (f"UPDATE {listaTexto[contador]} SET numero_agencia = {valor} WHERE numero_agencia is NULL")
             mysql.connection.commit()
             contador += 1
     cur.close()
@@ -273,12 +280,8 @@ def numeroAgenciaNull(valorAntigo, valor):
 
 def atualizaNumeroAgencia(dicionario, numero_antigo):
     tabelaAgencia = bd.pegarTabela('agencia')
-    jaExiste = False
-    
-    for linha in range(0, len(tabelaAgencia)):
-        if tabelaAgencia[linha]['numero_agencia'] == dicionario['numero_agencia']:
-            jaExiste = True
-    if not jaExiste:        
+
+    if not bd.valida('agencia', 'numero_agencia', dicionario['numero_agencia']):        
         if dicionario['numero_agencia'] != '':
             numeroAgenciaNull(numero_antigo, 'Null')
         bd.mudaAgencia(dicionario, numero_antigo) 

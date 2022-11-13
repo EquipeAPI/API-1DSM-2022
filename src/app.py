@@ -412,6 +412,7 @@ def atribuicao (tipo, numero_agencia):
     tabelaUsuario = bd.pegarTabela('usuario')
     if tipo == 'desatribuir':
         bd.atribuirDesatribuirGerente(tipo, linhaAgencia['numero_matricula'], numero_agencia)
+        
         return redirect(url_for('agencias'))
     else:
         if request.method == 'POST':
@@ -571,6 +572,7 @@ def usuariosAgencia(numero_agencia):
 def alteraAgencia(numero_agencia):
     atribuido = True
     linhaAgencia =bd.pegarLinha('agencia','numero_agencia', numero_agencia)
+    
     if linhaAgencia['numero_matricula'] != None:
         linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'])
         linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
@@ -583,12 +585,20 @@ def alteraAgencia(numero_agencia):
         form = request.form
         desatribuidos = bd.tabelaPersonalizada('gerente_geral', 'atribuicao', "'Nao'")
         if modelo.atualizaNumeroAgencia(form, numero_agencia):
+            
             if form['numero_agencia'] != '':
-                for linha in desatribuidos:
-                    bd.atribuirDesatribuirGerente('desatribuir', linha['numero_matricula'], form['numero_agencia'])
+                if session['numero_agencia'] == numero_agencia:
+                    numero_agencia =form['numero_agencia']
+                    session['numero_agencia'] = numero_agencia
+                numero_agencia =form['numero_agencia']
+                
+                '''for linha in desatribuidos:
+                    bd.atribuirDesatribuirGerente('desatribuir', linha['numero_matricula'], form['numero_agencia'])'''
             flash('alteração realizada com sucesso')
-            return redirect(url_for('alteraAgencia', numero_agencia = form['numero_agencia']))
+            numero_agencia = str(numero_agencia)
+            return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
         else:
+            numero_agencia = str(numero_agencia)
             flash('esse número de agencia já existe')
             return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
     else:
@@ -638,9 +648,12 @@ def criaAgencia():
 def criaGerenteNaoAtribuido():
         if request.method == 'POST':
             form = request.form
-            bd.criacaoGerente(form, 'Nao')
-            bd.atribuirDesatribuirGerente('desatribuir', form['numero_matricula'], 0)
-            return redirect(url_for('agencias'))
+            if not bd.valida('gerente_geral', 'numero_matricula', form['numero_matricula']):
+                bd.criacaoGerente(form, 'Nao')
+                return redirect(url_for('agencias'))
+            else:
+                flash('Número de matrícula já existe')
+                return redirect(url_for('criaGerenteNaoAtribuido'))
         else:
             return render_template('criaGerente.html')
 

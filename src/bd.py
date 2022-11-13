@@ -255,35 +255,52 @@ def criacaoGerente(form, atribuicao):
 
 
 #===================================== Atribui/Desatribui agência =====================================
+def pegaHistoricoNumeroConta(numero_conta):
+    cur = mysql.connection.cursor()
+    cur.execute(f'Select * FROM historico_operacao WHERE numero_conta = {numero_conta} or numero_conta_destino = {numero_conta}')
+    tabela = cur.fetchall()
+    cur.close()
+    return tabela
+
+def pegaHistoricoNumeroAgencia(numero_agencia):
+    cur = mysql.connection.cursor()
+    cur.execute(f'Select * FROM historico_operacao WHERE numero_conta = {numero_agencia} or numero_conta_destino = {numero_agencia}')
+    tabela = cur.fetchall()
+    cur.close()
+    return tabela
+
 
 def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     linhaGerente = pegarLinha('gerente_geral', 'numero_matricula', numero_matricula)
     linhaConta = pegarLinha('conta', 'id_usuario', linhaGerente['id_usuario'])
-    tabelaHistorico = tabelaPersonalizada('historico_operacao', 'numero_conta', linhaConta['numero_conta'])
+    tabelaHistorico = pegaHistoricoNumeroConta(linhaConta['numero_conta'])
     tabelaAlteracaoCadastro = tabelaPersonalizada('alteracao_cadastral', 'id_usuario', linhaGerente['id_usuario'])
     tabelaEncerraConta = tabelaPersonalizada('encerramento_conta', 'id_usuario', linhaGerente['id_usuario'])
+    
     cur = mysql.connection.cursor()
     
     if acao == 'desatribuir':
         cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
-        for linha in tabelaHistorico:
-            cur.execute(f"UPDATE historico_operacao SET numero_agencia = NULL WHERE numero_conta = {linhaConta['numero_conta']}")
-        for linha in tabelaAlteracaoCadastro:
+        if numero_agencia != 0:
+            cur.execute(f"UPDATE historico_operacao SET numero_agencia = NULL WHERE numero_agencia = {linhaConta['numero_agencia']}")
+        '''for linha in tabelaAlteracaoCadastro:
             cur.execute(f"UPDATE ateracao_cadastral SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")
         for linha in tabelaEncerraConta:
-            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")
+            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")'''
         cur.execute(f"UPDATE conta SET numero_agencia = NULL WHERE id_usuario ={linhaGerente['id_usuario']}")
+        if numero_agencia != 0:
+            cur.execute(f"UPDATE historico_operacao SET numero_agencia = {numero_agencia} WHERE numero_agencia is NULL")
         
     else:
-        cur.execute(f"UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_matricula is NULL")
+        cur.execute(f"UPDATE agencia SET numero_matricula = {numero_matricula} WHERE numero_agencia = {numero_agencia}")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Sim' WHERE numero_matricula = {numero_matricula}")
-        for linha in tabelaHistorico:
+        '''for linha in tabelaHistorico:
             cur.execute(f"UPDATE historico_operacao SET numero_agencia = {numero_agencia} WHERE numero_conta = {linhaConta['numero_conta']}")
         for linha in tabelaAlteracaoCadastro:
             cur.execute(f"UPDATE ateracao_cadastral SET numero_agencia = {numero_agencia} WHERE id_usuario = {linhaGerente['id_usuario']}")
         for linha in tabelaEncerraConta:
-            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = {numero_agencia} WHERE id_usuario = {linhaGerente['id_usuario']}")
+            cur.execute(f"UPDATE encerramento_conta SET numero_agencia = {numero_agencia} WHERE id_usuario = {linhaGerente['id_usuario']}")'''
         cur.execute(f"UPDATE conta SET numero_agencia = {numero_agencia} WHERE id_usuario ={linhaGerente['id_usuario']}")
     mysql.connection.commit()
     cur.close()
