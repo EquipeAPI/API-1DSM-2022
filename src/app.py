@@ -151,10 +151,17 @@ def home():
             numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
         else:
             modelo.atualizaCapital()
-            return render_template('home.html', nome = session['nome'],
-            saldo = bd.consultaSaldo(session['id_usuario']),
-            numero_conta = str(session['numero_conta']),
-            numero_agencia = str(session['numero_agencia']), gerente = session['gerente'])
+            if saldo['resultado'] >= 0: 
+                return render_template('home.html', nome = session['nome'],
+                saldo = bd.consultaSaldo(session['id_usuario']),
+                numero_conta = str(session['numero_conta']),
+                numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], cheque = False)
+            else:
+                flash("Você está em cheque especial")
+                return render_template('home.html', nome = session['nome'],
+                saldo = bd.consultaSaldo(session['id_usuario']),
+                numero_conta = str(session['numero_conta']),
+                numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], cheque = True)
     else:
         return redirect(url_for('login'))
 
