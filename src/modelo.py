@@ -71,6 +71,14 @@ def mesmaConta(numero_conta, senha): #Confere se a senha e o numero da conta sã
     else:
         return False
 
+def mesmaContaGerente(numero_matricula, senha):
+    linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', numero_matricula)
+    linhaUsuario = bd.pegarLinha('usuario', 'id_usuario', linhaGerente['id_usuario'])
+    if linhaUsuario['senha_usuario'] == senha:
+        return True
+    else:
+        return False
+
 def saque(id_usuario, valor):
     valor = float(valor)
     atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)

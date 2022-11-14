@@ -82,34 +82,31 @@ def login():
 @app.route('/loginGerente', methods = ['POST', 'GET'])
 def loginGerente():
     if request.method == 'POST': #Se a pessoa apertar o botão 'ENTRAR' do forms
-        numero_conta = request.form['numero_conta'] #Adicionando a uma variável python a informação do input cpf do forms
+        numero_matricula = request.form['numero_matricula'] #Adicionando a uma variável python a informação do input cpf do forms
         senha = request.form['senha'] #Adicionando a uma variável python a informação do input senha do forms
         
-        if bd.valida("conta", "numero_conta", numero_conta) and bd.valida("usuario", "senha_usuario", senha) and modelo.mesmaConta(numero_conta, senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True. Se corretas confere se são referentes a mesma conta (modelo.mesmaConta)
-            linhaConta = bd.pegarLinha('conta', 'numero_conta', numero_conta) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
+        if bd.valida("gerente_geral", "numero_matricula", numero_matricula) and bd.valida("usuario", "senha_usuario", senha) and modelo.mesmaContaGerente(numero_matricula, senha): #Inserir tabela, coluna, valor para ver se o valor existe na coluna da tabela, se existir retorna True. Se corretas confere se são referentes a mesma conta (modelo.mesmaConta)
+            linhaGerente = bd.pegarLinha('gerente_geral', 'numero_matricula', numero_matricula)
+            linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaGerente['id_usuario']) #Função que retorna os valores da linha da tabela escolhida (tabela, coluna, valor da linha requisitada)
             linhaUsuario = bd.pegarLinha("usuario", "id_usuario", linhaConta['id_usuario'])
-            if bd.valida('gerente_geral', 'id_usuario', linhaUsuario['id_usuario']):
-                session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
-                session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
-                session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
-                session['numero_agencia'] = linhaConta['numero_agencia']
-                linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
-                if linhaGerente['tipo_gerente'] == 'Gerente Geral':
-                    session['gerente'] = 'geral'
-                    return redirect(url_for('configCapital'))
-                else:
-                    if linhaGerente['atribuicao'] == 'Nao':
-                        session.clear()
-                        flash("Gerente não tem uma agência atribuida", "info")
-                        return redirect(url_for('loginGerente'))
-                    else:
-                        session['gerente'] = 'agencia'
-                        return redirect(url_for('homeGerenteAgencia'))
+            session['nome'] = linhaUsuario['nome_usuario'] # Guardando nome_usuario para ser usado em outras telas
+            session['id_usuario'] = linhaUsuario['id_usuario'] # Guardando id_usuario para ser usado em outras telas
+            session['numero_conta'] = linhaConta['numero_conta'] # Guardando numero_usuario para ser usado em outras telas
+            session['numero_agencia'] = linhaConta['numero_agencia']
+            linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
+            if linhaGerente['tipo_gerente'] == 'Gerente Geral':
+                session['gerente'] = 'geral'
+                return redirect(url_for('configCapital'))
             else:
-                flash("Esse não é o número de um gerente. Você foi redirecionado para o login de usuário normal", "info")
-                return redirect(url_for('login'))
+                if linhaGerente['atribuicao'] == 'Nao':
+                    session.clear()
+                    flash("Gerente não tem uma agência atribuida", "info")
+                    return redirect(url_for('loginGerente'))
+                else:
+                    session['gerente'] = 'agencia'
+                    return redirect(url_for('homeGerenteAgencia'))
         else:
-            flash("Número da Conta ou Senha incorretos", "info")
+            flash("Número de Matrícula ou Senha incorretos", "info")
             return redirect(url_for('loginGerente'))
         
     else:
