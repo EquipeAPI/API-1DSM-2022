@@ -38,7 +38,21 @@ def validaOperacao(input):
         return False
 
 
+def truncamento(valor):
+    valor = str(valor)
+    if float(valor) >= 0:
+        resto = float(valor) - float(valor[:(valor.find('.')+3)])
+        resultado = float(valor[:(valor.find('.')+3)])
+    else:
+        resto = float(valor) - float(valor[:(valor.find('.')+4)])
+        resultado = float(valor[:(valor.find('.')+4)])
+    dicionario = {'resultado':resultado, 'resto':resto}
+    return dicionario
 
+def truncamentoComBd(dicionario, id_usuario):
+    saque(id_usuario, dicionario['resto'])
+    bd.somarTruncamentoCapital(dicionario['resto'])
+    return None
 
 def geradorNumeroConta ():
     numero = random.sample(range(100000,1000000), 1) # Gera uma lista com um elemento numerico aleatório entre 100000 e 999999

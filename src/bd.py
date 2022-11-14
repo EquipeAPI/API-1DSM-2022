@@ -133,6 +133,16 @@ def inserirCapitalInicial(form):
     cur.close()
     return None
 
+def somarTruncamentoCapital(valor):
+    cur =mysql.connection.cursor()
+    cur.execute("select capital_inicial from capital_banco")
+    capital = cur.fetchone()
+    capitalAtualizado = float(capital['capital_inicial']) + float(valor)
+    cur.execute(f"update capital_banco set capital_inicial = {capitalAtualizado} where capital_inicial = {capital['capital_inicial']}")
+    cur.connection.commit()
+    cur.close()
+    return None
+
 #insere linha de operação realizada ou requisitada (caso depósito) na tabela desejada.
 def inserirOperacao(tabela, operacao, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()

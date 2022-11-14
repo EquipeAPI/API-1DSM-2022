@@ -142,6 +142,8 @@ def home():
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
         conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
+        saldo = modelo.truncamento(conta['saldo_conta']) #Pegando saldo truncado, separado entre valor truncado e resto
+        modelo.truncamentoComBd(saldo, conta['id_usuario']) #Tirando o resto da conta e mandando para o capital total
         if conta['tipo_conta'] == 'Poupança':
             rendimento = modelo.rendimentoPoupança()
             bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
