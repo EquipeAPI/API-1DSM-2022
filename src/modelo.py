@@ -258,7 +258,8 @@ def atualizaCapital():
     somaContas = somaContas[0]['sum(saldo_conta)']
     inicial = bd.pegarTabela('capital_banco')
     inicial = inicial[0]['capital_inicial']
-    atual = int(inicial) + somaContas
+    print(somaContas, inicial)
+    atual = inicial + somaContas
     cur = mysql.connection.cursor()
     cur.execute (f"update capital_banco set capital_total = {atual} where id_capital = 1")
     mysql.connection.commit()

@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -49,6 +49,18 @@ def cadastro():
 
 # Rota da página de login (que é a página inicial)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
+def configuracao():
+    if request.method == 'POST':
+        form = request.form
+        if modelo.validaOperacao(form['capital_inicial']):
+            bd.configuracaoInicial(form)
+            return redirect(url_for('login'))
+        else:
+            flash('Use apenas números positivos')
+            return render_template('configCapital.html')
+    else:
+        return render_template('configCapital.html')
+
 @app.route('/login', methods=['POST', 'GET']) # Colocando os metodos HTTP que serão usados
 def login():
     #if 'nome' in session: #Verificando se a pessoa já está logada
@@ -96,7 +108,7 @@ def loginGerente():
             linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
             if linhaGerente['tipo_gerente'] == 'Gerente Geral':
                 session['gerente'] = 'geral'
-                return redirect(url_for('configCapital'))
+                return redirect(url_for('homeGerenteGeral'))
             else:
                 if linhaGerente['atribuicao'] == 'Nao':
                     session.clear()
@@ -121,7 +133,7 @@ def configCapital():
         if request.method == 'POST':
             form = request.form
             if modelo.validaOperacao(form['capital_inicial']):
-                bd.inserirCapitalInicial(form)
+                bd.configuracaoInicial(form)
                 return redirect(url_for('homeGerenteGeral'))
             else:
                 flash('Use apenas números positivos')
@@ -239,21 +251,20 @@ def deposito():
                 if session['gerente'] == 'geral':
                     linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                     saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
                     linhaOperacao = bd.pegarLinha('historico_operacao', 'data_hora_operacao', dic_dados['dataHora'])
-                    dataHora = modelo.dataHora(True)
+                    dataHora = bd.diferencaDias()[0]
                     modelo.deposito(linhaConta['id_usuario'], deposito)
                     modelo.atualizaCapital()
                     bd.atualizaDeposito('historico_operacao', dataHora, 'Aprovado', 0)
-                    #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
                     flash('Depósito feito.', 'info') # Mensagem para indicar que a operação deu certo
                 else:
                     linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                     saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
-                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': deposito, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Depósito', 'status_operacao': 'Pendente'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacao('historico_operacao', 'Depósito', dic_dados) #Guardando operação na tabela histórico do banco de dados
                     #bd.reqDeposito(dic_dados) #Guardando operação na tabela histórico do banco de dados '''
@@ -282,7 +293,7 @@ def saque():
                 ct = ct['capital_total']
                 if int(float(saque)) <= ct:
                     modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
-                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacao('historico_operacao', 'Saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
                     modelo.atualizaCapital()
@@ -314,7 +325,7 @@ def transferencia():
                 linhaContaRecebido = bd.pegarLinha('conta', 'numero_conta', numero_recebedor)
                 dadosContaRecebido = bd.pegarLinha('usuario', 'id_usuario', linhaContaRecebido['id_usuario'])
                 if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
-                    dataHora = modelo.dataHora(True) #Armazenando data e hora do sistema na variável dataHora
+                    dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia'], 'nome_destino': dadosContaRecebido['nome_usuario']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
@@ -503,7 +514,7 @@ def respostaReq(decisao, tipo, id):
     elif tipo == 'confirmacao_cadastro':
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('confirmacao_cadastro', 'id_cadastro', id)
-            dataHora = modelo.dataHora(False)
+            dataHora = bd.diferencaDias()[0] 
             bd.criaConta(linhaOperacao, dataHora, True)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))

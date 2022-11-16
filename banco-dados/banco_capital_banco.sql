@@ -23,15 +23,18 @@ DROP TABLE IF EXISTS `capital_banco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `capital_banco` (
-  `capital_total` double NOT NULL,
-  `id_capital` int NOT NULL AUTO_INCREMENT,
+`id_capital` int NOT NULL AUTO_INCREMENT,
+  `capital_total` double DEFAULT NULL,
   `capital_inicial` double DEFAULT NULL,
   `taxa_rendimento` double DEFAULT (0.005),
   `taxa_juros` double DEFAULT NULL,
+  `data_atual` date DEFAULT NULL,
+  `diferenca_dias` int DEFAULT NULL,
   PRIMARY KEY (`id_capital`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+use banco;
+INSERT INTO `capital_banco`(id_capital) VALUES(1);
 --
 -- Dumping data for table `capital_banco`
 --

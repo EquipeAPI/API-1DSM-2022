@@ -3,6 +3,7 @@ from turtle import mode
 from flask import Flask
 from flask_mysqldb import MySQL
 from app import mysql
+from datetime import datetime
 import modelo
 
 
@@ -87,9 +88,9 @@ def pegarTabela(tabela):
 #========================== Funções que inserem linhas no BD ==========================
 
 def criaConta(forms, dataAbertura, req): #Insere uma linha com esses valores na tabela cliente
-    dataHora = modelo.dataHora(True)
+    dataHora = diferencaDias()[0]
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
-    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'], dataHora)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
+    cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (forms['nome_cadastro'], forms ['cpf_cadastro'], forms['rua_avenida_cadastro'], forms['numero_casa_cadastro'], forms['bairro_cadastro'], forms['cidade_cadastro'], forms['estado_cadastro'], forms['data_naascimento_cadastro'], forms['genero_cadastro'], forms['senha_cadastro'], diferencaDias()[0])) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit() # Dando commit
     cur.execute(f"SELECT * FROM usuario WHERE data_hora_usuario ='{dataHora}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     id = cur.fetchone() 
@@ -126,12 +127,21 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
     cur.close()
     return None
 
-def inserirCapitalInicial(form):
+def configuracaoInicial(form):
     cur = mysql.connection.cursor()
-    cur.execute (f" INSERT INTO capital_banco (id_capital, capital_inicial, capital_total) VALUES (1, %s, %s)", (form['capital_inicial'], form['capital_inicial']))
-    mysql.connection.commit() # Dando commit
+    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual']))
+    mysql.connection.commit()
     cur.close()
     return None
+
+def diferencaDias():
+    cur = mysql.connection.cursor()
+    data = str(pegarDado('capital_banco', 'id_capital', 1, 'data_atual'))
+    cur.execute(f" SELECT datediff('{data}', now()) as intervalo")
+    intervalo = cur.fetchone()['intervalo']
+    cur.execute(f" SELECT now() + INTERVAL {intervalo} day as data")
+    data = cur.fetchone()['data']
+    return data, intervalo
 
 def somarTruncamentoCapital(valor):
     cur =mysql.connection.cursor()

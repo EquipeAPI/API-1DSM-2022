@@ -18,6 +18,7 @@
     <title>Acesse sua conta</title>
 </head>
 <body class="body2">
+        {% block navbar%}
         <header class="navbar">
             <div class="menu">
                 <span style="font-size:40px;cursor:pointer" onclick="abre()">&#9776;</span>
@@ -31,6 +32,7 @@
             </a>
             </div>
         </header>
+        {% endblock %}
     <!-- Menssagem de erro de login (só aparece se as informações estiverem erradas) -->
 
     {% if gerente == 'SIM' %}
