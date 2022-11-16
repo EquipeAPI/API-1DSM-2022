@@ -9,13 +9,20 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 mysql = MySQL(app)
 
+def entrouCheque(saldoAntes, id_usuario): #Diz se o usuário entrou ou não no cheque especial
+    saldoAtual = bd.pegarDado('conta', 'id_usuario', id_usuario, 'saldo_conta')
+    if saldoAntes>=0 and saldoAtual<0:
+        bd.insereCheque(id_usuario)
+        return None
+    else:
+        return None
 
 def trataCPF(cpf): #tira os caracteres especiais do número de cpf
     cpf = cpf.replace('-', '')

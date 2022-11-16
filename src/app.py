@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -297,6 +297,7 @@ def saque():
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacao('historico_operacao', 'Saque', dic_dados) #Guardando operação na tabela histórico do banco de dados
                     modelo.atualizaCapital()
+                    modelo.entrouCheque(saldoAntes, session['id_usuario'])
                     session['dic_dados'] = dic_dados
                     flash('Saque realizado com sucesso.', 'info') # Mensagem para indicar que a operação deu certo
                     return redirect(url_for('comprovante', origem = 'operacao', operacao = 'saque', id = '0')) # Redirecionando para a tela home
@@ -319,6 +320,7 @@ def transferencia():
         if request.method == 'POST':
             transferencia = request.form['transferencia']
             numero_recebedor = request.form['numero']
+            saldoAntes = bd.pegarDado('conta', 'id_usuario', session['id_usuario'], 'saldo_conta')
             if modelo.validaOperacao(transferencia):
                 linhaContaEnvio = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
                 saldoAntesEnvio = linhaContaEnvio['saldo_conta'] #Guardando o valor do saldo antes da operação
@@ -329,6 +331,7 @@ def transferencia():
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia'], 'nome_destino': dadosContaRecebido['nome_usuario']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
                     bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
+                    modelo.entrouCheque(saldoAntes, session['id_usuario'])
                     flash('transferencia realizada com sucesso', 'info')
                     return redirect(url_for('comprovante', origem = 'operacao', operacao = 'transferencia', id = '0'))
                 else:

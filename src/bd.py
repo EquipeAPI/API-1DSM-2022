@@ -87,6 +87,11 @@ def pegarTabela(tabela):
 
 #========================== Funções que inserem linhas no BD ==========================
 
+def insereCheque(id_usuario): #Insere usuario na tabela de cheque especial
+    data = diferencaDias()
+    cur = mysql.connection.cur()
+    cur.execute(f"INSERT INTO cheque_especial(id_usuario, data_cheque) VALUES({id_usuario}, {data})")
+
 def criaConta(forms, dataAbertura, req): #Insere uma linha com esses valores na tabela cliente
     dataHora = diferencaDias()[0]
     cur = mysql.connection.cursor() #Abrindo um cursor pra navegar no SQL
