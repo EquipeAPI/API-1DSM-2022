@@ -9,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -394,3 +394,49 @@ def rendimentoPoupança():
     else:
         return saldo
     
+
+#============================ FUNÇÕES DE TEMPO ===============================
+
+def dataHora(comHora): #Função que retor a data e a hora do sistema em string no formato AAAA/MM/DD - hor:min:seg
+    dataHora = str(datetime.datetime.now()) #Pega a data e a hora do sistema em string
+    dataHora = dataHora.replace('-', '/') #Troca os '-' por '/'
+    dataHora = dataHora.replace(' ', ' - ') #Troca os '-' por '/'
+    if comHora:
+        dataHora = dataHora[0:21] #Tira os milissegundos
+    else:
+        dataHora = dataHora[0:10] #Tira as Horas
+    return dataHora #Retorna a string já formatada devidamente
+
+#============================ FUNÇÂO DE CHEQUE ESPECIAL ============================
+
+def aplicaJuros():
+    juros = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_juros')
+    tabelaCheque = bd.pegarTabela('cheque_especial')
+    dataAtual = bd.diferencaDias()[0]
+    for linhaCheque in tabelaCheque:
+        linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
+        if dataAtual - linhaCheque['data_cheque'] >= datetime.timedelta(days=1):
+            saldoAntigo = linhaConta['saldo_conta']
+            desconto = saldoAntigo * juros
+            saldoAtual = saldoAntigo + desconto
+            bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
+            bd.updateCheque(linhaConta['id_usuario'], dataAtual)
+            dic_dados = {'dataHora':dataAtual, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':desconto, 'tipo_operacao':'Cheque Especial', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
+            bd.inserirOperacao('historico_operacao', 'Cheque Especial', dic_dados)
+    return None
+
+def entrouCheque(saldoAntes, id_usuario): #Diz se o usuário entrou ou não no cheque especial
+    saldoAtual = bd.pegarDado('conta', 'id_usuario', id_usuario, 'saldo_conta')
+    if saldoAntes>=0 and saldoAtual<0:
+        bd.insereCheque(id_usuario)
+        return None
+    else:
+        return None
+
+def saiuCheque(saldoAntes, id_usuario): #Diz se o usuário saiu ou não no cheque especial
+    saldoAtual = bd.pegarDado('conta', 'id_usuario', id_usuario, 'saldo_conta')
+    if saldoAntes<0 and saldoAtual>=0:
+        bd.tiraCheque(id_usuario)
+        return None
+    else:
+        return None

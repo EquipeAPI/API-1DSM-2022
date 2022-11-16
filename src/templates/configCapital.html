@@ -10,6 +10,8 @@
         {% endwith %}
         <label for="capital_inicial">Capital Inicial disponível:</label>
         <input type="text" name="capital_inicial" pattern="[0-9]{1, 10}.[0-9]{2}" placeholder="R$ 00.00" autocomplete="off">
+        <label for="taxa_juros">Juros:</label>
+        <input type="text" name="taxa_juros" required>
         <label for="data_atual">Data atual:</label>
         <input type="date" name="data_atual">
         <button type="submit" value="Entrar">Confirmar</button>

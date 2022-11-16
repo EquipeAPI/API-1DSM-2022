@@ -85,12 +85,35 @@ def pegarTabela(tabela):
     cur.close()
     return tabelaSelecionada
 
-#========================== Funções que inserem linhas no BD ==========================
+#========================== Funções de cheque especial ==========================
 
 def insereCheque(id_usuario): #Insere usuario na tabela de cheque especial
-    data = diferencaDias()
-    cur = mysql.connection.cur()
-    cur.execute(f"INSERT INTO cheque_especial(id_usuario, data_cheque) VALUES({id_usuario}, {data})")
+    numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
+    data = str(diferencaDias()[0])
+    cur = mysql.connection.cursor()
+    cur.execute(f"INSERT INTO cheque_especial(numero_conta, data_cheque) VALUES({numero_conta}, '{data}')")
+    mysql.connection.commit()
+    cur.close()
+    return None
+
+def tiraCheque(id_usuario):
+    numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
+    cur = mysql.connection.cursor()
+    cur.execute(f"DELETE FROM cheque_especial WHERE numero_conta = {numero_conta}")
+    mysql.connection.commit()
+    cur.close()
+    return None
+
+def updateCheque(id_usuario, novaData):
+    numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE cheque_especial SET data_cheque = '{novaData}' WHERE numero_conta = {numero_conta}")
+    mysql.connection.commit()
+    cur.close()
+    return None
+
+
+#========================== Funções que inserem linhas no BD ==========================
 
 def criaConta(forms, dataAbertura, req): #Insere uma linha com esses valores na tabela cliente
     dataHora = diferencaDias()[0]
@@ -134,7 +157,7 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
 
 def configuracaoInicial(form):
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual']))
+    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], form['taxa_juros']))
     mysql.connection.commit()
     cur.close()
     return None

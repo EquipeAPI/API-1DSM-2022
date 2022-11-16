@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -147,6 +147,7 @@ def configCapital():
 # Rota da página home
 @app.route('/home')
 def home():
+    modelo.aplicaJuros()
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -179,6 +180,7 @@ def home():
 
 @app.route('/homeGerenteAgencia')
 def homeGerenteAgencia():
+    modelo.aplicaJuros()
     linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
     atribuido = linhaGerente['atribuicao']
     if session['gerente'] == 'agencia':
@@ -207,6 +209,7 @@ def homeGerenteAgencia():
 
 @app.route('/homeGerenteGeral')
 def homeGerenteGeral():
+    modelo.aplicaJuros()
     if session['gerente'] == 'geral':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -314,6 +317,7 @@ def saque():
         return redirect(url_for('login'))
 
 
+
 @app.route('/transferencia', methods = ['POST', 'GET'])
 def transferencia():
     if 'nome' in session:
@@ -332,6 +336,7 @@ def transferencia():
                     bd.inserirOperacaoTransferencia('historico_operacao', 'Transferencia', dic_dados) #Guardando operação na tabela histórico do banco de dados '''
                     session['dic_dados'] = dic_dados
                     modelo.entrouCheque(saldoAntes, session['id_usuario'])
+                    modelo.saiuCheque(linhaContaRecebido['saldo_conta'], linhaContaRecebido['id_usuario'])
                     flash('transferencia realizada com sucesso', 'info')
                     return redirect(url_for('comprovante', origem = 'operacao', operacao = 'transferencia', id = '0'))
                 else:
@@ -508,6 +513,7 @@ def respostaReq(decisao, tipo, id):
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
             modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
+            modelo.saiuCheque(linhaConta['saldo_conta'], id) #Confere se o usuario saiu do cheque especial
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             dataHora = modelo.dataHora(True)
@@ -716,4 +722,5 @@ def listaGerentes():
     return render_template('usuarios_agencia.html', listaGerentes = True, usuario = tabelaUsuario, conta = tabelaConta, tabelaGerente = tabelaGerente)
 
 if __name__ == '__main__':
+    
     app.run(debug = True)
