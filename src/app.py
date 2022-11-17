@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -155,8 +155,9 @@ def home():
         saldo = modelo.truncamento(conta['saldo_conta']) #Pegando saldo truncado, separado entre valor truncado e resto
         modelo.truncamentoComBd(saldo, conta['id_usuario']) #Tirando o resto da conta e mandando para o capital total
         if conta['tipo_conta'] == 'Poupança':
-            rendimento = modelo.rendimentoPoupança()
-            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
+            modelo.rendimentoPoupança()
+            #print(rendimento)
+            #bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
             modelo.atualizaCapital()
             return render_template('home.html', nome = session['nome'],
             saldo = bd.consultaSaldo(session['id_usuario']),

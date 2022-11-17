@@ -64,7 +64,11 @@
                     <h4>Data e hora realizada: {{dados['data_hora_operacao']}}</h4>
                 {% endif %}
             {% endif %}
+            {% if dados['tipo_operacao'] == 'Rendimento Poupança' %}
+
+            {% else %}
             <button id="esconde"><a href="{{'/comprovante/extrato/%s/%s' % (operacao, id)}}">Gerar comprovante</a></button>
+            {% endif %}
             <hr>
         </div>
         

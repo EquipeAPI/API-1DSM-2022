@@ -9,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -265,7 +265,7 @@ def atualizaCapital():
     somaContas = somaContas[0]['sum(saldo_conta)']
     inicial = bd.pegarTabela('capital_banco')
     inicial = inicial[0]['capital_inicial']
-    print(somaContas, inicial)
+    #print(somaContas, inicial)
     atual = inicial + somaContas
     cur = mysql.connection.cursor()
     cur.execute (f"update capital_banco set capital_total = {atual} where id_capital = 1")
@@ -358,39 +358,44 @@ def rendimentoPoupança():
 
     if saldo > 0:
         operacoes = bd.operacoesPositivas(session['numero_conta'])
-        """ depositos = []
-        for operacao in operacoes:
-            for coluna, registro in operacao.items():
-                if registro == 'Depósito':
-                    depositos.append(operacao) """
            
         if len(operacoes) > 1:
             for operacao in operacoes:
-                print(operacao)
                 for coluna, registro in operacao.items():
                     if coluna == 'data_hora_confirmacao': 
                         inicial = registro
-                    if registro < inicial:
-                        inicial = registro
+                        if registro < inicial:
+                            inicial = registro
         else:
             for operacao in operacoes:
                 for coluna, registro in operacao.items():
                     if coluna == 'data_hora_confirmacao': 
                         inicial = registro
                 
-
-        dataAtual = datetime.datetime.now()
+        
+        dataAtual = bd.diferencaDias()[0]
         dataInicial = inicial
 
         quantidadeDias = (dataAtual - dataInicial).days
         rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
+
     
         while quantidadeDias >= 30:
-            saldo = saldo + (saldo * rendimento)
+            saldo = bd.consultaSaldo(session['id_usuario'])
+            print(saldo)
+            saldo_novo = saldo + (saldo * rendimento)
+            print(saldo_novo)
+            valor = saldo_novo - saldo
+            dataHora = dataInicial.date() + datetime.timedelta(days=30)
+            dataInicial = dataInicial + datetime.timedelta(days=30)
+            dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': valor, 'dataHora': dataHora, 'saldoAntes': saldo, 'operacao': 'Rendimento Poupança', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
+            bd.inserirOperacao('historico_operacao', 'Rendimento Poupança', dic_dados)
+            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', saldo_novo)
+            
+
             quantidadeDias = quantidadeDias - 30
-        
-        
-        return saldo 
+            
+        return None
     else:
         return saldo
     
