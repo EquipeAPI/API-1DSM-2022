@@ -4,7 +4,9 @@
 a{
   text-decoration: none;
 }
-.menu{  position: absolute;
+
+.menu{  
+  position: absolute;
   top:6vh;
   left: 13vw;
 }
@@ -26,7 +28,6 @@ a{
   display: flex;
   gap: 10px;
   justify-content: center;
-
 }
 
 
@@ -78,6 +79,11 @@ body {
     display: inline-block;
     margin-left: 46.5%;
     margin-right: auto;
+}
+
+.logo{
+  height: 20px;
+  width: 140px;
 }
 
 .user{
@@ -307,31 +313,30 @@ body {
 
 /*PÁGINA LOGIN*/
 .login-form{
-  width:23vw;
-  top:38%;
-  left:50%;
-  position:absolute;
+  width: 23%;
+  left: 50%;
+  position:flex;
   transform: translate(-50%,-50%);
   font-family: Arial, Helvetica, sans-serif;
   color: #000;
   border-radius: 5px;
   background-color: #f0e5c7;
-  padding: 25px;
-  margin-top: 20vh;
+  padding: 2.5vh;
+  margin-top: 30vh;
 }
 
 .login-form label{
-  font-size:20px;
-  margin: 15px 0;
+  font-size: 1.1vw;
+  margin: 1vw 0;
 }
 .login-form input{
-  font-size:16px;
+  font-size: 1vw;
   width:100%;
-  padding:15px 5px;
+  padding: 1vh 0.5vw;
   border: 0;
   outline:none;
-  border-radius:10px;
-  margin-bottom:10px;
+  border-radius: 1vh;
+  margin-bottom: 1vh;
   margin-left: auto;
   margin-right: auto;
 }
