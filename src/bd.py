@@ -71,10 +71,10 @@ def extratoPersonalizado(conta, data_inicio, data_fim):
     cur.close()
     return extratoPersonalizado
 
-def operacoesPositivas(conta):
+def operacoesRendimento(conta):
     cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM historico_operacao WHERE (numero_conta = {conta} or numero_conta_destino = {conta}) AND (tipo_operacao = 'Depósito' OR tipo_operacao = 'Transferência') ")
-    operacoes = cur.fetchall()
+    cur.execute(f"SELECT * FROM historico_operacao WHERE (numero_conta = {conta} or numero_conta_destino = {conta}) AND (tipo_operacao = 'Depósito' OR tipo_operacao = 'Transferência') AND (status_operacao = 'Aprovado') AND (saldo_operacao = 0) ORDER BY data_hora_confirmacao DESC LIMIT 1 ")
+    operacoes = cur.fetchone()
     cur.close()
     return operacoes
 
@@ -170,6 +170,13 @@ def diferencaDias():
     cur.execute(f" SELECT now() + INTERVAL {intervalo} day as data")
     data = cur.fetchone()['data']
     return data, intervalo
+
+def insereRendimento(conta, data):
+    cur = mysql.connection.cursor()
+    cur.execute(f" INSERT INTO rendimento_poupanca(numero_conta, ultimo_rendimento) VALUES({conta}, '{data}') ON DUPLICATE KEY UPDATE ultimo_rendimento = '{data}'")
+    mysql.connection.commit()
+    cur.close()
+    return None
 
 def somarTruncamentoCapital(valor):
     cur =mysql.connection.cursor()

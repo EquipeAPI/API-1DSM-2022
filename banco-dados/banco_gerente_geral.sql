@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +26,7 @@ CREATE TABLE `gerente_geral` (
   `numero_matricula` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `tipo_gerente` set('Gerente Geral','Gerente de Agência') NOT NULL,
-  `atribuicao` set('Sim', 'Nao'),
+  `atribuicao` set('Sim','Nao') DEFAULT NULL,
   PRIMARY KEY (`numero_matricula`),
   KEY `fk_geral_usuario` (`id_usuario`),
   CONSTRAINT `fk_geral_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
@@ -41,7 +39,7 @@ CREATE TABLE `gerente_geral` (
 
 LOCK TABLES `gerente_geral` WRITE;
 /*!40000 ALTER TABLE `gerente_geral` DISABLE KEYS */;
-INSERT INTO `gerente_geral` VALUES (1,1,'Gerente Geral', Null),(2,2,'Gerente de Agência', 'Sim'),(3,3,'Gerente de Agência', 'Sim');
+INSERT INTO `gerente_geral` VALUES (1,1,'Gerente Geral',NULL),(2,2,'Gerente de Agência','Sim'),(3,3,'Gerente de Agência','Sim');
 /*!40000 ALTER TABLE `gerente_geral` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:03
+-- Dump completed on 2022-11-19 20:54:45

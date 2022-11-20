@@ -21,7 +21,7 @@ mysql = MySQL(app)
 def moeda(valor):
     valor = float(valor)
     return f'R${valor:.2f}'
-    
+
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
@@ -156,8 +156,6 @@ def home():
         modelo.truncamentoComBd(saldo, conta['id_usuario']) #Tirando o resto da conta e mandando para o capital total
         if conta['tipo_conta'] == 'Poupança':
             modelo.rendimentoPoupança()
-            #print(rendimento)
-            #bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', rendimento)
             modelo.atualizaCapital()
             return render_template('home.html', nome = session['nome'],
             saldo = bd.consultaSaldo(session['id_usuario']),
@@ -510,7 +508,7 @@ def respostaReq(decisao, tipo, id):
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('historico_operacao', 'id_operacao', id)
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaOperacao['numero_conta'])
-            dataHora = modelo.dataHora(True)
+            dataHora = bd.diferencaDias()[0]
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
             modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)

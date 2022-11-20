@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +27,8 @@ CREATE TABLE `conta` (
   `data_abertura_conta` date NOT NULL,
   `saldo_conta` double NOT NULL DEFAULT '0',
   `id_usuario` int NOT NULL,
-  `numero_agencia` int,
+  `numero_agencia` int DEFAULT NULL,
+  `tipo_conta` set('Poupança','Corrente') DEFAULT NULL,
   PRIMARY KEY (`numero_conta`),
   KEY `fk_id_usuario` (`id_usuario`),
   KEY `fk_agencia_conta` (`numero_agencia`),
@@ -38,18 +37,13 @@ CREATE TABLE `conta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
-ALTER table conta ADD tipo_conta set('Poupança', 'Corrente');
-
 --
 -- Dumping data for table `conta`
 --
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-
 INSERT INTO `conta` VALUES (123456,'2020-10-26',0,2,1,'Corrente'),(456123,'2020-10-26',0,1,1,'Corrente'),(654321,'2020-10-26',0,3,2,'Corrente');
-
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:02
+-- Dump completed on 2022-11-19 20:54:45

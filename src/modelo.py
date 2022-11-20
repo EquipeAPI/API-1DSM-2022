@@ -346,54 +346,32 @@ def criacaoGerenteComAgencia(form, numero_agencia):
     return None
 
 # Função para calcular rendimento de conta poupança
-jaRendeu = False
 def rendimentoPoupança():
-
-    global jaRendeu
     saldo = bd.consultaSaldo(session['id_usuario'])
-    if jaRendeu:
-        return saldo
-
-    jaRendeu = True
 
     if saldo > 0:
-        operacoes = bd.operacoesPositivas(session['numero_conta'])
-           
-        if len(operacoes) > 1:
-            for operacao in operacoes:
-                for coluna, registro in operacao.items():
-                    if coluna == 'data_hora_confirmacao': 
-                        inicial = registro
-                        if registro < inicial:
-                            inicial = registro
-        else:
-            for operacao in operacoes:
-                for coluna, registro in operacao.items():
-                    if coluna == 'data_hora_confirmacao': 
-                        inicial = registro
-                
-        
+        operacao = bd.operacoesRendimento(session['numero_conta'])
+        jaRendeu = bd.pegarLinha('rendimento_poupanca', 'numero_conta', session['numero_conta'])
         dataAtual = bd.diferencaDias()[0]
-        dataInicial = inicial
+        if jaRendeu == None:
+            dataInicial = operacao['data_hora_confirmacao']
+        else:
+            dataInicial = bd.pegarDado('rendimento_poupanca', 'numero_conta', session['numero_conta'], 'ultimo_rendimento')
 
-        quantidadeDias = (dataAtual - dataInicial).days
+        intervalo = (dataAtual - dataInicial).days
         rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
-
     
-        while quantidadeDias >= 30:
+        while intervalo >= 30:
             saldo = bd.consultaSaldo(session['id_usuario'])
-            print(saldo)
             saldo_novo = saldo + (saldo * rendimento)
-            print(saldo_novo)
             valor = saldo_novo - saldo
             dataHora = dataInicial.date() + datetime.timedelta(days=30)
-            dataInicial = dataInicial + datetime.timedelta(days=30)
             dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': valor, 'dataHora': dataHora, 'saldoAntes': saldo, 'operacao': 'Rendimento Poupança', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
             bd.inserirOperacao('historico_operacao', 'Rendimento Poupança', dic_dados)
             bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', saldo_novo)
-            
+            bd.insereRendimento(session['numero_conta'], dataHora)
 
-            quantidadeDias = quantidadeDias - 30
+            intervalo = intervalo - 30
             
         return None
     else:

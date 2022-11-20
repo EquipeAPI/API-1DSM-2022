@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -36,9 +34,9 @@ CREATE TABLE `confirmacao_cadastro` (
   `bairro_cadastro` varchar(50) NOT NULL,
   `cidade_cadastro` varchar(50) NOT NULL,
   `estado_cadastro` varchar(20) NOT NULL,
-  `numero_agencia` int,
+  `numero_agencia` int DEFAULT NULL,
   `numero_conta` int DEFAULT NULL,
-  `tipo_cadastro` set('Corrente', 'Poupança'),
+  `tipo_cadastro` set('Corrente','Poupança') DEFAULT NULL,
   PRIMARY KEY (`id_cadastro`),
   KEY `fk_cadastro_agencia` (`numero_agencia`),
   CONSTRAINT `fk_cadastro_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `agencia` (`numero_agencia`)
@@ -63,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:02
+-- Dump completed on 2022-11-19 20:54:44

@@ -16,32 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `encerramento_conta`
+-- Table structure for table `rendimento_poupanca`
 --
 
-DROP TABLE IF EXISTS `encerramento_conta`;
+DROP TABLE IF EXISTS `rendimento_poupanca`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `encerramento_conta` (
-  `id_encerramento` int NOT NULL AUTO_INCREMENT,
-  `saldo_encerramento` double NOT NULL,
-  `id_usuario` int NOT NULL,
-  `numero_agencia` int DEFAULT NULL,
-  PRIMARY KEY (`id_encerramento`),
-  KEY `fk_encerramento_usuario` (`id_usuario`),
-  KEY `fk_encerramento_agencia` (`numero_agencia`),
-  CONSTRAINT `fk_encerramento_agencia` FOREIGN KEY (`numero_agencia`) REFERENCES `agencia` (`numero_agencia`),
-  CONSTRAINT `fk_encerramento_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+CREATE TABLE `rendimento_poupanca` (
+  `numero_conta` int NOT NULL,
+  `ultimo_rendimento` datetime DEFAULT NULL,
+  PRIMARY KEY (`numero_conta`),
+  CONSTRAINT `fk_rendimento_conta` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `encerramento_conta`
+-- Dumping data for table `rendimento_poupanca`
 --
 
-LOCK TABLES `encerramento_conta` WRITE;
-/*!40000 ALTER TABLE `encerramento_conta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `encerramento_conta` ENABLE KEYS */;
+LOCK TABLES `rendimento_poupanca` WRITE;
+/*!40000 ALTER TABLE `rendimento_poupanca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rendimento_poupanca` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

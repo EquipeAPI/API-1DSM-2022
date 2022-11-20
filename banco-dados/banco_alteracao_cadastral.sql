@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `banco`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: banco
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +32,7 @@ CREATE TABLE `alteracao_cadastral` (
   `estado_alteracao` varchar(20) DEFAULT NULL,
   `senha_alteracao` varchar(16) DEFAULT NULL,
   `id_usuario` int NOT NULL,
-  `numero_agencia` int,
+  `numero_agencia` int DEFAULT NULL,
   `numero_casa_alteracao` varchar(5) DEFAULT NULL,
   `data_nascimento_alteracao` date DEFAULT NULL,
   PRIMARY KEY (`id_alteracao`),
@@ -63,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:39:03
+-- Dump completed on 2022-11-19 20:54:45
