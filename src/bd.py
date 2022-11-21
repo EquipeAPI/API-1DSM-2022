@@ -162,6 +162,13 @@ def configuracaoInicial(form):
     cur.close()
     return None
 
+def configuracoesSeguintes(form):
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE capital_banco SET data_atual = %s, taxa_juros = %s WHERE id_capital = 1", (form['data_atual'], form['taxa_juros']))
+    mysql.connection.commit()
+    cur.close()
+    return None
+
 def diferencaDias():
     cur = mysql.connection.cursor()
     data = str(pegarDado('capital_banco', 'id_capital', 1, 'data_atual'))

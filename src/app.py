@@ -50,16 +50,22 @@ def cadastro():
 # Rota da página de login (que é a página inicial)
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
 def configuracao():
+    saldo = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_inicial')
+    print(saldo)
     if request.method == 'POST':
         form = request.form
-        if modelo.validaOperacao(form['capital_inicial']):
-            bd.configuracaoInicial(form)
-            return redirect(url_for('login'))
+        if saldo == None:
+            if modelo.validaOperacao(form['capital_inicial']):
+                bd.configuracaoInicial(form)
+                return redirect(url_for('login'))
+            else:
+                flash('Use apenas números positivos')
+                return render_template('configCapital.html', saldo = saldo)
         else:
-            flash('Use apenas números positivos')
-            return render_template('configCapital.html')
+            bd.configuracoesSeguintes(form)
+            return redirect(url_for('login'))
     else:
-        return render_template('configCapital.html')
+        return render_template('configCapital.html', saldo = saldo)
 
 @app.route('/login', methods=['POST', 'GET']) # Colocando os metodos HTTP que serão usados
 def login():

@@ -1,20 +1,37 @@
 {% extends 'login.html'%}
 {% block navbar %}{% endblock %}
 {% block content %}
-<div class="login-form">
-    <form method="POST" action="#">
-        {% with mensagens = get_flashed_messages() %}
-            {% for msg in mensagens %}
-                <br><p id="confimacaoSenha">{{msg}}</p><br>
-            {% endfor %}
-        {% endwith %}
-        <label for="capital_inicial">Capital Inicial disponível:</label>
-        <input type="text" name="capital_inicial" pattern="[0-9]{1, 10}.[0-9]{2}" placeholder="R$ 00.00" autocomplete="off">
-        <label for="taxa_juros">Juros:</label>
-        <input type="text" name="taxa_juros" required>
-        <label for="data_atual">Data atual:</label>
-        <input type="date" name="data_atual">
-        <button type="submit" value="Entrar">Confirmar</button>
-    </form>  
-</div>
+    {% if saldo == None %}
+        <div class="login-form">
+            <form method="POST" action="#">
+                {% with mensagens = get_flashed_messages() %}
+                    {% for msg in mensagens %}
+                        <br><p id="confimacaoSenha">{{msg}}</p><br>
+                    {% endfor %}
+                {% endwith %}
+                <label for="capital_inicial">Capital Inicial disponível:</label>
+                <input type="text" name="capital_inicial" pattern="[0-9]{1, 10}.[0-9]{2}" placeholder="R$ 00.00" autocomplete="off">
+                <label for="taxa_juros">Juros:</label>
+                <input type="text" name="taxa_juros" required>
+                <label for="data_atual">Data atual:</label>
+                <input type="date" name="data_atual">
+                <button type="submit" value="Entrar">Confirmar</button>
+            </form>  
+        </div>
+    {% else %}   
+        <div class="login-form">
+            <form method="POST" action="#">
+                {% with mensagens = get_flashed_messages() %}
+                    {% for msg in mensagens %}
+                        <br><p id="confimacaoSenha">{{msg}}</p><br>
+                    {% endfor %}
+                {% endwith %}
+                <label for="taxa_juros">Juros:</label>
+                <input type="text" name="taxa_juros" required>
+                <label for="data_atual">Data atual:</label>
+                <input type="date" name="data_atual">
+                <button type="submit" value="Entrar">Confirmar</button>
+            </form>  
+        </div>
+    {% endif %}
 {% endblock %}
