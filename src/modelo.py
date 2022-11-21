@@ -398,13 +398,16 @@ def aplicaJuros():
     dataAtual = bd.diferencaDias()[0]
     for linhaCheque in tabelaCheque:
         linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
-        if dataAtual - linhaCheque['data_cheque'] >= datetime.timedelta(days=1):
+        dataUltimaAplicação = linhaCheque['data_cheque']
+        while dataAtual - dataUltimaAplicação >= datetime.timedelta(days=1):
+            linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
             saldoAntigo = linhaConta['saldo_conta']
             desconto = saldoAntigo * juros
             saldoAtual = saldoAntigo + desconto
+            dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)
             bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
             bd.updateCheque(linhaConta['id_usuario'], dataAtual)
-            dic_dados = {'dataHora':dataAtual, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':desconto, 'tipo_operacao':'Cheque Especial', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
+            dic_dados = {'dataHora':dataUltimaAplicação, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':desconto, 'tipo_operacao':'Cheque Especial', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
             bd.inserirOperacao('historico_operacao', 'Cheque Especial', dic_dados)
     return None
 
