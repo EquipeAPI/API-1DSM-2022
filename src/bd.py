@@ -104,9 +104,10 @@ def tiraCheque(id_usuario):
     cur.close()
     return None
 
-def updateCheque(id_usuario, novaData):
+def updateCheque(id_usuario, novaData, valorCheque):
     numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
     cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE conta SET cheque_conta = {valorCheque} WHERE numero_conta = {numero_conta}")
     cur.execute(f"UPDATE cheque_especial SET data_cheque = '{novaData}' WHERE numero_conta = {numero_conta}")
     mysql.connection.commit()
     cur.close()

@@ -26,6 +26,7 @@ CREATE TABLE `conta` (
   `numero_conta` int NOT NULL,
   `data_abertura_conta` date NOT NULL,
   `saldo_conta` double NOT NULL DEFAULT '0',
+  `cheque_conta` double DEFAULT '0',
   `id_usuario` int NOT NULL,
   `numero_agencia` int DEFAULT NULL,
   `tipo_conta` set('Poupança','Corrente') DEFAULT NULL,
@@ -43,7 +44,7 @@ CREATE TABLE `conta` (
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES (123456,'2020-10-26',0,2,1,'Corrente'),(456123,'2020-10-26',0,1,1,'Corrente'),(654321,'2020-10-26',0,3,2,'Corrente');
+INSERT INTO `conta` VALUES (123456,'2020-10-26',0,0,2,1,'Corrente'),(456123,'2020-10-26',0,0,1,1,'Corrente'),(654321,'2020-10-26',0,0,3,2,'Corrente');
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

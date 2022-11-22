@@ -9,7 +9,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -262,7 +262,8 @@ def dadosTransferenciaDestino(operacoes):
 
 def atualizaCapital():
     somaContas = bd.soma_capital('conta', 'saldo_conta')
-    somaContas = somaContas[0]['sum(saldo_conta)']
+    somaCheque = bd.soma_capital('conta', 'cheque_conta')
+    somaContas = somaContas[0]['sum(saldo_conta)'] - somaCheque[0]['sum(cheque_conta)']
     inicial = bd.pegarTabela('capital_banco')
     inicial = inicial[0]['capital_inicial']
     #print(somaContas, inicial)
@@ -404,9 +405,10 @@ def aplicaJuros():
             saldoAntigo = linhaConta['saldo_conta']
             desconto = saldoAntigo * juros
             saldoAtual = saldoAntigo + desconto
+            valorDevendo = linhaConta['cheque_conta'] + desconto
             dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)
             bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
-            bd.updateCheque(linhaConta['id_usuario'], dataAtual)
+            bd.updateCheque(linhaConta['id_usuario'], dataAtual, valorDevendo)
             dic_dados = {'dataHora':dataUltimaAplicação, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':desconto, 'tipo_operacao':'Cheque Especial', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
             bd.inserirOperacao('historico_operacao', 'Cheque Especial', dic_dados)
     return None
