@@ -75,7 +75,7 @@
                 <form action="" method="POST">
                 <span id="cifrão">
                     <label for="saque">R$</label>
-                    <input type="text" name="saque" placeholder="00.00" pattern="[0-9]{1, 10}.[0-9]{2}" title="Separe os centavos dos reais com '.' e utilize apenas 2 casas decimais" autocomplete="off">
+                    <input type="text" name="saque" placeholder="00.00" pattern="[0-9]+|[0-9]+\.[0-9]{1,2}" title="Separe os centavos dos reais com '.', utilize no máximo 2 casas decimais depois do '.' e use apenas números" autocomplete="off">
                 
                     <input type="submit" value="Sacar" id="sacar">
                     {% if gerente == 'agencia' %}

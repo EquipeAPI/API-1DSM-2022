@@ -87,6 +87,11 @@ def pegarTabela(tabela):
 
 #========================== Funções de cheque especial ==========================
 
+def updateDividaCheque(id_usuario, valor):
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE conta SET cheque_conta = {valor} WHERE id_usuario = {id_usuario}")
+
+
 def insereCheque(id_usuario): #Insere usuario na tabela de cheque especial
     numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
     data = str(diferencaDias()[0])

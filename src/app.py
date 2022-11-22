@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -62,12 +62,8 @@ def configuracao():
                 flash('Use apenas números positivos')
                 return render_template('configCapital.html', saldo = saldo)
         else:
-            if modelo.validaData(form['data_atual']):
-                bd.configuracoesSeguintes(form)
-                return redirect(url_for('login'))
-            else:
-                flash('Datas somente para a frente')
-                return render_template('configCapital.html')
+            bd.configuracoesSeguintes(form)
+            return redirect(url_for('login'))
     else:
         return render_template('configCapital.html', saldo = saldo)
 

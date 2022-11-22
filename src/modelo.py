@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from dataclasses import replace
+from turtle import update
 from flask import Flask, session
 from flask_mysqldb import MySQL
 import bd, random
@@ -9,7 +10,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'fatec'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -40,13 +41,6 @@ def validaOperacao(input):
         else:
             return False
     elif input.isnumeric() and int(input) >=0: # Caso não haja pontos confere se o usuário inseriu apenas números, caso contrário retorna falso
-        return True
-    else:
-        return False
-
-def validaData(data):
-    dataAtual = bd.pegarDado('capital_banco', 'id_capital', 1, 'data_atual')
-    if data > dataAtual:
         return True
     else:
         return False
@@ -105,6 +99,7 @@ def deposito(id_usuario, valor):
     atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)
     atual = atual['saldo_conta'] + valor
     bd.mudaSaldo(atual, id_usuario)
+    pagandoCheque(id_usuario, valor)
     return None
 
 def transferencia(id_usuario, valor, recebedor):
@@ -117,6 +112,7 @@ def transferencia(id_usuario, valor, recebedor):
         atualRecebedor = atualRecebedor['saldo_conta'] + valor
         bd.mudaSaldo(atualEnvio, id_usuario)
         bd.mudaSaldo(atualRecebedor, id_recebedor)
+        pagandoCheque(id_recebedor, valor)
         return True
     else:
         return False
@@ -399,6 +395,19 @@ def dataHora(comHora): #Função que retor a data e a hora do sistema em string 
     return dataHora #Retorna a string já formatada devidamente
 
 #============================ FUNÇÂO DE CHEQUE ESPECIAL ============================
+
+def pagandoCheque(id_usuario, valorEntrada):
+    linhaConta = bd.pegarLinha('conta', 'id_usuario', id_usuario)
+    if linhaConta['cheque_conta'] != 0:
+        if abs(linhaConta['cheque_conta']) <= valorEntrada:
+            bd.updateDividaCheque(id_usuario, 0)
+            return None
+        else:
+            divida = linhaConta['cheque_conta'] + valorEntrada
+            bd.updateDividaCheque(id_usuario, divida)
+            return None
+    else:
+        return None
 
 def aplicaJuros():
     juros = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_juros')
