@@ -41,10 +41,10 @@ app.config['MYSQL_DB'] = '' # Nome do esquema do banco de dados
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 ```
 * Execute a aplicação
-```
+```powershell
 cd src
 python app.py
-```powershell
+```
 
 <span id="entregas"></span>
 
