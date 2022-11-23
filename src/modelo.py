@@ -352,34 +352,41 @@ def criacaoGerenteComAgencia(form, numero_agencia):
 # Função para calcular rendimento de conta poupança
 def rendimentoPoupança():
     saldo = bd.consultaSaldo(session['id_usuario'])
+    jaRendeu = bd.pegarLinha('rendimento_poupanca', 'numero_conta', session['numero_conta'])
 
     if saldo > 0:
         operacao = bd.operacoesRendimento(session['numero_conta'])
-        jaRendeu = bd.pegarLinha('rendimento_poupanca', 'numero_conta', session['numero_conta'])
         dataAtual = bd.diferencaDias()[0]
+
         if jaRendeu == None:
             dataInicial = operacao['data_hora_confirmacao']
         else:
             dataInicial = bd.pegarDado('rendimento_poupanca', 'numero_conta', session['numero_conta'], 'ultimo_rendimento')
-
+            
         intervalo = (dataAtual - dataInicial).days
         rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
-    
+
         while intervalo >= 30:
             saldo = bd.consultaSaldo(session['id_usuario'])
             saldo_novo = saldo + (saldo * rendimento)
             valor = saldo_novo - saldo
             dataHora = dataInicial.date() + datetime.timedelta(days=30)
             dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': valor, 'dataHora': dataHora, 'saldoAntes': saldo, 'operacao': 'Rendimento Poupança', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
-            bd.inserirOperacao('historico_operacao', 'Rendimento Poupança', dic_dados)
-            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', saldo_novo)
             bd.insereRendimento(session['numero_conta'], dataHora)
-
-            intervalo = intervalo - 30
+            bd.updateDado('conta', 'numero_conta', session['numero_conta'], 'saldo_conta', saldo_novo)
+            bd.inserirOperacao('historico_operacao', 'Rendimento Poupança', dic_dados)
             
+            intervalo = intervalo - 30
+
+            dataInicial = bd.pegarDado('rendimento_poupanca', 'numero_conta', session['numero_conta'], 'ultimo_rendimento')
+
         return None
     else:
-        return saldo
+        if jaRendeu != None:
+            bd.apaga_linha('rendimento_poupanca', 'numero_conta', session['numero_conta'])
+            return saldo
+        else:
+            return saldo
     
 
 #============================ FUNÇÕES DE TEMPO ===============================

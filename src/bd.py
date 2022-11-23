@@ -59,7 +59,7 @@ def tabelaPersonalizada(tabela, dado, valor):
 
 def extrato(conta):
     cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM historico_operacao WHERE numero_conta = {conta} or numero_conta_destino = {conta} ORDER BY data_hora_operacao DESC") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    cur.execute(f"SELECT * FROM historico_operacao WHERE numero_conta = {conta} or numero_conta_destino = {conta} ORDER BY data_hora_operacao DESC, saldo_operacao DESC") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     tabelaPersonalizada = cur.fetchall() #Armazena todas as informações desse cliente na variável usuário
     cur.close()
     return tabelaPersonalizada
@@ -73,7 +73,7 @@ def extratoPersonalizado(conta, data_inicio, data_fim):
 
 def operacoesRendimento(conta):
     cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM historico_operacao WHERE (numero_conta = {conta} or numero_conta_destino = {conta}) AND (tipo_operacao = 'Depósito' OR tipo_operacao = 'Transferência') AND (status_operacao = 'Aprovado') AND (saldo_operacao = 0) ORDER BY data_hora_confirmacao DESC LIMIT 1 ")
+    cur.execute(f"SELECT * FROM historico_operacao WHERE (numero_conta = {conta} or numero_conta_destino = {conta}) AND (tipo_operacao = 'Depósito' OR tipo_operacao = 'Transferência') AND (status_operacao = 'Aprovado') AND (saldo_operacao = 0 or saldo_operacao_destino = 0) ORDER BY data_hora_confirmacao DESC LIMIT 1 ")
     operacoes = cur.fetchone()
     cur.close()
     return operacoes

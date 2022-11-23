@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -51,7 +51,6 @@ def cadastro():
 @app.route('/', methods=['POST', 'GET']) # As duas rotas acionaram a mesma função
 def configuracao():
     saldo = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_inicial')
-    print(saldo)
     if request.method == 'POST':
         form = request.form
         if saldo == None:
@@ -161,6 +160,7 @@ def home():
         saldo = modelo.truncamento(conta['saldo_conta']) #Pegando saldo truncado, separado entre valor truncado e resto
         modelo.truncamentoComBd(saldo, conta['id_usuario']) #Tirando o resto da conta e mandando para o capital total
         if conta['tipo_conta'] == 'Poupança':
+            modelo.atualizaCapital()
             modelo.rendimentoPoupança()
             modelo.atualizaCapital()
             return render_template('home.html', nome = session['nome'],
