@@ -21,6 +21,12 @@ Projeto desenvolvido por alunos do 1º semestre do curso de Desenvolviento de So
 # Acesse a página do projeto
 cd projeto
 
+# Crie um ambiente virtual
+python -m venv nomedoambiente
+
+# Ative o ambiente virtual
+nomedoambiente/Scripts/activate
+
 # Instale as dependências
 pip install -r requirements.txt
 ``` 
@@ -28,13 +34,17 @@ pip install -r requirements.txt
 
 ```powershell
 # Configure as informações do banco de dados de acordo com o seu servidor nos arquivos app.py e modelo.py 
-app.config['MYSQL_HOST'] = '' # localhost
+app.config['MYSQL_HOST'] = 'localhost' 
 app.config['MYSQL_USER'] = '' # Usuário 
 app.config['MYSQL_PASSWORD'] = '' # Senha 
-app.config['MYSQL_DB'] = '' # Nome do banco de dados
+app.config['MYSQL_DB'] = '' # Nome do esquema do banco de dados
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 ```
 * Execute a aplicação
+```powershell
+cd src
+python app.py
+```
 
 <span id="entregas"></span>
 

@@ -303,6 +303,10 @@ def saque():
                 saldoAntes = linhaConta['saldo_conta'] #Guardando o valor do saldo antes da operação
                 ct = bd.pegarLinha('capital_banco', 'id_capital', 1)
                 ct = ct['capital_total']
+                if linhaConta['tipo_conta'] == 'Poupança':
+                    if float(saque) > linhaConta['saldo_conta']:
+                        flash('Saldo insuficiente')
+                        return redirect(url_for('saque'))
                 if int(float(saque)) <= ct:
                     modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                     dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
