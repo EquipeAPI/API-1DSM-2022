@@ -61,8 +61,12 @@ def configuracao():
                 flash('Use apenas números positivos')
                 return render_template('configCapital.html', saldo = saldo)
         else:
-            bd.configuracoesSeguintes(form)
-            return redirect(url_for('login'))
+            if modelo.validaData(form['data_atual']):
+                bd.configuracoesSeguintes(form)
+                return redirect(url_for('login'))
+            else:
+                flash('Datas somente para a frente')
+                return render_template('configCapital.html')
     else:
         return render_template('configCapital.html', saldo = saldo)
 

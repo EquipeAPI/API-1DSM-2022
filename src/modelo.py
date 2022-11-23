@@ -45,6 +45,13 @@ def validaOperacao(input):
     else:
         return False
 
+def validaData(data):
+    dataAtual = bd.pegarDado('capital_banco', 'id_capital', 1, 'data_atual')
+    data = datetime.datetime.strptime(data, '%Y-%m-%d').date()
+    if data > dataAtual:
+        return True
+    else:
+        return False
 
 def truncamento(valor):
     valor = str(valor)
