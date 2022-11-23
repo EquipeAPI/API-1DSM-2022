@@ -432,12 +432,16 @@ def loggout():
 def enviaReqEncerramento():
     if 'nome' in session:
         linhaConta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
-        saldo = linhaConta['saldo_conta']
-        bd.reqFecha(session['id_usuario'], linhaConta['numero_agencia'], saldo)
-        flash('Requisição de fechamento de conta enviada.')
-        if session['gerente'] != 'nao':
-            return redirect(url_for('homeGerenteAgencia'))
+        if linhaConta['saldo_conta'] == 0:
+            saldo = linhaConta['saldo_conta']
+            bd.reqFecha(session['id_usuario'], linhaConta['numero_agencia'], saldo)
+            flash('Requisição de fechamento de conta enviada.')
+            if session['gerente'] != 'nao':
+                return redirect(url_for('homeGerenteAgencia'))
+            else:
+                return redirect(url_for('home'))
         else:
+            flash('Seu saldo precisa ser zero para pedir o encerramento da conta.')
             return redirect(url_for('home'))
     else:
         return redirect(url_for('login')) # Redireciona para o login.
@@ -523,11 +527,11 @@ def respostaReq(decisao, tipo, id):
             modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
             modelo.saiuCheque(linhaConta['saldo_conta'], linhaConta['id_usuario']) #Confere se o usuario saiu do cheque especial
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
         else:
             dataHora = modelo.dataHora(True)
             bd.atualizaDeposito(tipo, dataHora, 'Negado', id)
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
     
     elif tipo == 'confirmacao_cadastro':
         if decisao == 'aceita':
@@ -535,10 +539,11 @@ def respostaReq(decisao, tipo, id):
             dataHora = bd.diferencaDias()[0] 
             bd.criaConta(linhaOperacao, dataHora, True)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
         else:
+            linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
             bd.apaga_linha(tipo, 'id_cadastro', id) #Deleta linha na tabela confirmacao cadastro
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
     
     elif tipo == 'alteracao_cadastral':
         if decisao == 'aceita':
@@ -547,21 +552,27 @@ def respostaReq(decisao, tipo, id):
                 session['nome'] = linhaOperacao['nome_alteracao']
             modelo.alteraPorRequisicao(linhaOperacao['id_usuario'])
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
         else:
+            linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
             bd.apaga_linha(tipo, 'id_alteracao', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
 
     elif tipo == 'encerramento_conta':
         if decisao == 'aceita':
             linhaOperacao = bd.pegarLinha('encerramento_conta', 'id_encerramento', id)
             linhaConta = bd.pegarLinha('conta', 'id_usuario', linhaOperacao['id_usuario'])
-            modelo.apagaUsuario(linhaConta['numero_conta'], linhaOperacao['id_usuario'])
-            bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            if linhaConta['saldo_conta'] == 0:
+                modelo.apagaUsuario(linhaConta['numero_conta'], linhaOperacao['id_usuario'])
+                bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
+                return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaConta['numero_agencia']))
+            else:
+                flash(f"A conta {linhaConta['numero_conta']} não pode ser encerrada, pois seu saldo não é 0")
+                return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaConta['numero_agencia']))
         else:
+            linhaOperacao = bd.pegarLinha('alteracao_cadastral', 'id_alteracao', id)
             bd.apaga_linha(tipo, 'id_encerramento', id) #Deleta linha na tabela alteracao_cadastral
-            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
+            return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
 
 
 #======================================= Gerenciando Usuários da agência =======================================
@@ -586,8 +597,12 @@ def alteracaoGerente(id_usuario):
 @app.route('/encerraConta/<id_usuario>', methods=['POST', 'GET'])
 def encerraConta(id_usuario):
     linhaConta = bd.pegarLinha('conta', 'id_usuario', id_usuario)
-    modelo.apagaUsuario(linhaConta['numero_conta'], id_usuario)
-    return redirect(url_for('usuarios_agencia'))
+    if linhaConta['saldo_conta'] == 0:
+        modelo.apagaUsuario(linhaConta['numero_conta'], id_usuario)
+        return redirect(url_for('usuarios_agencia'))
+    else:
+        flash(f"A conta {linhaConta['numero_conta']} não pode ser encerrada, pois seu saldo não é 0.")
+        return(redirect(url_for('alteracaoGerente', id_usuario = id_usuario)))
         
 
 #======================================= Rotas de gerente geral =======================================

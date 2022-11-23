@@ -60,6 +60,11 @@
             </div>
         </header>
     </div>
+    {% with mensagens = get_flashed_messages() %}
+        {% for msg in mensagens %}
+            <p id="info">{{msg}}</p>
+        {% endfor %}
+    {% endwith %}
         <div class="divtabuser">
             <div class="dirowuser">
                 <div class="userinfo">

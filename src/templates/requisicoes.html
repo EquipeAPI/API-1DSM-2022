@@ -63,6 +63,11 @@
 </head>
 <body>
 <div id="flexbox">   
+    {% with mensagens = get_flashed_messages() %}
+        {% for msg in mensagens %}
+            <p id="info">{{msg}}</p>
+        {% endfor %}
+    {% endwith %}
     <!-- Requisições de depósito -->
     {% if gerente == 'geral' %}
         <form action="#" method="POST" class="cadastro">
@@ -259,10 +264,14 @@
             {% if chave == 'id_encerramento' %}
                 <label for="id_encerramento">Id da requisição:</label>
                 <input type="text" value="{{valor}}" readonly>
-            {% elif chave == 'saldo_encerramento' %}
-                <label for="saldo_encerramento">Saldo pendente:</label>
-                <input type="text" value="{{valor}}" readonly>
+                
             {% elif chave == 'id_usuario' %}
+                <label for="saldo_encerramento">Saldo pendente:</label>
+                {% for conta in tabelaConta %}
+                    {% if conta['id_usuario'] == valor %}
+                        <input type="text" value="{{conta['saldo_conta']}}" readonly>
+                    {% endif %}
+                {% endfor %}
                 <label for="id_usuario">ID do usuário:</label>
                 <input type="text" value="{{valor}}" readonly>
             {% endif %}
