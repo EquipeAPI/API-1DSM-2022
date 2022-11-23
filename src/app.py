@@ -522,7 +522,7 @@ def respostaReq(decisao, tipo, id):
             modelo.deposito(linhaConta['id_usuario'], linhaOperacao['valor_operacao'])
             modelo.atualizaCapital()
             bd.atualizaDeposito(tipo, dataHora, 'Aprovado', id)
-            modelo.saiuCheque(linhaConta['saldo_conta'], id) #Confere se o usuario saiu do cheque especial
+            modelo.saiuCheque(linhaConta['saldo_conta'], linhaConta['id_usuario']) #Confere se o usuario saiu do cheque especial
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = session ['numero_agencia']))
         else:
             dataHora = modelo.dataHora(True)
