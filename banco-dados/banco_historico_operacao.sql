@@ -37,8 +37,6 @@ CREATE TABLE `historico_operacao` (
   `saldo_operacao_destino` double DEFAULT NULL,
   PRIMARY KEY (`id_operacao`),
   KEY `fk_conta_historico` (`numero_conta`),
-  KEY `fk_agencia_historico` (`numero_agencia`),
-  CONSTRAINT `fk_agencia_historico` FOREIGN KEY (`numero_agencia`) REFERENCES `conta` (`numero_agencia`),
   CONSTRAINT `fk_conta_historico` FOREIGN KEY (`numero_conta`) REFERENCES `conta` (`numero_conta`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
