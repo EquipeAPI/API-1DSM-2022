@@ -410,7 +410,7 @@ def truncamentoSaldo(valor, id_usuario): #Trunca valor do saldo, a não ser que 
         truncamentoComBd(dicionario, id_usuario)
     else:
         resto = float(valor) - float(valor[:(valor.find('.')+3)])
-        if capitalTotal + resto >= 0:
+        if capitalTotal + resto > 0.01:
             resultado = float(valor[:(valor.find('.')+3)])
             dicionario = {'resultado':resultado, 'resto':resto}
             truncamentoComBd(dicionario, id_usuario)
@@ -424,18 +424,17 @@ def truncamentoSaldo(valor, id_usuario): #Trunca valor do saldo, a não ser que 
 
 def truncaValor(valor):
     valor = str(valor)
+    resto = float(valor) - float(valor[:(valor.find('.')+3)])
     capitalTotal = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_total')
     if float(valor) >= 0:
-        resto = float(valor) - float(valor[:(valor.find('.')+3)])
         resultado = float(valor[:(valor.find('.')+3)])
         dicionario = {'resultado':resultado, 'resto':resto}
-        bd.somarTruncamentoCapital(dicionario['resto'])
+        bd.somarValorCapital(dicionario['resto'])
     else:
-        resto = float(valor) - float(valor[:(valor.find('.')+3)])
-        if capitalTotal + resto >= 0:
+        if capitalTotal + resto > 0.01: 
             resultado = float(valor[:(valor.find('.')+3)])
             dicionario = {'resultado':resultado, 'resto':resto}
-            bd.somarTruncamentoCapital(dicionario['resto'])
+            bd.somarValorCapital(dicionario['resto'])
         else:
             valor = float(valor)
             valor = round(valor, 2)
@@ -445,7 +444,7 @@ def truncaValor(valor):
 
 def truncamentoComBd(dicionario, id_usuario):
     saque(id_usuario, dicionario['resto'])
-    bd.somarTruncamentoCapital(dicionario['resto'])
+    bd.somarValorCapital(dicionario['resto'])
     return None
 
 
@@ -455,10 +454,13 @@ def pagandoCheque(id_usuario, valorEntrada):
     linhaConta = bd.pegarLinha('conta', 'id_usuario', id_usuario)
     if linhaConta['cheque_conta'] != 0:
         if abs(linhaConta['cheque_conta']) <= valorEntrada:
+            bd.somarValorCapital(abs(linhaConta['cheque_conta']))
             bd.updateDividaCheque(id_usuario, 0)
+
             return None
         else:
             divida = linhaConta['cheque_conta'] + valorEntrada
+            bd.somarValorCapital(valorEntrada)
             bd.updateDividaCheque(id_usuario, divida)
             return None
     else:
@@ -478,6 +480,8 @@ def aplicaJuros():
             desconto = truncaValor(desconto)
             saldoAtual = saldoAntigo + desconto
             valorDevendo = linhaConta['cheque_conta'] + desconto
+            valorDevendo = truncaValor(valorDevendo) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
+            saldoAtual = truncaValor(saldoAtual) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
             dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)
             bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
             bd.updateCheque(linhaConta['id_usuario'], dataAtual, valorDevendo)
