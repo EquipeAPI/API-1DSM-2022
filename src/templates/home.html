@@ -42,15 +42,15 @@
             </div>
             {% if gerente == 'geral' %}
                 <a href="/homeGerenteGeral">
-                    <img src="../static/public/logo.png" alt="logo">
+                    <img src="../static/public/logo.png" alt="logo" class="logo">
                 </a>
             {% elif gerente == 'agencia' %}
                 <a href="/homeGerenteAgencia">
-                    <img src="../static/public/logo.png" alt="logo">
+                    <img src="../static/public/logo.png" alt="logo" class="logo">
                 </a>
             {% else %}
                 <a href="/home">
-                    <img src="../static/public/logo.png" alt="logo">
+                    <img src="../static/public/logo.png" alt="logo" class="logo">
                 </a>
             {% endif %}
             <div class="user">
@@ -63,6 +63,7 @@
         {% block capitalTotal %}
         {% endblock %}
     </div>
+    {% block operações %}
     <div class="corpohome">
         {% if nome %}
         <h1>Bem-vindo(a), {{ nome }}!</h1>
@@ -80,6 +81,7 @@
             <div class="transf2"><button><a href="/transferencia" class="nav-link">Transferência</a></button></div>
         </div>
     </div>
+    {% endblock %}
      <!-- Mensagem de saque ou depósito realizado com sucesso -->
     {% with mensagens = get_flashed_messages() %}
         {% for msg in mensagens %}

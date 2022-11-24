@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, session, url_for, f
 from flask_mysqldb import MySQL
 
 
-import bd, modelo # Importando os outros arquivos .py
+import bd, modelo, math # Importando os outros arquivos .py
 
 app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -19,7 +19,7 @@ mysql = MySQL(app)
 
 @app.template_filter()
 def moeda(valor):
-    valor = float(valor)
+    valor = math.floor(valor * 10 ** 2) / 10 ** 2
     return f'R${valor:.2f}'
 
 
