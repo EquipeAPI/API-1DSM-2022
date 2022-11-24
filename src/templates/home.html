@@ -66,7 +66,7 @@
     {% block operações %}
     <div class="corpohome">
         {% if nome %}
-        <h1>Bem-vindo(a), {{ nome }}!</h1>
+        <h1>Bem-vindo(a), {{ nome | primeiro_nome }}!</h1>
         {% else %}]
         <p>Não está logado ainda</p>
         {% endif %}

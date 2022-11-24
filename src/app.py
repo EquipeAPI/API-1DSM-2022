@@ -22,6 +22,11 @@ def moeda(valor):
     valor = math.floor(valor * 10 ** 2) / 10 ** 2
     return f'R${valor:.2f}'
 
+@app.template_filter()
+def primeiro_nome(nome):
+    nome = nome.split(' ')
+    return f'{nome[0]}'
+
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
