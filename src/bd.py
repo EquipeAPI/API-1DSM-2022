@@ -191,7 +191,7 @@ def insereRendimento(conta, data):
     cur.close()
     return None
 
-def somarTruncamentoCapital(valor):
+def somarValorCapital(valor):
     cur =mysql.connection.cursor()
     cur.execute("select capital_inicial from capital_banco")
     capital = cur.fetchone()
