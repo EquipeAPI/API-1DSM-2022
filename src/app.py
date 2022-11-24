@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -161,8 +161,7 @@ def home():
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
         conta = bd.pegarLinha('conta', 'numero_conta', session['numero_conta'])
-        saldo = modelo.truncamento(conta['saldo_conta']) #Pegando saldo truncado, separado entre valor truncado e resto
-        modelo.truncamentoComBd(saldo, conta['id_usuario']) #Tirando o resto da conta e mandando para o capital total
+        #saldo = modelo.truncamentoSaldo(conta['saldo_conta'], conta['id_usuario']) #Pegando saldo truncado, separado entre valor truncado e resto
         if conta['tipo_conta'] == 'Poupança':
             modelo.atualizaCapital()
             modelo.rendimentoPoupança()
@@ -173,7 +172,7 @@ def home():
             numero_agencia = str(session['numero_agencia']), gerente = session['gerente'], contaTipo = 'Conta Poupança')
         else:
             modelo.atualizaCapital()
-            if saldo['resultado'] >= 0: 
+            if conta['saldo_conta'] >= 0: 
                 return render_template('home.html', nome = session['nome'],
                 saldo = bd.consultaSaldo(session['id_usuario']),
                 numero_conta = str(session['numero_conta']),
@@ -307,7 +306,7 @@ def saque():
                     if float(saque) > linhaConta['saldo_conta']:
                         flash('Saldo insuficiente')
                         return redirect(url_for('saque'))
-                if int(float(saque)) <= ct:
+                if float(saque) <= ct:
                     modelo.saque(session['id_usuario'], saque) # Atualiza o saldo do usuário com o novo valor
                     dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': saque, 'dataHora': dataHora, 'saldoAntes': saldoAntes, 'operacao': 'Saque', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário

@@ -10,7 +10,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -53,21 +53,7 @@ def validaData(data):
     else:
         return False
 
-def truncamento(valor):
-    valor = str(valor)
-    if float(valor) >= 0:
-        resto = float(valor) - float(valor[:(valor.find('.')+3)])
-        resultado = float(valor[:(valor.find('.')+3)])
-    else:
-        resto = float(valor) - float(valor[:(valor.find('.')+4)])
-        resultado = float(valor[:(valor.find('.')+4)])
-    dicionario = {'resultado':resultado, 'resto':resto}
-    return dicionario
 
-def truncamentoComBd(dicionario, id_usuario):
-    saque(id_usuario, dicionario['resto'])
-    bd.somarTruncamentoCapital(dicionario['resto'])
-    return None
 
 def geradorNumeroConta ():
     numero = random.sample(range(100000,1000000), 1) # Gera uma lista com um elemento numerico aleatório entre 100000 e 999999
@@ -269,6 +255,8 @@ def dadosTransferenciaDestino(operacoes):
 
     return dic_nome_conta_destino
 
+
+
 #=============================== FUNÇÕES DE CAPITAL TOTAL ===============================
 
 def atualizaCapital():
@@ -409,6 +397,58 @@ def dataHora(comHora): #Função que retor a data e a hora do sistema em string 
         dataHora = dataHora[0:10] #Tira as Horas
     return dataHora #Retorna a string já formatada devidamente
 
+
+#======================================== FUNÇÔES DE TRUNCAMENTO ========================================
+
+def truncamentoSaldo(valor, id_usuario): #Trunca valor do saldo, a não ser que isso negative o capital total. Se esse for o caso, o valor em questão é arredondado
+    valor = str(valor)
+    capitalTotal = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_total')
+    if float(valor) >= 0:
+        resto = float(valor) - float(valor[:(valor.find('.')+3)])
+        resultado = float(valor[:(valor.find('.')+3)])
+        dicionario = {'resultado':resultado, 'resto':resto}
+        truncamentoComBd(dicionario, id_usuario)
+    else:
+        resto = float(valor) - float(valor[:(valor.find('.')+3)])
+        if capitalTotal + resto >= 0:
+            resultado = float(valor[:(valor.find('.')+3)])
+            dicionario = {'resultado':resultado, 'resto':resto}
+            truncamentoComBd(dicionario, id_usuario)
+        else:
+            valor = float(valor)
+            valor = round(valor, 2)
+            bd.mudaSaldo(valor, id_usuario)
+            dicionario = {'reultado':valor}
+    return dicionario
+    
+
+def truncaValor(valor):
+    valor = str(valor)
+    capitalTotal = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_total')
+    if float(valor) >= 0:
+        resto = float(valor) - float(valor[:(valor.find('.')+3)])
+        resultado = float(valor[:(valor.find('.')+3)])
+        dicionario = {'resultado':resultado, 'resto':resto}
+        bd.somarTruncamentoCapital(dicionario['resto'])
+    else:
+        resto = float(valor) - float(valor[:(valor.find('.')+3)])
+        if capitalTotal + resto >= 0:
+            resultado = float(valor[:(valor.find('.')+3)])
+            dicionario = {'resultado':resultado, 'resto':resto}
+            bd.somarTruncamentoCapital(dicionario['resto'])
+        else:
+            valor = float(valor)
+            valor = round(valor, 2)
+            #valor = str(valor)[:(valor.find('.')+3)]
+            dicionario = {'resultado':valor}
+    return dicionario['resultado']
+
+def truncamentoComBd(dicionario, id_usuario):
+    saque(id_usuario, dicionario['resto'])
+    bd.somarTruncamentoCapital(dicionario['resto'])
+    return None
+
+
 #============================ FUNÇÂO DE CHEQUE ESPECIAL ============================
 
 def pagandoCheque(id_usuario, valorEntrada):
@@ -435,6 +475,7 @@ def aplicaJuros():
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
             saldoAntigo = linhaConta['saldo_conta']
             desconto = saldoAntigo * juros
+            desconto = truncaValor(desconto)
             saldoAtual = saldoAntigo + desconto
             valorDevendo = linhaConta['cheque_conta'] + desconto
             dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)
