@@ -366,6 +366,8 @@ def rendimentoPoupança():
             saldo = bd.consultaSaldo(session['id_usuario'])
             saldo_novo = saldo + (saldo * rendimento)
             valor = saldo_novo - saldo
+            saldo_novo = truncaValor(saldo_novo)
+            valor = truncaValor(valor)
             dataHora = dataInicial.date() + datetime.timedelta(days=30)
             dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': valor, 'dataHora': dataHora, 'saldoAntes': saldo, 'operacao': 'Rendimento Poupança', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
             bd.insereRendimento(session['numero_conta'], dataHora)
