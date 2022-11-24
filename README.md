@@ -31,6 +31,7 @@ nomedoambiente/Scripts/activate
 pip install -r requirements.txt
 ``` 
 <p>Utilize dos arquivos script .sql para criar a estrutura do banco de dados</p>
+<a href="https://www.youtube.com/watch?v=Y18wK0v6mxA">Tutorial em mais detalhes para importar scripts no MySQL</a>
 
 ```powershell
 # Configure as informações do banco de dados de acordo com o seu servidor nos arquivos app.py e modelo.py 
@@ -53,10 +54,10 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 
 | Sprint| Período | Status | Relatório |
 |:-----:|:----------:|:---------:|:---------:|
-| 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | [relatório](docs/entregas/sprint-1/README.md) |
-| 02 |   19/09/2022 - 09/10/2022 | Entregue :heavy_check_mark: |  |
-| 03 |   16/05/2021 | Pendente :hourglass:|  |
-| 04 |   06/06/2021 | Pendente :hourglass:|  |
+| 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | 
+| 02 |   19/09/2022 - 09/10/2022 | Entregue :heavy_check_mark: |  
+| 03 |   10/10/2022 - 06/11/2022 | Entregue :heavy_check_mark: | 
+| 04 |   07/11/2022 - 27/11/2022 | Pendente :hourglass:|  
 
 <span id="backlogs"></span>
 
@@ -118,7 +119,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  04  | Cadastro e Login de usuários (Abertura de conta) |
 |  05  | Operações de depósito e saque |
 <p align="center">
-    <img src="docs/entregas/sprint-1/sprint1/mvp-sprint1.gif">
+    <img src="docs/entregas/sprint-1/mvp-sprint1.gif">
 </p>
 
 ### Sprint 2 
