@@ -9,7 +9,10 @@
   </head>
   <body>
     <span>
-    {% extends "home.html" %} {% block gerente %}
+    {% extends "home.html" %} 
+    {% block operações %}
+    {% endblock %}
+    {% block gerente %}
         <div class="centHomeG">
           <button id="req"><a href="{{'/requisicoes/historico_operacao/%s' % (agencia)}}" class="nav-link">Requisições de depósito</a></button>
           <button id="req"><a href="{{'/requisicoes/alteracao_cadastral/%s' % (agencia)}}" class="nav-link">Requisições alterações cadastrais</a></button>

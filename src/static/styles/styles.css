@@ -52,10 +52,6 @@ a{
   margin-left: 50px;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
 /* fim menu */
 
 body {
@@ -90,7 +86,7 @@ body {
 /* PÁGINAS SAQUE E DEPÓSITO */
 .corposaque {
     width: 35vw;
-    height: 30vh;
+    height: 38vh;
     margin: 12vh auto;
 
 
@@ -179,7 +175,7 @@ body {
 /* PÁGINA HOME */
 .corpohome {
     width: 35vw;
-    height: 35vh;
+    height: 37vh;
     margin: 12vh auto;
 
 
@@ -664,7 +660,7 @@ span.botoes
 
 .transf {
   width: 33vw;
-  height: 44vh;
+  height: 48vh;
   margin: 12vh auto;
   padding-top: 1vh;
   padding-left: 1vw;
@@ -827,6 +823,10 @@ span.botoes
     right: 8%;
   }
 
+  .sidenav {padding-top: 5vh;}
+
+  .sidenav a {font-size: 6vw;}
+
   .login-form{
     width: 70%;
     left: 50%;
@@ -905,6 +905,96 @@ span.botoes
       border-radius: 1vw;
       padding: 0 1vw;
       text-decoration: none;
-  
   }
+
+  .corpohome {
+    width: 90%;
+    height: 0%;
+    margin: 12vh auto;
+    padding-bottom: 4%;
+  }
+
+  .corpohome button {
+    font-size: 5vw;
+    padding: 1% 6%;
+    margin-right: 10%;
+    margin-left: 5%;
+  }
+
+  .corpohome h1 {
+    font-size: 7vw;
+  }
+  
+  .corpohome h2 {
+    font-size: 6vw;
+  }
+  
+  .corposaque {
+    width: 90%;
+    padding-top: 10%;
+  }
+
+  .corposaque h2 {
+    font-size: 5vw;
+  }
+  
+  .corposaque h1 {
+    font-size: 6vw;
+  }
+
+  .corposaque button {
+    position: absolute;
+    font-size: 5vw;
+    padding: 1% 6%;
+    margin-right: 10%;
+    margin-left: 5%;
+    margin-top: 5%;
+  }
+
+  #sacar, #depositar {
+    position: absolute;
+    padding: 1% 5%;
+    margin-left: 10%;
+    border: none;
+    border-radius: 10px;
+    right: 0%;
+    top: 155%;
+  }
+
+  #cifrão {
+    font-size: 5vw;
+  }
+
+  #cifrão input{
+    font-size: 5vw;
+  }
+
+  .transf {
+    width: 90%;
+    padding-bottom: 0%;
+    margin-top: 20%;
+  }
+
+  .transf h1{
+    padding-left: 6%;
+    font-size: 6vw;
+  }
+  
+  .transf label{
+    padding-left: 6%;
+  }
+
+  .transf input{
+    padding-left: 3%;
+    margin-left: 5%;
+  }
+
+  .transf button {
+    position: absolute;
+    font-size: 5vw;
+    left: 10%;
+    top: 155%;
+    padding: 1% 5%;
+  }
+
 }
