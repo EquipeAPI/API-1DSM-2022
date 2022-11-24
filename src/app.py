@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, session, url_for, f
 from flask_mysqldb import MySQL
 
 
-import bd, modelo, math # Importando os outros arquivos .py
+import bd, modelo, math, datetime # Importando os outros arquivos .py
 
 app = Flask(__name__)
 app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
@@ -27,6 +27,15 @@ def primeiro_nome(nome):
     nome = nome.split(' ')
     return f'{nome[0]}'
 
+@app.template_filter()
+def data(data):
+    data = data.strftime('%d/%m/%Y')
+    return f'{data}'
+
+@app.template_filter()
+def datahora(data):
+    data = data.strftime('%d/%m/%Y %H:%M:%S')
+    return f'{data}'
 
 # Rota da página de cadastro
 @app.route('/cadastro', methods=['POST', 'GET'])
@@ -423,7 +432,7 @@ def geraPDF(tipo):
 @app.route('/loggout')
 def loggout():
     if 'nome' in session: # Se a pessoa estiver logada (nome está na session)
-        nome = session['nome'] # Passando o nome para uma variável para transmitir para a mensagem
+        nome = primeiro_nome(session['nome']) # Passando o nome para uma variável para transmitir para a mensagem
         flash(f'{nome}, você saiu da sua conta com sucesso.', 'info') # Criando uma mensagem que vai ser mostrada na pagina login
      # Apagando as informações armazenadas na session['nome']
     if session['gerente'] == 'nao':
