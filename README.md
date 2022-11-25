@@ -52,8 +52,8 @@ python app.py
 ## Entregas
 O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separadas em 4 entregas com sprints de 21 dias de duração cada uma. <br>
 
-| Sprint| Período | Status | Relatório |
-|:-----:|:----------:|:---------:|:---------:|
+| Sprint| Período | Status |
+|:-----:|:----------:|:---------:|
 | 01 |   29/08/2022 - 19/09/2022 | Entregue :heavy_check_mark: | 
 | 02 |   19/09/2022 - 09/10/2022 | Entregue :heavy_check_mark: |  
 | 03 |   10/10/2022 - 06/11/2022 | Entregue :heavy_check_mark: | 

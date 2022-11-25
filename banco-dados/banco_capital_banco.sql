@@ -26,10 +26,9 @@ CREATE TABLE `capital_banco` (
   `id_capital` int NOT NULL AUTO_INCREMENT,
   `capital_total` double DEFAULT NULL,
   `capital_inicial` double DEFAULT NULL,
-  `taxa_rendimento` double DEFAULT (0.005),
+  `taxa_rendimento` double DEFAULT NULL,
   `taxa_juros` double DEFAULT NULL,
   `data_atual` date DEFAULT NULL,
-  `diferenca_dias` int DEFAULT NULL,
   PRIMARY KEY (`id_capital`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,7 +39,7 @@ CREATE TABLE `capital_banco` (
 
 LOCK TABLES `capital_banco` WRITE;
 /*!40000 ALTER TABLE `capital_banco` DISABLE KEYS */;
-INSERT INTO `capital_banco` VALUES (1,NULL,NULL,0.005,NULL,NULL,NULL);
+INSERT INTO `capital_banco` VALUES (1,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `capital_banco` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

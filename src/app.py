@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -356,6 +356,10 @@ def transferencia():
                 saldoAntesEnvio = linhaContaEnvio['saldo_conta'] #Guardando o valor do saldo antes da operação
                 linhaContaRecebido = bd.pegarLinha('conta', 'numero_conta', numero_recebedor)
                 dadosContaRecebido = bd.pegarLinha('usuario', 'id_usuario', linhaContaRecebido['id_usuario'])
+                if linhaContaEnvio['tipo_conta'] == 'Poupança':
+                    if float(transferencia) > linhaContaEnvio['saldo_conta']:
+                        flash('Saldo insuficiente')
+                        return redirect(url_for('transferencia'))
                 if modelo.transferencia(session['id_usuario'], transferencia, numero_recebedor):
                     dataHora = bd.diferencaDias()[0] #Armazenando data e hora do sistema na variável dataHora
                     dic_dados = {'numero_conta': session['numero_conta'], 'operacao': 'Transferencia', 'valor': transferencia, 'dataHora': dataHora, 'saldoAntes': saldoAntesEnvio, 'contaDestino': numero_recebedor, 'saldoAntesRecebedor': linhaContaRecebido['saldo_conta'], 'numero_agencia_recebedor': linhaContaRecebido['numero_agencia'], 'status_operacao': 'Aprovado', 'numero_agencia':session['numero_agencia'], 'nome_destino': dadosContaRecebido['nome_usuario']} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário

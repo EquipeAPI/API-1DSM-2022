@@ -162,15 +162,51 @@ def reqMudanca(dicionario, id_usuario, numero_agencia):
     return None
 
 def configuracaoInicial(form):
+    if '%' in str(form['taxa_juros']):
+        taxa_juros = form['taxa_juros']
+        taxa_juros = taxa_juros.rstrip(taxa_juros[-1])
+        if ',' in taxa_juros:
+            taxa_juros = taxa_juros.replace(',', '.')
+        taxa_juros = float(taxa_juros)/100
+    else:
+        taxa_juros = form['taxa_juros']
+    
+    if '%' in str(form['taxa_rendimento']):
+        taxa_rendimento = form['taxa_rendimento']
+        taxa_rendimento = taxa_rendimento.rstrip(taxa_rendimento[-1])
+        if ',' in taxa_rendimento:
+            taxa_rendimento = taxa_rendimento.replace(',','.')
+        taxa_rendimento = float(taxa_rendimento)/100
+    else:
+        taxa_rendimento = form['taxa_rendimento']
+    
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], form['taxa_juros']))
+    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s, taxa_rendimento = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], taxa_juros, taxa_rendimento))
     mysql.connection.commit()
     cur.close()
     return None
 
 def configuracoesSeguintes(form):
+    if '%' in str(form['taxa_juros']):
+        taxa_juros = form['taxa_juros']
+        taxa_juros = taxa_juros.rstrip(taxa_juros[-1])
+        if ',' in taxa_juros:
+            taxa_juros = taxa_juros.replace(',', '.')
+        taxa_juros = float(taxa_juros)/100
+    else:
+        taxa_juros = form['taxa_juros']
+    
+    if '%' in str(form['taxa_rendimento']):
+        taxa_rendimento = form['taxa_rendimento']
+        taxa_rendimento = taxa_rendimento.rstrip(taxa_rendimento[-1])
+        if ',' in taxa_rendimento:
+            taxa_rendimento = taxa_rendimento.replace(',','.')
+        taxa_rendimento = float(taxa_rendimento)/100
+    else:
+        taxa_rendimento = form['taxa_rendimento']
+        
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE capital_banco SET data_atual = %s, taxa_juros = %s WHERE id_capital = 1", (form['data_atual'], form['taxa_juros']))
+    cur.execute(f"UPDATE capital_banco SET data_atual = %s, taxa_juros = %s, taxa_rendimento = %s WHERE id_capital = 1", (form['data_atual'], taxa_juros, taxa_rendimento))
     mysql.connection.commit()
     cur.close()
     return None
