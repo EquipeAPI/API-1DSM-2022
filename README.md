@@ -134,6 +134,26 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
     <img src="docs/entregas/sprint-2/demo-api-2sprint.gif">
 </p>
 
+### Sprint 3 
+| Item | Funcionalidade             |
+| :--: | :------------------------- |
+|  01  | Criação do Gerente Geral|
+|  02  | O Gerente Geral possui acesso a todas funcionalidade do sistema, sem restrição. |
+|  04  | Funcionalidade de Capital Total |
+|  05  | Transferência entre usuários do banco |
+|  06  | Gerente de Agência pode realizar alteração de dados dos seus clientes sem requisição (correção) |
+|  07  | Comprovante de operações (correção) |
+|  08  | Extrato de movimentação da conta (correção) |
+
+### Sprint 4 
+| Item | Funcionalidade             |
+| :--: | :------------------------- |
+|  01  | Configurações iniciais do sistema |
+|  02  | Diferenciação entre tipos de conta Corrente e Poupança |
+|  03  | Cheque Especial |
+|  05  | Truncamento de valores |
+|  06  | Responsividade do sistema |
+
 <span id="tecnologias"></span>
 
 ## Tecnologias utilizadas
