@@ -45,6 +45,8 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 ```powershell
 cd src
 python app.py
+# digite no navegador a url que aparecer no terminal
+# padrão: http://127.0.0.1:5000
 ```
 
 <span id="entregas"></span>
@@ -144,6 +146,9 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  06  | Gerente de Agência pode realizar alteração de dados dos seus clientes sem requisição (correção) |
 |  07  | Comprovante de operações (correção) |
 |  08  | Extrato de movimentação da conta (correção) |
+<p align="center">
+    <img src="docs/entregas/sprint-3/mvp-sprint3.gif">
+</p>
 
 ### Sprint 4 
 | Item | Funcionalidade             |
@@ -153,6 +158,9 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 |  03  | Cheque Especial |
 |  05  | Truncamento de valores |
 |  06  | Responsividade do sistema |
+<p align="center">
+    <img src="docs/entregas/sprint-4/mvp-sprint4.gif">
+</p>
 
 <span id="tecnologias"></span>
 
