@@ -165,7 +165,7 @@ O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separa
 <span id="tecnologias"></span>
 
 ## Tecnologias utilizadas
-![Tecnologias utilizadas.](docs/imagens/tec-1.jpg "HTML5, CSS3, Python, Flask e MySQL.")
+![Tecnologias utilizadas.](docs/imagens/tec-2.jpg "HTML5, CSS3, Python, Flask e MySQL.")
 
 <span id="equipe"></span>
 
