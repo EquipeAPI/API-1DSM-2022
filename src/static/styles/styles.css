@@ -11,6 +11,10 @@ a{
   left: 13vw;
 }
 
+#deflacao{
+  margin: 0;
+}
+
 .sidenav {
   height: 100%;
   width: 0;

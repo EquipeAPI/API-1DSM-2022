@@ -11,7 +11,7 @@ app.secret_key = 'aonainfinnBFNFOANOnasfononfsa' #Chave de segurança da session
 # Configurações do banco de dados
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = 'Goiabada2!' #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -67,20 +67,24 @@ def configuracao():
     saldo = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_inicial')
     if request.method == 'POST':
         form = request.form
-        if saldo == None:
-            if modelo.validaOperacao(form['capital_inicial']):
-                bd.configuracaoInicial(form)
-                return redirect(url_for('login'))
+        if form['correcao_monetaria'][0].isnumeric() and form['taxa_juros'][0].isnumeric() and form['taxa_rendimento'][0].isnumeric():
+            if saldo == None:
+                if modelo.validaOperacao(form['capital_inicial']):
+                    bd.configuracaoInicial(form)
+                    return redirect(url_for('login'))
+                else:
+                    flash('Use apenas números positivos')
+                    return render_template('configCapital.html', saldo = saldo)
             else:
-                flash('Use apenas números positivos')
-                return render_template('configCapital.html', saldo = saldo)
+                if modelo.validaData(form['data_atual']):
+                    bd.configuracoesSeguintes(form)
+                    return redirect(url_for('login'))
+                else:
+                    flash('Datas somente para a frente')
+                    return render_template('configCapital.html')
         else:
-            if modelo.validaData(form['data_atual']):
-                bd.configuracoesSeguintes(form)
-                return redirect(url_for('login'))
-            else:
-                flash('Datas somente para a frente')
-                return render_template('configCapital.html')
+            flash("É necessário inserir um número valido nos campos de porcentagem")
+            return redirect(url_for('configuracao'))
     else:
         return render_template('configCapital.html', saldo = saldo)
 
@@ -170,6 +174,7 @@ def configCapital():
 # Rota da página home
 @app.route('/home')
 def home():
+    #modelo.correcaoCorrente()
     modelo.aplicaJuros()
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
@@ -539,10 +544,10 @@ def requisicoes(tipo, numero_agencia):
 
 '''@app.route('/teste')
 def teste():
-    somaSaldo = bd.soma_capital('conta','saldo_conta')
-    capitalInicial = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_inicial')
-    somaTotal = somaSaldo[0]['soma'] + capitalInicial
-    return f"Esse é um teste -> somaSaldo:{somaSaldo} || capitalInicial:{capitalInicial} || somaTotal:{somaTotal}"'''
+    dataAbertura = bd.pegarDado('conta', 'id_usuario', 4, 'data_abertura_conta')
+    dataHora = bd.diferencaDias()[0]
+    diferenca = dataHora.date()+datetime.timedelta(30) - dataAbertura
+    return f"Esse é um teste -> DataHora:{dataHora} || dataAbertura:{dataAbertura} || diferenca: {diferenca} || ?: {diferenca >= datetime.timedelta(30)}"'''
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
 def respostaReq(decisao, tipo, id):
@@ -557,7 +562,7 @@ def respostaReq(decisao, tipo, id):
             modelo.saiuCheque(linhaConta['saldo_conta'], linhaConta['id_usuario']) #Confere se o usuario saiu do cheque especial
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
         else:
-            dataHora = modelo.dataHora(True)
+            dataHora = bd.diferencaDias()[0]
             bd.atualizaDeposito(tipo, dataHora, 'Negado', id)
             return redirect(url_for('requisicoes', tipo=tipo, numero_agencia = linhaOperacao['numero_agencia']))
     

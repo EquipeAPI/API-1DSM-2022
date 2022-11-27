@@ -363,8 +363,10 @@ def rendimentoPoupança():
         rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
 
         while intervalo >= 30:
+            
+            #correcaoPoupaca(session['numero_conta'], dataInicial)
             saldo = bd.consultaSaldo(session['id_usuario'])
-            saldo_novo = saldo + (saldo * rendimento)
+            saldo_novo = saldo + (saldo * (rendimento / 100))
             valor = saldo_novo - saldo
             saldo_novo = truncaValor(saldo_novo)
             valor = truncaValor(valor)
@@ -478,7 +480,7 @@ def aplicaJuros():
         while dataAtual - dataUltimaAplicação >= datetime.timedelta(days=1):
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
             saldoAntigo = linhaConta['saldo_conta']
-            desconto = saldoAntigo * juros
+            desconto = saldoAntigo * (juros / 100)
             desconto = truncaValor(desconto)
             saldoAtual = saldoAntigo + desconto
             valorDevendo = linhaConta['cheque_conta'] + desconto
@@ -506,3 +508,51 @@ def saiuCheque(saldoAntes, id_usuario): #Diz se o usuário saiu ou não no chequ
         return None
     else:
         return None
+
+
+
+#============================ FUNÇÂO DE CORREÇÃO MONETÁRIA ============================
+
+'''def correcaoCorrente():
+    tabelaConta = bd.tabelaPersonalizada('conta', 'tipo_conta', 'Corrente')
+    taxaCorrecao = bd.pegarDado('capital_banco', 'id_capital', 1, 'correcao_monetaria')
+    dataHora = bd.diferencaDias()[0]
+    for linhaConta in tabelaConta:
+        if bd.operacoesCorrecao(linhaConta['numero_conta']) != None:
+            linhaUltimaCorrecao = bd.operacoesCorrecao(linhaConta['numero_conta'])
+            ultimaData = linhaUltimaCorrecao['data_hora_operacao']
+            while dataHora - ultimaData >= datetime.timedelta(30):
+                saldoAntigo = linhaConta['saldo_conta']
+                correcao = saldoAntigo * taxaCorrecao
+                correcao = truncaValor(correcao)
+                saldoAtual = saldoAntigo + correcao
+                bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
+                dic_dados = {'dataHora': ultimaData, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':correcao, 'tipo_operacao':'Correção Monetária', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
+                ultimaData = ultimaData + datetime.timedelta(30)
+                bd.inserirOperacao('historico_operacao', 'Correção Monetária', dic_dados)
+        else:
+            ultimaData = linhaConta['data_abertura_conta']
+            while dataHora.date() - ultimaData >= datetime.timedelta(30):
+                saldoAntigo = linhaConta['saldo_conta']
+                correcao = saldoAntigo * taxaCorrecao
+                correcao = truncaValor(correcao)
+                saldoAtual = saldoAntigo + correcao
+                bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
+                dic_dados = {'dataHora': ultimaData, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':correcao, 'tipo_operacao':'Correção Monetária', 'numero_conta':linhaConta['numero_conta'], 'numero_agencia':linhaConta['numero_agencia'], 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
+                ultimaData = ultimaData + datetime.timedelta(30)
+                bd.inserirOperacao('historico_operacao', 'Correção Monetária', dic_dados)
+    return None
+
+
+def correcaoPoupaca(numero_conta, dataHora):
+    saldoAntigo = bd.pegarDado('conta', 'numero_conta', numero_conta, 'saldo_conta')
+    id_usuario = bd.pegarDado('conta', 'numero_conta', numero_conta, 'id_usuario')
+    numero_agencia = bd.pegarDado('conta', 'numero_conta', numero_conta, 'numero_agencia')
+    taxaCorrecao = bd.pegarDado('capital_banco', 'id_capital', 1, 'correcao_monetaria')
+    correcao = saldoAntigo * taxaCorrecao
+    correcao = truncaValor(correcao)
+    saldoAtual = saldoAntigo + correcao
+    bd.mudaSaldo(saldoAtual, id_usuario)
+    dic_dados = {'dataHora': dataHora, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':correcao, 'tipo_operacao':'Correção Monetária', 'numero_conta':numero_conta, 'numero_agencia':numero_agencia, 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
+    bd.inserirOperacao('historico_operacao', 'Correção Monetária', dic_dados)
+    return None'''

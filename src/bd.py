@@ -36,6 +36,13 @@ def mudaSaldo(valor, id):
     
 #========================== Funções que pegam linhas ou tabelas no BD ==========================
 
+def operacoesCorrecao(numero_conta):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM historico_operacao where numero_conta = {numero_conta} AND tipo_operacao = 'Correção Monetária' ORDER BY data_hora_operacao DESC")
+    linha = cur.fetchone()
+    cur.close()
+    return linha
+
 def pegarLinha(tabela, coluna, valor): #retorna uma linha da coluna que possui o valor inserido
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT * FROM {tabela} WHERE {coluna} =%s", [valor]) #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
@@ -52,7 +59,10 @@ def pegarDado(tabela, coluna, valor, dado): #retorna uma linha da coluna que pos
 
 def tabelaPersonalizada(tabela, dado, valor):
     cur = mysql.connection.cursor()
-    cur.execute(f"SELECT * FROM {tabela} where {dado} = {valor}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    if isinstance(valor, str):
+        cur.execute(f"SELECT * FROM {tabela} where {dado} = '{valor}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
+    else:
+        cur.execute(f"SELECT * FROM {tabela} where {dado} = {valor}")
     tabelaPersonalizada = cur.fetchall() #Armazena todas as informações desse cliente na variável usuário
     cur.close()
     return tabelaPersonalizada
@@ -179,9 +189,18 @@ def configuracaoInicial(form):
         taxa_rendimento = float(taxa_rendimento)/100
     else:
         taxa_rendimento = form['taxa_rendimento']
+
+    if '%' in str(form['correcao_monetaria']):
+        correcao_monetaria = form['correcao_monetaria']
+        correcao_monetaria = correcao_monetaria.rstrip(correcao_monetaria[-1])
+        if ',' in correcao_monetaria:
+            correcao_monetaria = correcao_monetaria.replace(',','.')
+        correcao_monetaria = float(correcao_monetaria)/100
+    else:
+        taxa_rendimento = form['taxa_rendimento']
     
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s, taxa_rendimento = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], taxa_juros, taxa_rendimento))
+    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s, taxa_rendimento = %s, correcao_monetaria = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], taxa_juros, taxa_rendimento, correcao_monetaria))
     mysql.connection.commit()
     cur.close()
     return None
@@ -343,8 +362,8 @@ def criacaoAgencia(form, atribuido):
 
 def criacaoGerente(form, atribuicao):
     numero_conta = modelo.geradorNumeroConta()
-    dataHora = modelo.dataHora(True)
-    dataAbertura = dataHora[0:10]
+    dataHora = diferencaDias()[0]
+    dataAbertura = str(dataHora)[0:10]
     cur = mysql.connection.cursor()
     cur.execute("INSERT INTO usuario(nome_usuario, cpf_usuario, rua_avenida_usuario, numero_casa_usuario, bairro_usuario, cidade_usuario, estado_usuario, data_nascimento_usuario, genero_usuario, senha_usuario, data_hora_usuario) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (form['nome_usuario'], form ['CPF'], form['rua'], form['numero'], form['bairro'], form['cidade'], form['estado'], form['dataNascimento'], form['genero'], form['senha'], dataHora)) # Executando o comando de inserir os dados na tabela. "%s" representa uma variável que eu defini nos parenteses seguintes
     mysql.connection.commit()

@@ -28,7 +28,7 @@ CREATE TABLE `historico_operacao` (
   `data_hora_confirmacao` datetime DEFAULT NULL,
   `saldo_operacao` double NOT NULL,
   `valor_operacao` double NOT NULL,
-  `tipo_operacao` set('Depósito','Saque','Transferência','Cheque Especial','Rendimento Poupança') DEFAULT NULL,
+  `tipo_operacao` set('Depósito','Saque','Transferência','Cheque Especial','Rendimento Poupança', 'Correção Monetária') DEFAULT NULL,
   `numero_conta` int NOT NULL,
   `numero_agencia` int DEFAULT NULL,
   `status_operacao` set('Pendente','Aprovado','Negado') DEFAULT NULL,
