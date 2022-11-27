@@ -549,15 +549,6 @@ def requisicoes(tipo, numero_agencia):
         requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', numero_agencia), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta, gerente = session['gerente'], tabelaAgencia =agencia, numero_agencia = numero_agencia)
 
 
-@app.route('/teste')
-def teste():
-    #dataAbertura = bd.pegarDado('usuario', 'id_usuario', 4, 'data_hora_usuario')
-    saldoAntigo = 113.78
-    rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
-    valor = rendimento * saldoAntigo
-    valor = modelo.truncaValor(valor)
-    saldoFinal = saldoAntigo + (saldoAntigo * rendimento)
-    return f"Esse é um teste -> saldoAntigo:{saldoAntigo} || rendimento:{rendimento} || saldoFinal: {saldoFinal} || valor:{valor}"
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
 def respostaReq(decisao, tipo, id):

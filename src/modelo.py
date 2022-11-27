@@ -11,7 +11,7 @@ import datetime
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Goiabada2!'  #Insira aqui a senha do seu servidor local do MYSQL
+app.config['MYSQL_PASSWORD'] = ''  #Insira aqui a senha do seu servidor local do MYSQL
 app.config['MYSQL_DB'] = 'banco'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -488,6 +488,7 @@ def aplicaJuros():
             valorDevendo = Decimal(linhaConta['cheque_conta']) + Decimal(desconto)
             valorDevendo = truncaValor(valorDevendo) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
             saldoAtual = truncaValor(saldoAtual) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
+            
             dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)
             bd.mudaSaldo(saldoAtual, linhaConta['id_usuario'])
             bd.updateCheque(linhaConta['id_usuario'], dataAtual, valorDevendo)
@@ -515,7 +516,7 @@ def saiuCheque(saldoAntes, id_usuario): #Diz se o usuário saiu ou não no chequ
 
 #============================ FUNÇÂO DE CORREÇÃO MONETÁRIA ============================
 
-'''def correcaoCorrente():
+def correcaoCorrente():
     tabelaConta = bd.tabelaPersonalizada('conta', 'tipo_conta', 'Corrente')
     taxaCorrecao = bd.pegarDado('capital_banco', 'id_capital', 1, 'correcao_monetaria')
     dataHora = bd.diferencaDias()[0]
@@ -557,6 +558,7 @@ def saiuCheque(saldoAntes, id_usuario): #Diz se o usuário saiu ou não no chequ
               
                 bd.inserirOperacao('historico_operacao', 'Correção Monetária', dic_dados)
     return None
+
 def correcaoPoupaca(numero_conta, dataHora):
     saldoAntigo = bd.pegarDado('conta', 'numero_conta', numero_conta, 'saldo_conta')
     id_usuario = bd.pegarDado('conta', 'numero_conta', numero_conta, 'id_usuario')
@@ -568,4 +570,5 @@ def correcaoPoupaca(numero_conta, dataHora):
     bd.mudaSaldo(saldoAtual, id_usuario)
     dic_dados = {'dataHora': dataHora, 'data_hora_confirmacao':None, 'saldoAntes':saldoAntigo, 'valor':correcao, 'tipo_operacao':'Correção Monetária', 'numero_conta':numero_conta, 'numero_agencia':numero_agencia, 'status_operacao':'Aprovado', 'numero_conta_destino':None, 'numero_agencia_destino':None, 'saldo_operacao_destino':None}
     bd.inserirOperacao('historico_operacao', 'Correção Monetária', dic_dados)
-    return None'''
+    return None
+
