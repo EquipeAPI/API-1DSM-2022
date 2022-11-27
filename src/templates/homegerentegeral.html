@@ -9,6 +9,8 @@
   </head>
   <body>
     {% extends "home.html" %}
+    {% block cliente_normal %}
+    {% endblock %}
     {% block capitalTotal  %}
       <h2>Capital total do banco: {{capitalTotal | moeda}}</h2>
     {% endblock %}
