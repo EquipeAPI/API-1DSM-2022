@@ -3,6 +3,7 @@ from dataclasses import replace
 from turtle import update
 from flask import Flask, session
 from flask_mysqldb import MySQL
+from decimal import *
 import bd, random
 import datetime
 
@@ -16,6 +17,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 mysql = MySQL(app)
+getcontext().prec = 9
 
 def entrouCheque(saldoAntes, id_usuario): #Diz se o usuário entrou ou não no cheque especial
     saldoAtual = bd.pegarDado('conta', 'id_usuario', id_usuario, 'saldo_conta')
@@ -83,14 +85,14 @@ def mesmaContaGerente(numero_matricula, senha):
 def saque(id_usuario, valor):
     valor = float(valor)
     atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)
-    atual = atual['saldo_conta'] - valor
+    atual = Decimal(atual['saldo_conta']) - Decimal(valor)
     bd.mudaSaldo(atual, id_usuario)
     return None
 
 def deposito(id_usuario, valor):
     valor = float(valor)
     atual = bd.pegarLinha('conta', 'id_usuario', id_usuario)
-    atual = atual['saldo_conta'] + valor
+    atual = Decimal(atual['saldo_conta']) + Decimal(valor)
     bd.mudaSaldo(atual, id_usuario)
     pagandoCheque(id_usuario, valor)
     return None
@@ -101,8 +103,8 @@ def transferencia(id_usuario, valor, recebedor):
         atualEnvio = bd.pegarLinha('conta', 'id_usuario', id_usuario)
         id_recebedor = atualRecebedor['id_usuario']
         valor = float(valor)
-        atualEnvio = atualEnvio['saldo_conta'] - valor
-        atualRecebedor = atualRecebedor['saldo_conta'] + valor
+        atualEnvio = Decimal(atualEnvio['saldo_conta']) - Decimal(valor)
+        atualRecebedor = Decimal(atualRecebedor['saldo_conta']) + Decimal(valor)
         bd.mudaSaldo(atualEnvio, id_usuario)
         bd.mudaSaldo(atualRecebedor, id_recebedor)
         pagandoCheque(id_recebedor, valor)
@@ -366,10 +368,10 @@ def rendimentoPoupança():
             
             #correcaoPoupaca(session['numero_conta'], dataInicial)
             saldo = bd.consultaSaldo(session['id_usuario'])
-            saldo_novo = saldo + (saldo * rendimento)
-            valor = saldo_novo - saldo
-            saldo_novo = truncaValor(saldo_novo)
+            valor = Decimal(saldo) * Decimal(rendimento)
+            saldo_novo = Decimal(saldo) + Decimal(valor)
             valor = truncaValor(valor)
+            saldo_novo = truncaValor(saldo_novo)
             dataHora = dataInicial.date() + datetime.timedelta(days=30)
             dic_dados = {'numero_conta': session['numero_conta'], 'numero_agencia':session['numero_agencia'],'valor': valor, 'dataHora': dataHora, 'saldoAntes': saldo, 'operacao': 'Rendimento Poupança', 'status_operacao': 'Aprovado'} #Colocando os dados necessários para a chamada da função inserirOperação em uma variável dicionário
             bd.insereRendimento(session['numero_conta'], dataHora)
@@ -428,14 +430,14 @@ def truncamentoSaldo(valor, id_usuario): #Trunca valor do saldo, a não ser que 
 
 def truncaValor(valor):
     valor = str(valor)
-    resto = float(valor) - float(valor[:(valor.find('.')+3)])
+    resto = Decimal(valor) - Decimal(valor[:(valor.find('.')+3)])
     capitalTotal = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_total')
     if float(valor) >= 0:
         resultado = float(valor[:(valor.find('.')+3)])
         dicionario = {'resultado':resultado, 'resto':resto}
         bd.somarValorCapital(dicionario['resto'])
     else:
-        if capitalTotal + resto > 0.01: 
+        if Decimal(capitalTotal) + Decimal(resto) > 0.01: 
             resultado = float(valor[:(valor.find('.')+3)])
             dicionario = {'resultado':resultado, 'resto':resto}
             bd.somarValorCapital(dicionario['resto'])
@@ -480,10 +482,10 @@ def aplicaJuros():
         while dataAtual - dataUltimaAplicação >= datetime.timedelta(days=1):
             linhaConta = bd.pegarLinha('conta', 'numero_conta', linhaCheque['numero_conta'])
             saldoAntigo = linhaConta['saldo_conta']
-            desconto = saldoAntigo * juros
+            desconto = Decimal(saldoAntigo) * Decimal(juros)
             desconto = truncaValor(desconto)
-            saldoAtual = saldoAntigo + desconto
-            valorDevendo = linhaConta['cheque_conta'] + desconto
+            saldoAtual = Decimal(saldoAntigo) + Decimal(desconto)
+            valorDevendo = Decimal(linhaConta['cheque_conta']) + Decimal(desconto)
             valorDevendo = truncaValor(valorDevendo) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
             saldoAtual = truncaValor(saldoAtual) #truncando para evitar inconsistencias da limitante computacional de representação de números de ponto flutuante
             dataUltimaAplicação = dataUltimaAplicação + datetime.timedelta(1)

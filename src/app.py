@@ -19,7 +19,7 @@ mysql = MySQL(app)
 
 @app.template_filter()
 def moeda(valor):
-    valor = math.floor(valor * 10 ** 2) / 10 ** 2
+    #valor = math.floor(valor * 10 ** 2) / 10 ** 2
     return f'R${valor:.2f}'
 
 @app.template_filter()
@@ -552,10 +552,12 @@ def requisicoes(tipo, numero_agencia):
 @app.route('/teste')
 def teste():
     #dataAbertura = bd.pegarDado('usuario', 'id_usuario', 4, 'data_hora_usuario')
-    dataAbertura = bd.pegarDado('conta', 'id_usuario', 4, 'data_abertura_conta')
-    dataHora = bd.diferencaDias()[0]
-    diferenca = dataHora.date() - dataAbertura
-    return f"Esse é um teste -> DataHora:{dataHora} || dataAbertura:{dataAbertura} || diferenca: {dataHora.date() - dataAbertura} || ?: {diferenca >= datetime.timedelta(30)}"
+    saldoAntigo = 113.78
+    rendimento = bd.pegarDado('capital_banco', 'id_capital', 1, 'taxa_rendimento')
+    valor = rendimento * saldoAntigo
+    valor = modelo.truncaValor(valor)
+    saldoFinal = saldoAntigo + (saldoAntigo * rendimento)
+    return f"Esse é um teste -> saldoAntigo:{saldoAntigo} || rendimento:{rendimento} || saldoFinal: {saldoFinal} || valor:{valor}"
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
 def respostaReq(decisao, tipo, id):
