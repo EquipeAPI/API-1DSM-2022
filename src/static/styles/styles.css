@@ -1035,4 +1035,86 @@ span.botoes
     width: 34%;
   }
   
+  .req-form{
+    width:auto;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  a.nav-link2:link{
+    font-size: 4vw;
+   color: black;
+   text-decoration: none;
+  }
+
+  a.nav-link2:visited
+  {
+    color:black;
+    text-decoration: none;
+  }
+  a.nav-link2:hover{
+    color:black;
+    text-decoration: none;
+  }
+
+  a.nav-link2:active{
+    color:black;
+    text-decoration: none;
+  }
+  
+  .atribui-form{
+    width:80%;
+    top: 30%;
+    left: 50%;
+    position: block;
+  }
+
+  .atribui-form h1{
+    font-size:5vw;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  .atribui-form p{
+    font-size: 5vw;
+    padding: 2%;
+  }
+  
+  .atribui-form input{
+    margin-top: 5%;
+    font-size: 5vw; 
+    padding: 2%;
+  }
+  
+  .atribui-form select{
+    font-size: 5vw;
+    padding: 2%;
+  }
+
+  .voltar2 button {
+  font-size: 5vw;
+  padding: 2%;
+  }
+
+  a.nav-link:link{
+    font-size: 4vw;
+   color: black;
+   text-decoration: none;
+  }
+
+  a.nav-link:visited
+  {
+    color:black;
+    text-decoration: none;
+  }
+  a.nav-link:hover{
+    color:black;
+    text-decoration: none;
+  }
+
+  a.nav-link:active{
+    color:black;
+    text-decoration: none;
+  }
+  
 }
