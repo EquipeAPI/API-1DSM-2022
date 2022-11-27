@@ -179,7 +179,7 @@ body {
 /* PÁGINA HOME */
 .corpohome {
     width: 35vw;
-    height: 37vh;
+    height: 42vh;
     margin: 12vh auto;
 
 
@@ -226,12 +226,12 @@ body {
 }
 
 #info {
-  margin-left:80vh;
+  margin-left: 34%;
   font-size: 1.5vw;
   color:#FF884D;
   font-weight: 700;
-  left: 33%;
   top: 24%;
+  display: block;
 }
 
 #confimacaoSenha{
@@ -664,7 +664,7 @@ span.botoes
 
 .transf {
   width: 33vw;
-  height: 48vh;
+  height: 50vh;
   margin: 12vh auto;
   padding-top: 1vh;
   padding-left: 1vw;

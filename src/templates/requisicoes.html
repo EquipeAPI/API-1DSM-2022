@@ -68,6 +68,8 @@
             <p id="info">{{msg}}</p>
         {% endfor %}
     {% endwith %}
+</div>
+<div id="flexbox">
     <!-- Requisições de depósito -->
     {% if gerente == 'geral' %}
         <form action="#" method="POST" class="cadastro">
@@ -80,8 +82,7 @@
             <input type="submit" value="Filtrar">
         </form>
     {% endif %}
-    
-</div>
+ </div>   
 <div id="flexbox"><h1>Agência: {{numero_agencia}}</h1></div>
 
 {% if tipo == 'historico_operacao' %}
