@@ -658,7 +658,12 @@ def usuariosAgencia(numero_agencia):
     tabelaUsuario = bd.pegarTabela('usuario')
     tabelaConta = bd.pegarTabela('conta')
     agencia = int(numero_agencia)
-    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = agencia, gerente = session['gerente'])
+    linhaAgencia = bd.pegarLinha('agencia', 'numero_agencia', agencia)
+    if linhaAgencia['numero_matricula'] != None:
+        id_gerente = bd.pegarDado('gerente_geral', 'numero_matricula', linhaAgencia['numero_matricula'], 'id_usuario')
+    else:
+        id_gerente = 'não'
+    return render_template('usuarios_agencia.html', usuario = tabelaUsuario, conta = tabelaConta, agencia = agencia, gerente = session['gerente'], id_gerente = id_gerente)
 
 @app.route('/alteraAgencia/<numero_agencia>', methods = ['POST', 'GET'])
 def alteraAgencia(numero_agencia):
@@ -770,6 +775,7 @@ def demiteGerente(id_usuario, atribuido):
     if atribuido == "True":
         bd.updateDado('agencia', 'numero_matricula', linhaGerente['numero_matricula'], 'numero_matricula', 'NULL')
         bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
+        modelo.apagaUsuario(linhaConta['numero_conta'], linhaConta['id_usuario'])
     else:
         bd.apaga_linha('gerente_geral', 'id_usuario', id_usuario)
         modelo.apagaUsuario(linhaConta['numero_conta'], linhaConta['id_usuario'])
