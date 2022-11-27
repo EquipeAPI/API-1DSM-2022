@@ -1130,6 +1130,9 @@ span.botoes
     margin-bottom: 5%;
   }
 
-  .blocoAgencia > div{     width: 75vw;   }
+  .blocoAgencia > div{
+    width: 75vw;
+  }
   
 }
+
