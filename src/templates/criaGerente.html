@@ -65,7 +65,7 @@
                 {% endfor %}
             {% endwith %}
             <label for="numero_matricula">Número Matricula:</label>
-            <input type="number" name="numero_matricula" required>
+            <input type="number" name="numero_matricula" min="1" max="9999" step="1" required>
             <label for="nome">Nome:</label><br>
             <input type="text" name="nome_usuario" required><br>
             <label for="CPF">CPF:</label><br>

@@ -59,7 +59,7 @@ def pegarDado(tabela, coluna, valor, dado): #retorna uma linha da coluna que pos
 
 def tabelaPersonalizada(tabela, dado, valor):
     cur = mysql.connection.cursor()
-    if isinstance(valor, str):
+    if valor == 'Correção Monetária' or valor=='Corrente':
         cur.execute(f"SELECT * FROM {tabela} where {dado} = '{valor}'") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
     else:
         cur.execute(f"SELECT * FROM {tabela} where {dado} = {valor}")
@@ -128,6 +128,13 @@ def updateCheque(id_usuario, novaData, valorCheque):
     cur.close()
     return None
 
+def updateChequeCorrecao(id_usuario, valorCheque):
+    numero_conta = pegarDado('conta', 'id_usuario', id_usuario, 'numero_conta')
+    cur = mysql.connection.cursor()
+    cur.execute(f"UPDATE conta SET cheque_conta = {valorCheque} WHERE numero_conta = {numero_conta}")
+    mysql.connection.commit()
+    cur.close()
+    return None
 
 #========================== Funções que inserem linhas no BD ==========================
 
@@ -190,17 +197,17 @@ def configuracaoInicial(form):
     else:
         taxa_rendimento = form['taxa_rendimento']
 
-    if '%' in str(form['correcao_monetaria']):
-        correcao_monetaria = form['correcao_monetaria']
-        correcao_monetaria = correcao_monetaria.rstrip(correcao_monetaria[-1])
-        if ',' in correcao_monetaria:
-            correcao_monetaria = correcao_monetaria.replace(',','.')
-        correcao_monetaria = float(correcao_monetaria)/100
-    else:
-        taxa_rendimento = form['taxa_rendimento']
+    # if '%' in str(form['correcao_monetaria']):
+    #     correcao_monetaria = form['correcao_monetaria']
+    #     correcao_monetaria = correcao_monetaria.rstrip(correcao_monetaria[-1])
+    #     if ',' in correcao_monetaria:
+    #         correcao_monetaria = correcao_monetaria.replace(',','.')
+    #     correcao_monetaria = float(correcao_monetaria)/100
+    # else:
+    #     taxa_rendimento = form['taxa_rendimento']
     
     cur = mysql.connection.cursor()
-    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s, taxa_rendimento = %s, correcao_monetaria = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], taxa_juros, taxa_rendimento, correcao_monetaria))
+    cur.execute(f"UPDATE capital_banco SET capital_inicial = %s, capital_total = %s, data_atual = %s, taxa_juros = %s, taxa_rendimento = %s WHERE id_capital = 1", (form['capital_inicial'], form['capital_inicial'], form['data_atual'], taxa_juros, taxa_rendimento))
     mysql.connection.commit()
     cur.close()
     return None
@@ -405,9 +412,9 @@ def atribuirDesatribuirGerente(acao, numero_matricula, numero_agencia):
     if acao == 'desatribuir':
         cur.execute(f"UPDATE agencia SET numero_matricula = NULL WHERE numero_matricula = {numero_matricula}")
         cur.execute(f"UPDATE gerente_geral SET atribuicao = 'Nao' WHERE numero_matricula = {numero_matricula}")
-        if numero_agencia != 0:
+        '''if numero_agencia != None:
             cur.execute(f"UPDATE historico_operacao SET numero_agencia = NULL WHERE numero_agencia = {linhaConta['numero_agencia']}")
-        '''for linha in tabelaAlteracaoCadastro:
+        for linha in tabelaAlteracaoCadastro:
             cur.execute(f"UPDATE ateracao_cadastral SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")
         for linha in tabelaEncerraConta:
             cur.execute(f"UPDATE encerramento_conta SET numero_agencia = NULL WHERE id_usuario = {linhaGerente['id_usuario']}")'''

@@ -57,7 +57,7 @@
                     <label for="nome">Nome:</label><br>
                     <input type="text" name="nome" value="{{linhaUsuario['nome_usuario']}}"><br>
                     <label for="numero_matricula">Número de Matrícula:</label><br>
-                    <input type="number" value="{{linhaGerente['numero_matricula']}}">
+                    <input type="number" value="{{linhaGerente['numero_matricula']}}" min="1" max="9999" step="1">
                     <div type="separações" class="separações">Rua ou Avenida:</div>
                     <input type="text" name="rua" value="{{linhaUsuario['rua_avenida_usuario']}}">
                     <div type="separações" class="separações">Número:</div>

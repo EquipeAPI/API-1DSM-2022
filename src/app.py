@@ -67,7 +67,7 @@ def configuracao():
     saldo = bd.pegarDado('capital_banco', 'id_capital', 1, 'capital_inicial')
     if request.method == 'POST':
         form = request.form
-        if form['correcao_monetaria'][0].isnumeric() and form['taxa_juros'][0].isnumeric() and form['taxa_rendimento'][0].isnumeric():
+        if form['taxa_juros'][0].isnumeric() and form['taxa_rendimento'][0].isnumeric():
             if saldo == None:
                 if modelo.validaOperacao(form['capital_inicial']):
                     bd.configuracaoInicial(form)
@@ -174,8 +174,8 @@ def configCapital():
 # Rota da página home
 @app.route('/home')
 def home():
-    #modelo.correcaoCorrente()
     modelo.aplicaJuros()
+    #modelo.correcaoCorrente()
     if 'nome' in session:
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -208,6 +208,7 @@ def home():
 @app.route('/homeGerenteAgencia')
 def homeGerenteAgencia():
     modelo.aplicaJuros()
+    #modelo.correcaoCorrente()
     linhaGerente = bd.pegarLinha('gerente_geral', 'id_usuario', session['id_usuario'])
     atribuido = linhaGerente['atribuicao']
     if session['gerente'] == 'agencia':
@@ -237,6 +238,7 @@ def homeGerenteAgencia():
 @app.route('/homeGerenteGeral')
 def homeGerenteGeral():
     modelo.aplicaJuros()
+    #modelo.correcaoCorrente()
     if session['gerente'] == 'geral':
         if 'dic_dados' in session: #Se há algum dado de operação na session, ele será apagado.
             session.pop('dic_dados', None)
@@ -492,16 +494,21 @@ def atribuicao (tipo, numero_agencia):
 
 @app.route('/apagaAgencia/<numero_agencia>') #Rota de exclusão de agância
 def apagaAgencia(numero_agencia):
-    agenciaReceptora = modelo.atribuiAgencia()
     tabelaAgencia = bd.pegarTabela('agencia')
-    numero_agencia = int(numero_agencia)
-    agenciaReceptora = int(agenciaReceptora)
-    if agenciaReceptora == numero_agencia:
-        for linha in tabelaAgencia:
-            if linha['numero_agencia'] != numero_agencia:
-                agenciaReceptora = int(linha['numero_agencia'])    
-    modelo.apagaAgencia(numero_agencia, agenciaReceptora)
-    return redirect(url_for('agencias'))
+    if len(tabelaAgencia) > 1:
+        agenciaReceptora = modelo.atribuiAgencia()
+        tabelaAgencia = bd.pegarTabela('agencia')
+        numero_agencia = int(numero_agencia)
+        agenciaReceptora = int(agenciaReceptora)
+        if agenciaReceptora == numero_agencia:
+            for linha in tabelaAgencia:
+                if linha['numero_agencia'] != numero_agencia:
+                    agenciaReceptora = int(linha['numero_agencia'])    
+        modelo.apagaAgencia(numero_agencia, agenciaReceptora)
+        return redirect(url_for('agencias'))
+    else:
+        flash("Está é a única agência, por isso não pode ser apagada.")
+        return redirect(url_for('alteraAgencia', numero_agencia = numero_agencia))
 
 #======================================= Requisições do Usuário =======================================
 
@@ -542,12 +549,13 @@ def requisicoes(tipo, numero_agencia):
         requisicoes = bd.tabelaPersonalizada(str(tipo), 'numero_agencia', numero_agencia), tipo = tipo, tabelaUsuario = usuario, tabelaConta = conta, gerente = session['gerente'], tabelaAgencia =agencia, numero_agencia = numero_agencia)
 
 
-'''@app.route('/teste')
+@app.route('/teste')
 def teste():
+    #dataAbertura = bd.pegarDado('usuario', 'id_usuario', 4, 'data_hora_usuario')
     dataAbertura = bd.pegarDado('conta', 'id_usuario', 4, 'data_abertura_conta')
     dataHora = bd.diferencaDias()[0]
-    diferenca = dataHora.date()+datetime.timedelta(30) - dataAbertura
-    return f"Esse é um teste -> DataHora:{dataHora} || dataAbertura:{dataAbertura} || diferenca: {diferenca} || ?: {diferenca >= datetime.timedelta(30)}"'''
+    diferenca = dataHora.date() - dataAbertura
+    return f"Esse é um teste -> DataHora:{dataHora} || dataAbertura:{dataAbertura} || diferenca: {dataHora.date() - dataAbertura} || ?: {diferenca >= datetime.timedelta(30)}"
 
 @app.route('/resposta/<decisao>/<tipo>/<id>')
 def respostaReq(decisao, tipo, id):
