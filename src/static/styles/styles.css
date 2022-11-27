@@ -1000,5 +1000,39 @@ span.botoes
     top: 155%;
     padding: 1% 5%;
   }
+  
+  .divtabuser{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 0%;
+    display: table;
+  }
+  
+  .divrowuser{
+    display: table-row;
+  }
+  
+  .userinfo{
+    width: 50%;
+    margin-top: 5%;
+  }
+  
+  .useralt{
+    width: 50%;
+    padding-bottom: 20px;
+  }
 
+  #alterar {
+    font-size: 4vw;
+    padding: 3vw;
+    width: 60%;
+  }
+
+  #req{
+    font-size: 5vw;
+    padding-right: 1vw;
+    margin-bottom: 1vh;
+    width: 34%;
+  }
+  
 }
