@@ -48,9 +48,14 @@ python app.py
 # digite no navegador a url que aparecer no terminal
 # padrão: http://127.0.0.1:5000
 ```
+#### Configurações adicionais
+Para simular situações de cheque especial e rendimento da poupança, as configurações de tempo e taxas se armazenam na tabela 'capital_banco' no banco de dados. Para alterar é possível:
+* Alterar manualmente pelo banco de dados;
+* Através da aplicação na rota inicial '/'  .
+
+![Configurações do sistema.](docs/imagens/configuracoes.png "Página de configurações da aplicação")
 
 <span id="entregas"></span>
-
 ## Entregas
 O projeto está sendo realizado utilizando-se da metodologia ágil SCRUM, separadas em 4 entregas com sprints de 21 dias de duração cada uma. <br>
 
