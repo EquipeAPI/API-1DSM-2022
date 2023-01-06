@@ -310,8 +310,16 @@ def criacaoGerenteComAgencia(form, numero_agencia):
     return None
 
 # Função para calcular rendimento de conta poupança
+jaRendeu = False
 def rendimentoPoupança():
+
+    global jaRendeu
     saldo = bd.consultaSaldo(session['id_usuario'])
+    if jaRendeu:
+        return saldo
+
+    jaRendeu = True
+
     if saldo > 0:
         operacoes = bd.extrato(session['numero_conta'])
         depositos = []
@@ -343,7 +351,8 @@ def rendimentoPoupança():
             saldo = saldo + (saldo * rendimento)
             quantidadeDias = quantidadeDias - 30
         
-        return saldo
+        
+        return saldo 
     else:
         return saldo
     
