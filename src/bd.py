@@ -70,6 +70,13 @@ def extratoPersonalizado(conta, data_inicio, data_fim):
     cur.close()
     return extratoPersonalizado
 
+def operacoesPositivas(conta):
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM historico_operacao WHERE (numero_conta = {conta} or numero_conta_destino = {conta}) AND (tipo_operacao = 'Depósito' OR tipo_operacao = 'Transferência') ")
+    operacoes = cur.fetchall()
+    cur.close()
+    return operacoes
+
 def pegarTabela(tabela):
     cur = mysql.connection.cursor()
     cur.execute(f"SELECT * FROM {tabela}") #Procura pelo cliente cujo CPF bata com o que foi digitado no formulário de login
@@ -136,7 +143,7 @@ def inserirOperacao(tabela, operacao, dic_dados): #id_usuário, operacao, valor,
 
 def inserirOperacaoTransferencia(tabela, operacao, dic_dados): #id_usuário, operacao, valor, data e hora estão como um dicionário dicionário oq reduz esses parametros em um (será implementado na tarefa data e hora)
     cur = mysql.connection.cursor()
-    cur.execute (f"INSERT INTO {tabela} (numero_conta, numero_agencia, tipo_operacao, valor_operacao, data_hora_operacao, saldo_operacao, status_operacao, numero_conta_destino, numero_agencia_destino, saldo_operacao_destino) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], operacao, dic_dados['valor'], dic_dados['dataHora'], dic_dados['saldoAntes'], dic_dados['status_operacao'], dic_dados['contaDestino'], dic_dados['numero_agencia_recebedor'], dic_dados['saldoAntesRecebedor']))
+    cur.execute (f"INSERT INTO {tabela} (numero_conta, numero_agencia, tipo_operacao, valor_operacao, data_hora_operacao, data_hora_confirmacao, saldo_operacao, status_operacao, numero_conta_destino, numero_agencia_destino, saldo_operacao_destino) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dic_dados['numero_conta'], dic_dados['numero_agencia'], operacao, dic_dados['valor'], dic_dados['dataHora'], dic_dados['dataHora'], dic_dados['saldoAntes'], dic_dados['status_operacao'], dic_dados['contaDestino'], dic_dados['numero_agencia_recebedor'], dic_dados['saldoAntesRecebedor']))
     mysql.connection.commit() # Dando commit
     cur.close() # Fechando o cursor
     return None

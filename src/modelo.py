@@ -321,22 +321,24 @@ def rendimentoPoupança():
     jaRendeu = True
 
     if saldo > 0:
-        operacoes = bd.extrato(session['numero_conta'])
-        depositos = []
+        operacoes = bd.operacoesPositivas(session['numero_conta'])
+        """ depositos = []
         for operacao in operacoes:
             for coluna, registro in operacao.items():
                 if registro == 'Depósito':
-                    depositos.append(operacao)
-        if len(depositos) > 1:
-            for deposito in depositos:
-                for coluna, registro in deposito.items():
+                    depositos.append(operacao) """
+           
+        if len(operacoes) > 1:
+            for operacao in operacoes:
+                print(operacao)
+                for coluna, registro in operacao.items():
                     if coluna == 'data_hora_confirmacao': 
                         inicial = registro
                     if registro < inicial:
                         inicial = registro
         else:
-            for deposito in depositos:
-                for coluna, registro in deposito.items():
+            for operacao in operacoes:
+                for coluna, registro in operacao.items():
                     if coluna == 'data_hora_confirmacao': 
                         inicial = registro
                 
